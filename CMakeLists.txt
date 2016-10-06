@@ -1,0 +1,15 @@
+cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
+project(rpg LANGUAGES CXX)
+
+add_executable(${PROJECT_NAME} src/main.cpp)
+
+# Add source and header files
+file(GLOB_RECURSE ${PROJECT_NAME}_SOURCES src/*.cpp)
+
+target_sources(${PROJECT_NAME} PRIVATE ${${PROJECT_NAME}_SOURCES})
+target_include_directories(${PROJECT_NAME} PRIVATE src)
+
+# Add required libraries
+find_package(SFML 2.4 REQUIRED system window graphics)
+target_link_libraries(${PROJECT_NAME} PRIVATE ${SFML_LIBRARIES})
+target_include_directories(${PROJECT_NAME} PRIVATE ${SFML_INCLUDE_DIR})
