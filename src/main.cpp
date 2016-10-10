@@ -29,7 +29,7 @@ void update(sf::Time delta) {
 			quit = true;
 	}
 
-	mgr.template forEntitiesHaving<TBackgroundEntity>([](auto entity) {
+	mgr.forEntitiesHaving<TBackgroundEntity>([](auto entity) {
 		auto& bgColor = mgr.getComponent<CBackgroundColor>(entity);
 		bgColor.color.r += 1;
 		bgColor.color.r %= 255;
@@ -43,7 +43,7 @@ void update(sf::Time delta) {
 
 void render(sf::Time delta) {
 
-	mgr.template forEntitiesHaving<TBackgroundEntity>([](auto entity) {
+	mgr.forEntitiesHaving<TBackgroundEntity>([](auto entity) {
 		auto& bgColor = mgr.getComponent<CBackgroundColor>(entity);
 		window->clear(bgColor.color);
 	});
@@ -83,8 +83,8 @@ int main(int argc, char** argv) {
 	window = &window_;
 
 	auto bgEntity = mgr.createEntity();
-	mgr.template addTag<TBackgroundEntity>(bgEntity);
-	mgr.template emplaceComponent<CBackgroundColor>(bgEntity);
+	mgr.addTag<TBackgroundEntity>(bgEntity);
+	mgr.emplaceComponent<CBackgroundColor>(bgEntity);
 	
 	quit = false;
 
