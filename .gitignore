@@ -1,0 +1,6 @@
+# Ignore cmake build directories
+.build
+build
+
+# Ignore personal makefiles
+Makefile

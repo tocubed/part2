@@ -1,6 +1,23 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 
+#include <core/ecs/configuration.hpp>
+#include <core/ecs/manager.hpp>
+#include <core/ecs/typelist.hpp>
+
+struct CBackgroundColor
+{
+	sf::Color color{};
+};
+class TBackgroundEntity;
+
+using ComponentList = ecs::TypeList<CBackgroundColor>;
+using TagList = ecs::TypeList<TBackgroundEntity>;
+using Configuration = ecs::Configuration<ComponentList, TagList>;
+using Manager = ecs::Manager<Configuration>;
+
+Manager mgr{};
+
 sf::RenderWindow* window;
 bool quit;
 
@@ -12,13 +29,26 @@ void update(sf::Time delta) {
 			quit = true;
 	}
 
+	mgr.template forEntitiesHaving<TBackgroundEntity>([](auto entity) {
+		auto& bgColor = mgr.getComponent<CBackgroundColor>(entity);
+		bgColor.color.r += 1;
+		bgColor.color.r %= 255;
+		bgColor.color.g += 2;
+		bgColor.color.g %= 255;
+		bgColor.color.b += 3;
+		bgColor.color.b %= 255;
+	});
+
 }
 
 void render(sf::Time delta) {
 
-	window->clear(sf::Color::Black);
-	window->display();
+	mgr.template forEntitiesHaving<TBackgroundEntity>([](auto entity) {
+		auto& bgColor = mgr.getComponent<CBackgroundColor>(entity);
+		window->clear(bgColor.color);
+	});
 
+	window->display();
 }
 
 void loop() {
@@ -52,6 +82,10 @@ int main(int argc, char** argv) {
 	sf::RenderWindow window_(sf::VideoMode(800, 600), "Test");
 	window = &window_;
 
+	auto bgEntity = mgr.createEntity();
+	mgr.template addTag<TBackgroundEntity>(bgEntity);
+	mgr.template emplaceComponent<CBackgroundColor>(bgEntity);
+	
 	quit = false;
 
 	loop();
