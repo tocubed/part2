@@ -56,18 +56,24 @@ public:
 		return eI;
 	}
 
+	bool isDeleted(EntityIndex eI) const
+	{
+		return entities[eI].deleted;
+	}
+
 	template <typename TFunc>
 	void forEntities(TFunc&& func)
 	{
 		for(EntityIndex eI = 0; eI < entities.size(); ++eI)
-			func(eI);
+			if(!isDeleted(eI))
+				func(eI);
 	}
 
 	template <typename TFunc>
 	void forEntitiesMatching(Signature s, TFunc&& func)
 	{
 		for(EntityIndex eI = 0; eI < entities.size(); ++eI)
-			if(getEntity(eI).signature.matches(s))
+			if(getEntity(eI).signature.matches(s) && !isDeleted(eI))
 				func(eI);
 	}
 
@@ -76,14 +82,10 @@ public:
 	{
 		for(EntityIndex eI = 0; eI < entities.size(); ++eI)
 			if (getEntity(eI).signature.matches(
-			        Signature::template create<Ts...>()))
+			        Signature::template create<Ts...>()) && !isDeleted(eI))
 				func(eI);
 	}
 
-	bool isDeleted(EntityIndex eI) const
-	{
-		return entities[eI].deleted;
-	}
 
 private:
 	ComponentStorage components;
@@ -206,7 +208,6 @@ public:
 
 		freeIndices.push_back(eI);
 	}
-
 };
 
 } // namespace ecs
