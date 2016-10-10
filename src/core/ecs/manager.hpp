@@ -200,7 +200,7 @@ public:
 		ComponentList::forEach([&](auto t) {
 			using Component = decltype(t);
 
-			if(e.signature.getComponent<Component>())
+			if(e.signature.template getComponent<Component>())
 				removeComponent<Component>(eI);
 		});
 
