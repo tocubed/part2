@@ -1,24 +1,15 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 
-#include <core/ecs/configuration.hpp>
-#include <core/ecs/manager.hpp>
-#include <core/ecs/typelist.hpp>
+#include <core/manager.hpp>
+#include <render/render.hpp>
+#include <cstdlib>
 
-struct CBackgroundColor
-{
-	sf::Color color{};
-};
-class TBackgroundEntity;
-
-using ComponentList = ecs::TypeList<CBackgroundColor>;
-using TagList = ecs::TypeList<TBackgroundEntity>;
-using Configuration = ecs::Configuration<ComponentList, TagList>;
-using Manager = ecs::Manager<Configuration>;
-
-Manager mgr{};
+Manager manager{};
 
 sf::RenderWindow* window;
+RenderSystem* renderSystem;
+
 bool quit;
 
 void update(sf::Time delta) {
@@ -29,24 +20,26 @@ void update(sf::Time delta) {
 			quit = true;
 	}
 
-	mgr.forEntitiesHaving<TBackgroundEntity>([](auto entity) {
-		auto& bgColor = mgr.getComponent<CBackgroundColor>(entity);
-		bgColor.color.r += 1;
-		bgColor.color.r %= 255;
-		bgColor.color.g += 2;
-		bgColor.color.g %= 255;
-		bgColor.color.b += 3;
-		bgColor.color.b %= 255;
-	});
+	renderSystem->update(delta);
 
+	auto anotherCircle = manager.createEntity();
+	manager.addComponent<CPosition>(anotherCircle, CPosition{000.f, 000.f, 1});
+	manager.addComponent<CDrawable>(anotherCircle, CDrawable{new sf::CircleShape(3)});
+
+	manager.forEntitiesHaving<CPosition>([](auto entity)
+	{
+		auto& pos = manager.getComponent<CPosition>(entity);
+
+		pos.x += (std::rand() % 8) - 1;
+		pos.y += (std::rand() % 8) - 1;
+	});
 }
 
 void render(sf::Time delta) {
 
-	mgr.forEntitiesHaving<TBackgroundEntity>([](auto entity) {
-		auto& bgColor = mgr.getComponent<CBackgroundColor>(entity);
-		window->clear(bgColor.color);
-	});
+	window->clear(sf::Color::Black);
+
+	renderSystem->render(delta);
 
 	window->display();
 }
@@ -80,11 +73,19 @@ void loop() {
 int main(int argc, char** argv) {
 
 	sf::RenderWindow window_(sf::VideoMode(800, 600), "Test");
+	RenderSystem renderSystem_(manager, window_);
+	
 	window = &window_;
+	renderSystem = &renderSystem_;
 
-	auto bgEntity = mgr.createEntity();
-	mgr.addTag<TBackgroundEntity>(bgEntity);
-	mgr.emplaceComponent<CBackgroundColor>(bgEntity);
+	auto mySquareEntity = manager.createEntity();
+	manager.addComponent<CPosition>(mySquareEntity, CPosition{0.f, 0.f, 1});
+	manager.addComponent<CDrawable>(mySquareEntity, CDrawable{new sf::CircleShape(100, 4)});
+
+	auto myCircleEntity = manager.createEntity();
+	manager.addComponent<CPosition>(myCircleEntity, CPosition{000.f, 000.f, 1});
+	manager.addComponent<CDrawable>(myCircleEntity, CDrawable{new sf::CircleShape(10)});
+
 	
 	quit = false;
 
