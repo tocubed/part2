@@ -14,6 +14,8 @@ target_include_directories(${PROJECT_NAME} PRIVATE src)
 # Add required libraries
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
 
+set(SFML_STATIC_LIBRARIES TRUE)
 find_package(SFML 2.4 REQUIRED system window graphics)
+target_link_libraries(${PROJECT_NAME} PRIVATE ${SFML_DEPENDENCIES})
 target_link_libraries(${PROJECT_NAME} PRIVATE ${SFML_LIBRARIES})
 target_include_directories(${PROJECT_NAME} PRIVATE ${SFML_INCLUDE_DIR})
