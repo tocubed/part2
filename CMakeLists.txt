@@ -3,7 +3,7 @@ project(rpg LANGUAGES CXX)
 
 add_executable(${PROJECT_NAME} src/main.cpp)
 target_compile_features(${PROJECT_NAME} PRIVATE 
-	cxx_auto_type cxx_alias_templates cxx_relaxed_constexpr)
+	cxx_auto_type cxx_alias_templates cxx_return_type_deduction)
 
 # Add source and header files
 file(GLOB_RECURSE ${PROJECT_NAME}_SOURCES src/*.cpp)

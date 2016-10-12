@@ -7,18 +7,16 @@ namespace ecs {
 
 namespace detail {
 
-template <typename T, typename... Ts>
-constexpr std::size_t find()
-{
-	const auto N{sizeof...(Ts)};
-	std::array<bool, N> matching{std::is_same<T, Ts>::value...};
-
-	for(auto i = 0u; i < N; ++i)
-		if(matching[i])
-			return i;
-
-	return N;
+template <typename T>
+constexpr std::size_t find(std::size_t i = 0) {
+	return i;
 }
+
+template <typename T, typename U, typename... Ts>
+constexpr std::size_t find(std::size_t i = 0) {
+	return std::is_same<T, U>::value ? i : find<T, Ts...>(i + 1);
+}
+
 
 } // namespace detail
 
