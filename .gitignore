@@ -2,5 +2,6 @@
 .build
 build
 
-# Ignore personal makefiles
+# Ignore personal build scripts
 Makefile
+*.bat
