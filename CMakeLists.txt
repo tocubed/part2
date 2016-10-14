@@ -12,10 +12,16 @@ target_sources(${PROJECT_NAME} PRIVATE ${${PROJECT_NAME}_SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE src)
 
 # Add required libraries
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
+# SFML
+if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+	set(SFML_STATIC_LIBRARIES TRUE)
+endif()
+find_package(SFML 2.4 REQUIRED COMPONENTS system window graphics)
 
-set(SFML_STATIC_LIBRARIES TRUE)
-find_package(SFML 2.4 REQUIRED system window graphics)
 target_link_libraries(${PROJECT_NAME} PRIVATE ${SFML_DEPENDENCIES})
 target_link_libraries(${PROJECT_NAME} PRIVATE ${SFML_LIBRARIES})
 target_include_directories(${PROJECT_NAME} PRIVATE ${SFML_INCLUDE_DIR})
+
+# pugixml
+target_sources(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/deps/pugixml/pugixml.cpp)
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/deps/pugixml)
