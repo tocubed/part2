@@ -12,6 +12,8 @@ target_sources(${PROJECT_NAME} PRIVATE ${${PROJECT_NAME}_SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE src)
 
 # Add required libraries
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
+
 # SFML
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 	set(SFML_STATIC_LIBRARIES TRUE)
