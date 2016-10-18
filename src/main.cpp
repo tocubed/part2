@@ -24,18 +24,6 @@ void update(sf::Time delta) {
 	}
 
 	renderSystem->update(delta);
-
-	auto anotherCircle = manager.createEntity();
-	manager.addComponent<CLocation>(anotherCircle, CLocation{0, 0, 1});
-	manager.addComponent<CDrawable>(anotherCircle, CDrawable{new sf::CircleShape(3)});
-
-	manager.forEntitiesHaving<CLocation>([](auto entity)
-	{
-		auto& pos = manager.getComponent<CLocation>(entity);
-
-		pos.x += (std::rand() % 8) - 1;
-		pos.y += (std::rand() % 8) - 1;
-	});
 }
 
 void render(sf::Time delta) {
@@ -83,15 +71,6 @@ int main(int argc, char** argv) {
 
 	myAwesomeMap.loadFromFile("assets/maps/untitled.tmx");
 
-	auto mySquareEntity = manager.createEntity();
-	manager.addComponent<CLocation>(mySquareEntity, CLocation{0, 0, 1});
-	manager.addComponent<CDrawable>(mySquareEntity, CDrawable{new sf::CircleShape(100, 4)});
-
-	auto myCircleEntity = manager.createEntity();
-	manager.addComponent<CLocation>(myCircleEntity, CLocation{0, 0, 1});
-	manager.addComponent<CDrawable>(myCircleEntity, CDrawable{new sf::CircleShape(10)});
-
-	
 	quit = false;
 
 	loop();
