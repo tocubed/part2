@@ -10,7 +10,7 @@ struct Configuration
 	using ComponentList = TComponentList;
 	using TagList = TTagList;
 	using ComponentAndTagList =
-	    typename ComponentList::template Concatenate<TagList>;
+	    typename ComponentList::template Concatenate<TagList>::Type;
 
 	template <typename T>
 	static constexpr bool isComponent()

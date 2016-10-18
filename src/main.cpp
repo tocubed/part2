@@ -1,11 +1,14 @@
+#include <core/manager.hpp>
+#include <render/render.hpp>
+#include <world/map.hpp>
+
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 
-#include <core/manager.hpp>
-#include <render/render.hpp>
 #include <cstdlib>
 
 Manager manager{};
+Map myAwesomeMap(manager);
 
 sf::RenderWindow* window;
 RenderSystem* renderSystem;
@@ -23,12 +26,12 @@ void update(sf::Time delta) {
 	renderSystem->update(delta);
 
 	auto anotherCircle = manager.createEntity();
-	manager.addComponent<CPosition>(anotherCircle, CPosition{000.f, 000.f, 1});
+	manager.addComponent<CLocation>(anotherCircle, CLocation{0, 0, 1});
 	manager.addComponent<CDrawable>(anotherCircle, CDrawable{new sf::CircleShape(3)});
 
-	manager.forEntitiesHaving<CPosition>([](auto entity)
+	manager.forEntitiesHaving<CLocation>([](auto entity)
 	{
-		auto& pos = manager.getComponent<CPosition>(entity);
+		auto& pos = manager.getComponent<CLocation>(entity);
 
 		pos.x += (std::rand() % 8) - 1;
 		pos.y += (std::rand() % 8) - 1;
@@ -78,12 +81,14 @@ int main(int argc, char** argv) {
 	window = &window_;
 	renderSystem = &renderSystem_;
 
+	myAwesomeMap.loadFromFile("assets/maps/untitled.tmx");
+
 	auto mySquareEntity = manager.createEntity();
-	manager.addComponent<CPosition>(mySquareEntity, CPosition{0.f, 0.f, 1});
+	manager.addComponent<CLocation>(mySquareEntity, CLocation{0, 0, 1});
 	manager.addComponent<CDrawable>(mySquareEntity, CDrawable{new sf::CircleShape(100, 4)});
 
 	auto myCircleEntity = manager.createEntity();
-	manager.addComponent<CPosition>(myCircleEntity, CPosition{000.f, 000.f, 1});
+	manager.addComponent<CLocation>(myCircleEntity, CLocation{0, 0, 1});
 	manager.addComponent<CDrawable>(myCircleEntity, CDrawable{new sf::CircleShape(10)});
 
 	

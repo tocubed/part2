@@ -2,7 +2,7 @@
 
 #include <core/system.hpp>
 #include <render/drawable.hpp>
-#include <world/position.hpp>
+#include <world/location.hpp>
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Transform.hpp>
@@ -17,15 +17,15 @@ public:
 		: System(manager), renderTarget(renderTarget),
 		  renderList([this](EntityIndex a, EntityIndex b)
 		  {
-			  return this->manager.getComponent<CPosition>(a).level <
-			         this->manager.getComponent<CPosition>(b).level;
+			  return this->manager.getComponent<CLocation>(a).zLevel <
+			         this->manager.getComponent<CLocation>(b).zLevel;
 		  })
 	{}
 
 	void update(sf::Time delta)
 	{
 		renderList.clear();
-		manager.forEntitiesHaving<CDrawable, CPosition>([this](EntityIndex eI)
+		manager.forEntitiesHaving<CDrawable, CLocation>([this](EntityIndex eI)
 		{
 			renderList.insert(eI);
 		});
@@ -35,7 +35,7 @@ public:
 	{
 		for(auto eI : renderList)
 		{
-			auto pos = manager.getComponent<CPosition>(eI);
+			auto pos = manager.getComponent<CLocation>(eI);
 
 			sf::Transform t;
 			t.translate(pos.x, pos.y);

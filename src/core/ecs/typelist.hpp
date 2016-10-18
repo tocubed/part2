@@ -54,8 +54,10 @@ struct TypeList
 	struct Concatenate;
 
 	template <typename... Us>
-	struct Concatenate<TypeList<Us...>> : TypeList<Ts..., Us...> {};
-
+	struct Concatenate<TypeList<Us...>>
+	{
+		using Type = TypeList<Ts..., Us...>;	
+	};
 };
 
 } // namespace ecs

@@ -3,9 +3,15 @@
 #include <core/ecs/typelist.hpp>
 
 #include <render/drawable.hpp>
-#include <world/position.hpp>
+
+namespace Render {
 
 using ComponentList = ecs::TypeList<
-	CPosition,
 	CDrawable
 >;
+
+using TagList = ecs::TypeList<
+
+>;
+
+} // namespace Render
