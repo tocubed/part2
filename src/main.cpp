@@ -8,7 +8,6 @@
 #include <cstdlib>
 
 Manager manager{};
-Map myAwesomeMap(manager);
 
 sf::RenderWindow* window;
 RenderSystem* renderSystem;
@@ -69,6 +68,7 @@ int main(int argc, char** argv) {
 	window = &window_;
 	renderSystem = &renderSystem_;
 
+	Map myAwesomeMap(manager);
 	myAwesomeMap.loadFromFile("assets/maps/untitled.tmx");
 
 	quit = false;
