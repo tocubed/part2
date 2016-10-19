@@ -29,8 +29,16 @@ target_sources(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/deps/pugixml/pugixml.
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/deps/pugixml)
 
 # Copy assets to build directory
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
-	${CMAKE_COMMAND} -E copy_directory 
-		${CMAKE_SOURCE_DIR}/assets 
-		$<TARGET_FILE_DIR:${PROJECT_NAME}>/assets
-)
+if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
+		${CMAKE_COMMAND} -E copy_directory 
+			${CMAKE_SOURCE_DIR}/assets 
+			${PROJECT_BINARY_DIR}/assets
+	)
+else()
+	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND 
+		${CMAKE_COMMAND} -E copy_directory 
+			${CMAKE_SOURCE_DIR}/assets 
+			$<TARGET_FILE_DIR:${PROJECT_NAME}>/assets
+	)
+endif()
