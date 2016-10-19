@@ -3,7 +3,7 @@
 #include <core/ecs/typelist.hpp>
 
 #include <world/location.hpp>
-#include <world/maplayer.hpp>
+#include <world/tags.hpp>
 
 namespace World {
 
