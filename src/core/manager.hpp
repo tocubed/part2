@@ -3,6 +3,7 @@
 #include <core/ecs.hpp>
 #include <render/ecs.hpp>
 #include <world/ecs.hpp>
+#include <input/ecs.hpp>
 
 #include <core/ecs/configuration.hpp>
 #include <core/ecs/manager.hpp>
@@ -12,14 +13,16 @@
 using ComponentList = 
 	Core::ComponentList::Concatenate<
 	Render::ComponentList::Concatenate<
-	World::ComponentList
+	World::ComponentList::Concatenate<
+	Input::ComponentList>::Type
 	>::Type>::Type
 ;
 
 using TagList = 
 	Core::TagList::Concatenate<
 	Render::TagList::Concatenate<
-	World::TagList
+	World::TagList::Concatenate<
+	Input::TagList>::Type
 	>::Type>::Type
 ;
 

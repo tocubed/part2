@@ -1,6 +1,7 @@
 #include <core/manager.hpp>
 #include <render/render.hpp>
 #include <world/map.hpp>
+#include <input/input.hpp>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
@@ -11,6 +12,7 @@ Manager manager{};
 
 sf::RenderWindow* window;
 RenderSystem* renderSystem;
+InputSystem* inputSystem;
 
 bool quit;
 
@@ -23,6 +25,7 @@ void update(sf::Time delta) {
 	}
 
 	renderSystem->update(delta);
+	inputSystem->update(delta);
 }
 
 void render(sf::Time delta) {
@@ -35,7 +38,6 @@ void render(sf::Time delta) {
 }
 
 void loop() {
-
 	sf::Clock clock;
 	sf::Time accumulator;
 
@@ -57,20 +59,22 @@ void loop() {
 
 		render(accumulator);
 	}
-
 }
 
 int main(int argc, char** argv) {
 
+	std::string a;
 	sf::RenderWindow window_(sf::VideoMode(800, 600), "Test");
 	RenderSystem renderSystem_(manager, window_);
+	InputSystem inputSystem_(manager);
 	
 	window = &window_;
 	renderSystem = &renderSystem_;
+	inputSystem = &inputSystem_;
 
 	Map myAwesomeMap(manager);
 	myAwesomeMap.loadFromFile("assets/maps/untitled.tmx");
-
+	
 	quit = false;
 
 	loop();
