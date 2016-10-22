@@ -1,9 +1,9 @@
 #pragma once
 
 #include <core/ecs.hpp>
+#include <input/ecs.hpp>
 #include <render/ecs.hpp>
 #include <world/ecs.hpp>
-#include <input/ecs.hpp>
 
 #include <core/ecs/configuration.hpp>
 #include <core/ecs/manager.hpp>

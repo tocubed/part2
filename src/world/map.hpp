@@ -1,6 +1,7 @@
 #pragma once 
 
 #include <core/manager.hpp>
+#include <world/components.hpp>
 
 #include <SFML/Graphics/Image.hpp>
 #include <SFML/Graphics/Texture.hpp>
@@ -21,9 +22,9 @@ public:
 
 public:
 	void setSize(std::size_t width, std::size_t height);
-	void setLocation(int x, int y);
+	void setLocation(TileLocation location);
 
-	bool isCollidable(std::size_t x, std::size_t y);
+	bool isCollidable(TileLocation location);
 
 private:
 	Manager& manager;
@@ -31,9 +32,7 @@ private:
 	std::size_t mapWidth;
 	std::size_t mapHeight;
 
-	// TODO Add underscore to all member variables
-	int x_;
-	int y_;
+	TileLocation location;
 
 private:
 	void createTileset(std::size_t numTiles);

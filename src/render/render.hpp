@@ -1,8 +1,8 @@
 #pragma once
 
+#include <core/manager.hpp>
 #include <core/system.hpp>
 #include <render/drawable.hpp>
-#include <world/location.hpp>
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Transform.hpp>
@@ -14,7 +14,8 @@ class RenderSystem : System
 {
 public:
 	RenderSystem(Manager& manager, sf::RenderTarget& renderTarget)
-		: System(manager), renderTarget(renderTarget),
+		: System(manager), renderTarget(renderTarget), 
+		  view(renderTarget.getView()),
 		  renderList([this](EntityIndex a, EntityIndex b)
 		  {
 			  return this->manager.getComponent<CLocation>(a).zLevel <
@@ -29,10 +30,19 @@ public:
 		{
 			renderList.insert(eI);
 		});
+
+		manager.forEntitiesHaving<TPlayer, CLocation>([this](EntityIndex eI)
+		{
+			auto& location = manager.getComponent<CLocation>(eI);
+
+			view.setCenter(location.x, location.y);
+		});
 	}
 
 	void render(sf::Time delta)
 	{
+		renderTarget.setView(view);
+
 		for(auto eI : renderList)
 		{
 			auto pos = manager.getComponent<CLocation>(eI);
@@ -46,6 +56,7 @@ public:
 
 private:
 	sf::RenderTarget& renderTarget;
+	sf::View view;
 
 	std::multiset<EntityIndex, 
 		std::function<bool(EntityIndex, EntityIndex)>> renderList;

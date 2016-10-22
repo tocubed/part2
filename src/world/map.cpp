@@ -22,17 +22,16 @@ void Map::setSize(std::size_t width, std::size_t height)
 	mapHeight = height;
 }
 
-void Map::setLocation(int x, int y)
+void Map::setLocation(TileLocation location)
 {
-	x_ = x;
-	y_ = y;	
+	this->location = location;
 
 	for(auto e: tileLayerEntities)
 	{
-		auto& location = manager.getComponent<CLocation>(e);
-
-		location.x = x;
-		location.y = y;
+		auto& entityLocation = manager.getComponent<CLocation>(e);
+		
+		entityLocation.x = location.toLocation().x;
+		entityLocation.y = location.toLocation().y;
 	}
 }
 
@@ -111,7 +110,7 @@ auto& Map::getTileLayerArray(const std::string& name)
 	return getTileLayerArray(std::get<1>(*found));
 }
 
-bool Map::isCollidable(std::size_t x, std::size_t y)
+bool Map::isCollidable(TileLocation location)
 {
 	auto it = tileLayersByName.find("Collision");
 
@@ -121,7 +120,7 @@ bool Map::isCollidable(std::size_t x, std::size_t y)
 	{
 		auto& layer = getTileLayerArray(std::get<1>(*it));
 
-		return layer[x + mapWidth * y] != 0;
+		return layer[location.x + mapWidth * location.y] != 0;
 	}
 }
 
@@ -165,7 +164,9 @@ void Map::finalizeTileLayer(std::size_t index)
 
 	auto layerEntity = tileLayerEntities[index];
 	manager.addComponent<CDrawable>(layerEntity, CDrawable{drawable});
-	manager.addComponent<CLocation>(layerEntity, CLocation{x_, y_, zLevel});
+	manager.addComponent<CLocation>(
+	    layerEntity,
+	    CLocation{location.toLocation().x, location.toLocation().y, zLevel});
 	manager.addTag<TMapLayer>(layerEntity);
 }
 
@@ -185,7 +186,6 @@ void Map::loadFromFile(const std::string& mapFile)
 	auto width = map.attribute("width").as_int();
 	auto height = map.attribute("height").as_int();
 
-	setLocation(0, 0);
 	setSize(width, height);
 
 	auto numTiles = 0u;

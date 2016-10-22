@@ -1,7 +1,6 @@
 #pragma once
 
 #include <core/manager.hpp>
-#include <world/location.hpp>
 #include <world/map.hpp>
 
 #include <cassert>
@@ -18,25 +17,27 @@ public:
 	{
 	}
 
-	void loadMap(const std::string& mapFile, int x, int y)
+	void loadMap(const std::string& mapFile, TileLocation location)
 	{
 		maps.emplace_back(new Map(manager));
 
 		auto& map = *maps.back();
 
 		map.loadFromFile(mapFile);
-		map.setLocation(x, y);
+		map.setLocation(location);
 
 		// TODO Assert that map size is correct
 
-		mapsByLocation[MapLocation{x, y}] = maps.size() - 1;
+		mapsByLocation[location] = maps.size() - 1;
 	}
 
-	bool isCollidable(int x, int y)
+	bool isCollidable(TileLocation location)
 	{
-		MapLocation location{x / (int)mapSize, y / (int)mapSize};
+		TileLocation mapLocation;
+		mapLocation.x = (location.x / (int)mapSize) * (int)mapSize;
+		mapLocation.y = (location.y / (int)mapSize) * (int)mapSize;
 		
-		auto it = mapsByLocation.find(location);
+		auto it = mapsByLocation.find(mapLocation);
 
 		if(it == mapsByLocation.end())
 			return true; // out of bounds
@@ -44,7 +45,9 @@ public:
 		{
 			auto& map = *maps[std::get<1>(*it)];
 
-			return map.isCollidable(x % mapSize, y % mapSize);
+			return map.isCollidable(
+			    TileLocation{
+			        location.x - mapLocation.x, location.y - mapLocation.y});
 		}
 	}
 
@@ -53,5 +56,5 @@ private:
 	std::size_t mapSize;
 
 	std::vector<std::unique_ptr<Map>> maps;
-	std::unordered_map<MapLocation, std::size_t> mapsByLocation;
+	std::unordered_map<TileLocation, std::size_t> mapsByLocation;
 };

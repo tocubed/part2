@@ -1,7 +1,7 @@
 #pragma once
 
+#include <core/manager.hpp>
 #include <core/system.hpp>
-
 
 class InputSystem : System
 {
@@ -12,28 +12,31 @@ public:
 
 	void update(sf::Time delta)
 	{
-		manager.forEntitiesHaving<TPlayer> ([this](EntityIndex eI)
+		manager.forEntitiesHaving<TPlayer, CDesiredMovement>(
+		[this](EntityIndex eI)
 		{
-			auto &reference = manager.getComponent<CDesiredMovement>(eI);
+			auto& desired = manager.getComponent<CDesiredMovement>(eI);
+
+			desired.direction = Direction::NONE;
 			
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 			{
-				reference.direction = reference.Direction::UP;
+				desired.direction = Direction::UP;
 			}
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 			{
-				reference.direction = reference.Direction::DOWN;
+				desired.direction = Direction::DOWN;
 			}
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 			{
-				reference.direction = reference.Direction::LEFT;
+				desired.direction = Direction::LEFT;
 			}
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 			{
-				reference.direction = reference.Direction::RIGHT;
+				desired.direction = Direction::RIGHT;
 			}
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
