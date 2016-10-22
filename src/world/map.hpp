@@ -17,8 +17,13 @@ class Map
 public:
 	Map(Manager& manager);
 
+	void loadFromFile(const std::string& mapFile);
+
+public:
 	void setSize(std::size_t width, std::size_t height);
 	void setLocation(int x, int y);
+
+	bool isCollidable(std::size_t x, std::size_t y);
 
 private:
 	Manager& manager;
@@ -56,12 +61,11 @@ private:
 	// TODO fix errors that could happen during reallocation
 	// might use something else instead of unique_ptr
 	std::vector<std::vector<std::size_t>> tileLayers;
+
+	std::vector<EntityIndex> tileLayerEntities;
 	std::vector<std::unique_ptr<sf::VertexArray>> tileLayerVertices;
 	std::vector<int> tileLayerZLevels;
 
 	std::unordered_map<std::string, std::size_t> tileLayersByName;
 	std::set<std::pair<int, std::size_t>> tileLayersByZLevel;
-
-public:
-	void loadFromFile(const std::string& mapFile);
 };

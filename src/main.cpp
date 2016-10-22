@@ -1,18 +1,21 @@
 #include <core/manager.hpp>
+#include <input/input.hpp>
 #include <render/render.hpp>
 #include <world/map.hpp>
-#include <input/input.hpp>
+#include <world/overworld.hpp>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 
 #include <cstdlib>
 
-Manager manager{};
+Manager manager;
+Overworld overworld(manager, 30);
 
 sf::RenderWindow* window;
-RenderSystem* renderSystem;
+
 InputSystem* inputSystem;
+RenderSystem* renderSystem;
 
 bool quit;
 
@@ -24,8 +27,8 @@ void update(sf::Time delta) {
 			quit = true;
 	}
 
-	renderSystem->update(delta);
 	inputSystem->update(delta);
+	renderSystem->update(delta);
 }
 
 void render(sf::Time delta) {
@@ -72,8 +75,7 @@ int main(int argc, char** argv) {
 	renderSystem = &renderSystem_;
 	inputSystem = &inputSystem_;
 
-	Map myAwesomeMap(manager);
-	myAwesomeMap.loadFromFile("assets/maps/untitled.tmx");
+	overworld.loadMap("assets/maps/untitled.tmx", 10, 10);
 	
 	quit = false;
 

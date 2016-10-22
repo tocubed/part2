@@ -27,7 +27,13 @@ void Map::setLocation(int x, int y)
 	x_ = x;
 	y_ = y;	
 
-	// TODO Adjust tileLayer entity positions
+	for(auto e: tileLayerEntities)
+	{
+		auto& location = manager.getComponent<CLocation>(e);
+
+		location.x = x;
+		location.y = y;
+	}
 }
 
 void Map::createTileset(std::size_t numTiles)
@@ -77,6 +83,8 @@ void Map::finalizeTileset()
 auto Map::createTileLayer(std::string&& name, int zLevel)
 {
 	tileLayers.emplace_back(mapWidth * mapHeight);
+
+	tileLayerEntities.push_back(manager.createEntity());
 	tileLayerVertices.emplace_back(new sf::VertexArray);
 	tileLayerZLevels.push_back(zLevel);
 
@@ -101,6 +109,20 @@ auto& Map::getTileLayerArray(const std::string& name)
 	assert(found != tileLayersByName.end());
 
 	return getTileLayerArray(std::get<1>(*found));
+}
+
+bool Map::isCollidable(std::size_t x, std::size_t y)
+{
+	auto it = tileLayersByName.find("Collision");
+
+	if(it == tileLayersByName.end())
+		return false; // no collision layer
+	else
+	{
+		auto& layer = getTileLayerArray(std::get<1>(*it));
+
+		return layer[x + mapWidth * y] != 0;
+	}
 }
 
 // TODO Not all layers should be visible
@@ -141,7 +163,7 @@ void Map::finalizeTileLayer(std::size_t index)
 	auto drawable = new GenericDrawable(vertices, tilesetTexture);
 	auto zLevel = tileLayerZLevels[index];
 
-	auto layerEntity = manager.createEntity();
+	auto layerEntity = tileLayerEntities[index];
 	manager.addComponent<CDrawable>(layerEntity, CDrawable{drawable});
 	manager.addComponent<CLocation>(layerEntity, CLocation{x_, y_, zLevel});
 	manager.addTag<TMapLayer>(layerEntity);
