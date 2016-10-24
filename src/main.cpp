@@ -10,7 +10,7 @@
 #include <cstdlib>
 
 Manager manager;
-Overworld overworld(manager, 16);
+Overworld overworld(manager, 30);
 
 sf::RenderWindow* window;
 
@@ -90,7 +90,9 @@ int main(int argc, char** argv) {
 	movementSystem = &movementSystem_;
 	inputSystem = &inputSystem_;
 
-	overworld.loadMap("assets/maps/untitled.tmx", TileLocation{0, 0});
+	overworld.loadMap("assets/maps/lake.tmx", TileLocation{0, 0});
+	overworld.loadMap("assets/maps/forestmaze.tmx", TileLocation{0, -30});
+	overworld.loadMap("assets/maps/forestclearing.tmx", TileLocation{0, -60});
 	addPlayer();
 	
 	quit = false;

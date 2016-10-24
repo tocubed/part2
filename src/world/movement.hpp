@@ -54,9 +54,9 @@ public:
 	{
 		// TODO Fix this to work better with an animation system
 		accumulator += delta;
-		while(accumulator >= sf::milliseconds(15))
+		while(accumulator >= sf::milliseconds(6))
 		{
-			accumulator -= sf::milliseconds(15);
+			accumulator -= sf::milliseconds(6);
 			manager.forEntitiesHaving<CMovement, CLocation>([this](EntityIndex eI)
 			{
 				auto& movement = manager.getComponent<CMovement>(eI);
