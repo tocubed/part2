@@ -33,9 +33,18 @@ public:
 
 	bool isCollidable(TileLocation location)
 	{
+		const auto floor_div = [](int x, int y)
+		{
+			auto q = x / y;
+			auto r = x % y;
+
+			auto d = (r != 0) && ((r < 0) != (y < 0));
+			return q - d;
+		};
+
 		TileLocation mapLocation;
-		mapLocation.x = (location.x / (int)mapSize) * (int)mapSize;
-		mapLocation.y = (location.y / (int)mapSize) * (int)mapSize;
+		mapLocation.x = floor_div(location.x, (int)mapSize) * (int)mapSize;
+		mapLocation.y = floor_div(location.y, (int)mapSize) * (int)mapSize;
 		
 		auto it = mapsByLocation.find(mapLocation);
 
