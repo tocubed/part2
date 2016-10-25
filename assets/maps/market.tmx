@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" nextobjectid="1">
  <tileset firstgid="1" name="open_tileset" tilewidth="32" tileheight="32" tilecount="1710" columns="45">
-  <image source="../../../../Program Files (x86)/Tiled/openpixels-master/open_tileset.png" width="1440" height="1216"/>
+  <image source="../images/open_tileset.png" width="1440" height="1216"/>
  </tileset>
  <tileset firstgid="1711" name="forest_tiles" tilewidth="32" tileheight="32" tilecount="256" columns="16">
-  <image source="../../../../Program Files (x86)/Tiled/LPC_forest/forest_tiles.png" width="512" height="512"/>
+  <image source="../images/LPC_forest/forest_tiles.png" width="512" height="512"/>
  </tileset>
  <layer name="Tile Layer 1" width="30" height="30">
   <data encoding="csv">
