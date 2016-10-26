@@ -150,7 +150,7 @@ public:
 	template <typename T>
 	bool hasComponent(EntityIndex eI)
 	{
-		return hasComponents<T>();
+		return hasComponents<T>(eI);
 	}
 
 public:
@@ -190,7 +190,7 @@ public:
 	template <typename T>
 	bool hasTag(EntityIndex eI)
 	{
-		return hasTags<T>();
+		return hasTags<T>(eI);
 	}
 
 public:
