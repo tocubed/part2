@@ -131,7 +131,7 @@ public:
 		auto& e = getEntity(eI);
 		e.signature.template clearComponents<Ts...>();
 		
-		components.template removeComponents<Ts...>();
+		components.template removeComponents<Ts...>(eI);
 	}
 
 	template <typename T>
@@ -196,14 +196,14 @@ public:
 public:
 	void deleteEntity(EntityIndex eI)
 	{
-		auto& e = getEntity();
+		auto& e = getEntity(eI);
 		e.deleted = true;
 
-		ComponentList::forEach([&](auto t) {
+		ComponentList::forEach([this, &e, eI](auto t) {
 			using Component = decltype(t);
 
 			if(e.signature.template getComponent<Component>())
-				removeComponent<Component>(eI);
+				this->removeComponent<Component>(eI);
 		});
 
 		freeIndices.push_back(eI);

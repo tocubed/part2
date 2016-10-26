@@ -75,19 +75,19 @@ struct Signature : detail::bitset<TConfiguration::componentAndTagCount()>
 	template <typename T>
 	bool getComponent() const
 	{
-		return get(Configuration::template componentBit<T>());
+		return Base::get(Configuration::template componentBit<T>());
 	}
 
 	template <typename T>
 	bool getTag() const
 	{
-		return get(Configuration::template tagBit<T>());
+		return Base::get(Configuration::template tagBit<T>());
 	}
 
 	template <typename T>
 	bool getComponentOrTag() const
 	{
-		return get(Configuration::template componentOrTagBit<T>());
+		return Base::get(Configuration::template componentOrTagBit<T>());
 	}
 
 	template <typename... Ts>
