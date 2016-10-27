@@ -14,12 +14,13 @@ public:
 	{
 	}
 
-	void announceMoved(EntityIndex who, Direction direction)
-	{
+	void announceMoved(EntityIndex who, Direction direction, 
+	                   bool successful, bool complete) {
 		auto moved = manager.createEntity();
 
 		manager.addTag<TEvent>(moved);
-		manager.addComponent<CEventMoved>(moved, CEventMoved{who, direction, true});
+		manager.addComponent<CEventMoved>(
+		    moved, CEventMoved{who, direction, successful, complete});
 	}
 
 	void handleDesired()
@@ -28,7 +29,7 @@ public:
 		[this](EntityIndex eI)
 		{
 			auto& movement = manager.getComponent<CMovement>(eI);
-			if(movement.direction != Direction::NONE)
+			if(movement.moving)
 				return;
 
 			auto& desired = manager.getComponent<CDesiredMovement>(eI);
@@ -50,13 +51,15 @@ public:
 				return;
 			}
 
-			if(overworld.isCollidable(destination))
-				return; // TODO Add a bump animation when movement not allowed
-
 			movement.direction = desired.direction;
-			movement.destination = destination;
 
-			announceMoved(eI, movement.direction);
+			if(!overworld.isCollidable(destination))
+			{
+				movement.destination = destination;
+				movement.moving = true;
+			}
+
+			announceMoved(eI, movement.direction, movement.moving, false);
 		});
 	}
 
@@ -70,13 +73,18 @@ public:
 			manager.forEntitiesHaving<CMovement, CLocation>([this](EntityIndex eI)
 			{
 				auto& movement = manager.getComponent<CMovement>(eI);
-				auto& location = manager.getComponent<CLocation>(eI);
+
+				if(!movement.moving)
+					return;
 
 				auto destination = movement.destination.toLocation();
+				auto& location = manager.getComponent<CLocation>(eI);
+
 				if(destination.x == location.x && destination.y == location.y)
 				{
-					movement.direction = Direction::NONE;
-					movement.destination = {};
+					movement.moving = false;
+					announceMoved(eI, movement.direction, movement.moving, true);
+					return;
 				}
 
 				switch(movement.direction)

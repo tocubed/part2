@@ -1,6 +1,7 @@
 #include <core/manager.hpp>
 #include <input/input.hpp>
 #include <render/animation.hpp>
+#include <render/character.hpp>
 #include <render/render.hpp>
 #include <world/movement.hpp>
 #include <world/overworld.hpp>
@@ -80,34 +81,12 @@ void addPlayer()
 	auto player = manager.createEntity();
 
 	manager.addTag<TPlayer>(player);
-	manager.addTag<TAnimated>(player);
 	manager.addComponent(player, CLocation{15 * 32, 15 * 32, 9999999});
 	manager.addComponent(player, CDesiredMovement{Direction::NONE});
-	manager.addComponent(player, CMovement{Direction::NONE, TileLocation{0, 0}});
+	manager.addComponent(player, CMovement{Direction::DOWN, TileLocation{0, 0}});
 
-	// TODO Move to animations loading function
 	// TODO Clean this up, add all animations
-	sf::Texture* spriteSheet = new sf::Texture;
-	spriteSheet->loadFromFile("assets/images/mainCharacter.png");
-
-	auto animation = new AnimatedSprite(*spriteSheet, sf::Vector2i(64, 64));
-	manager.addComponent(player, CDrawable{animation});
-
-	std::array<std::string, 4> animName{
-		std::string("up"), std::string("left"), 
-		std::string("down"), std::string("right")
-	};	
-	for(auto walkRow = 8; walkRow < 8 + 4; walkRow++)
-	{
-		std::vector<std::size_t> frames;
-		for(auto i = 0u; i < 9; i++)
-			frames.push_back(i + walkRow * 13);
-
-		animation->addAnimation("walk_" + animName[walkRow - 8], frames);
-	}
-
-	animation->setPosition(-16.f, -32.f);
-	//animation->setScale(sf::Vector2f(0.5f, 0.5f));
+	Character::loadAnimations(manager, player, "assets/images/mainCharacter.png");
 }
 
 int main(int argc, char** argv) {

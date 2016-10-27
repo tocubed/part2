@@ -56,6 +56,8 @@ struct CMovement
 {
 	Direction direction;
 	TileLocation destination;
+
+	bool moving;
 };
 
 struct CDesiredMovement
@@ -68,4 +70,6 @@ struct CEventMoved
 	EntityIndex who;
 	Direction direction;
 	bool successful;
+
+	bool complete;
 };

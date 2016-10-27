@@ -16,6 +16,7 @@ public:
 		  timePerFrame(sf::milliseconds(1000))
 	{
 		addAnimation("default", std::vector<std::size_t>{0});
+		playAnimation("default", true);
 		stopAnimation();
 	}
 
@@ -40,14 +41,22 @@ public:
 	void playAnimation(const std::string& name, bool loop = false)
 	{
 		animationFrameIndex = 0;
+		accumulator = sf::milliseconds(0);
 
 		currentAnimation = name;
 		looping = loop;
+
+		playing = true;
+	}
+
+	bool isPlaying() const
+	{
+		return playing;
 	}
 
 	void stopAnimation()
 	{
-		playAnimation("default", true);
+		playing = false;
 	}
 
 	void setPlaySpeed(sf::Time perFrame)
@@ -57,6 +66,9 @@ public:
 
 	void update(sf::Time delta)
 	{
+		if(!playing)
+			return;
+
 		auto& animation = animationFrames[currentAnimation];
 
 		accumulator += delta;
@@ -65,7 +77,6 @@ public:
 			accumulator -= timePerFrame;
 
 			animationFrameIndex += 1;
-
 			if(looping)
 				animationFrameIndex %= animation.size();
 			else if(animationFrameIndex == animation.size())
@@ -110,4 +121,5 @@ private:
 	sf::Time timePerFrame;
 
 	bool looping;
+	bool playing;
 };
