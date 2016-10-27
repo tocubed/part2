@@ -1,5 +1,7 @@
 #pragma once
 
+#include <core/ecs/typedefs.hpp>
+
 #include <unordered_map>
 
 struct CLocation
@@ -61,3 +63,9 @@ struct CDesiredMovement
 	Direction direction;
 };
 
+struct CEventMoved
+{
+	EntityIndex who;
+	Direction direction;
+	bool successful;
+};

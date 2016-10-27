@@ -14,6 +14,14 @@ public:
 	{
 	}
 
+	void announceMoved(EntityIndex who, Direction direction)
+	{
+		auto moved = manager.createEntity();
+
+		manager.addTag<TEvent>(moved);
+		manager.addComponent<CEventMoved>(moved, CEventMoved{who, direction, true});
+	}
+
 	void handleDesired()
 	{
 		manager.forEntitiesHaving<CMovement, CDesiredMovement, CLocation>(
@@ -47,6 +55,8 @@ public:
 
 			movement.direction = desired.direction;
 			movement.destination = destination;
+
+			announceMoved(eI, movement.direction);
 		});
 	}
 
@@ -54,9 +64,9 @@ public:
 	{
 		// TODO Fix this to work better with an animation system
 		accumulator += delta;
-		while(accumulator >= sf::milliseconds(6))
+		while(accumulator >= sf::milliseconds(8))
 		{
-			accumulator -= sf::milliseconds(6);
+			accumulator -= sf::milliseconds(8);
 			manager.forEntitiesHaving<CMovement, CLocation>([this](EntityIndex eI)
 			{
 				auto& movement = manager.getComponent<CMovement>(eI);

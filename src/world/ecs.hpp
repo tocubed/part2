@@ -10,7 +10,8 @@ namespace World {
 using ComponentList = ecs::TypeList<
 	CLocation,
 	CMovement,
-	CDesiredMovement
+	CDesiredMovement,
+	CEventMoved
 >;
 
 using TagList = ecs::TypeList<
