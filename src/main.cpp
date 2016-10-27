@@ -10,6 +10,8 @@
 #include <SFML/System.hpp>
 
 #include <cstdlib>
+#include <sstream>
+#include <string>
 
 Manager manager;
 Overworld overworld(manager, 30);
@@ -52,6 +54,8 @@ void render(sf::Time delta) {
 	window->display();
 }
 
+unsigned int fpsCounter;
+sf::Time fpsTimer;
 void loop() {
 	sf::Clock clock;
 	sf::Time accumulator;
@@ -73,6 +77,21 @@ void loop() {
 		}
 
 		render(accumulator);
+
+		// FPS Counter
+		fpsTimer += elapsed;
+		fpsCounter++;
+
+		if(fpsTimer >= sf::milliseconds(1000))
+		{
+			fpsTimer = sf::milliseconds(0);
+
+			std::stringstream ss;
+			ss << "Milk - " << fpsCounter << " FPS";
+			window->setTitle(ss.str());
+
+			fpsCounter = 0;
+		}
 	}
 }
 
@@ -92,7 +111,7 @@ void addPlayer()
 int main(int argc, char** argv) {
 
 	std::string a;
-	sf::RenderWindow window_(sf::VideoMode(800, 600), "Test");
+	sf::RenderWindow window_(sf::VideoMode(800, 600), "Milk");
 	RenderSystem renderSystem_(manager, window_);
 	MovementSystem movementSystem_(manager, overworld);
 	InputSystem inputSystem_(manager);
