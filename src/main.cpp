@@ -81,7 +81,7 @@ void addPlayer()
 
 	manager.addTag<TPlayer>(player);
 	manager.addTag<TAnimated>(player);
-	manager.addComponent(player, CLocation{15 * 32, 15 * 32, 0});
+	manager.addComponent(player, CLocation{15 * 32, 15 * 32, 9999999});
 	manager.addComponent(player, CDesiredMovement{Direction::NONE});
 	manager.addComponent(player, CMovement{Direction::NONE, TileLocation{0, 0}});
 
