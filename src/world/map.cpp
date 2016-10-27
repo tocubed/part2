@@ -124,7 +124,7 @@ bool Map::isCollidable(TileLocation location)
 	}
 }
 
-// TODO Not all layers should be visible
+// TODO More control over visibility
 void Map::finalizeTileLayer(std::size_t index)
 {
 	// Build the vertices
@@ -272,9 +272,10 @@ void Map::loadFromFile(const std::string& mapFile)
 			}
 		}
 
-		// TODO Visibility
-
-		finalizeTileLayer(layerIndex);
+		// TODO More control over visibility
+		auto visible = layer.attribute("visible").as_bool(true);
+		if(visible)
+			finalizeTileLayer(layerIndex);
 
 		i++;
 	}

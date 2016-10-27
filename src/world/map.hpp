@@ -54,7 +54,7 @@ private:
 
 	auto& getTileLayerArray(const std::string& name);
 
-	// TODO Not all layers should be visible
+	// TODO More control over visibility
 	void finalizeTileLayer(std::size_t index);
 
 	// TODO fix errors that could happen during reallocation
