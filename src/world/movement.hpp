@@ -82,8 +82,8 @@ public:
 
 				if(destination.x == location.x && destination.y == location.y)
 				{
-					movement.moving = false;
 					announceMoved(eI, movement.direction, movement.moving, true);
+					movement.moving = false;
 					return;
 				}
 

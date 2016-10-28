@@ -20,7 +20,6 @@ public:
 			auto& animatedSprite = 
 					static_cast<AnimatedSprite&>(*(drawable.drawable));
 
-
 			auto& movement = manager.getComponent<CMovement>(eI);
 
 			if(movement.moving || animatedSprite.isPlaying())
@@ -54,8 +53,8 @@ public:
 		{
 			auto& moved = manager.getComponent<CEventMoved>(eI);
 
-			if(manager.hasTags<TAnimated>(moved.who) &&
-			   manager.hasComponents<CMovement>(moved.who))
+			if(manager.hasTag<TAnimated>(moved.who) &&
+			   manager.hasComponent<CMovement>(moved.who))
 			{
 				auto& drawable = manager.getComponent<CDrawable>(moved.who);
 				auto& animatedSprite = 

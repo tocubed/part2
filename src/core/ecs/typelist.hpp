@@ -17,6 +17,11 @@ constexpr std::size_t find(std::size_t i = 0) {
 	return std::is_same<T, U>::value ? i : find<T, Ts...>(i + 1);
 }
 
+template <typename T>
+struct TypeWrapper
+{
+	using Type = T;
+};
 
 } // namespace detail
 
@@ -43,7 +48,7 @@ struct TypeList
 	template <typename TFunc>
 	static void forEach(TFunc&& func)
 	{
-		int dummy[] = {(func(Ts{}), 0)...};
+		int dummy[] = {(func(detail::TypeWrapper<Ts>{}), 0)...};
 		(void)dummy;
 	}
 

@@ -36,7 +36,7 @@ private:
 		else
 		{
 			eI = entities.size();
-			entities.reserve(eI + 1);
+			entities.emplace_back();
 		}
 
 		return eI;
@@ -51,7 +51,7 @@ public:
 	auto createEntity()
 	{
 		auto eI = createEntityIndex();
-		entities.emplace(entities.begin() + eI);
+		entities[eI] = Entity{};
 
 		return eI;
 	}
@@ -200,13 +200,34 @@ public:
 		e.deleted = true;
 
 		ComponentList::forEach([this, &e, eI](auto t) {
-			using Component = decltype(t);
+			using Component = typename decltype(t)::Type;
 
 			if(e.signature.template getComponent<Component>())
 				this->removeComponent<Component>(eI);
 		});
 
 		freeIndices.push_back(eI);
+	}
+
+	void debugPrint(EntityIndex eI)
+	{
+		auto& e = getEntity(eI);
+
+		std::cout << "entity: " << eI << ", deleted: " << e.deleted
+				  << ", signature: ";
+
+		using CTL = typename Configuration::ComponentAndTagList;
+
+		CTL::forEach([this, &e, eI](auto t) {
+			using CT = typename decltype(t)::Type;
+
+			if(e.signature.template getComponentOrTag<CT>())
+				std::cout << "1";
+			else
+				std::cout << "0";
+		});
+
+		std::cout << "\n";
 	}
 };
 
