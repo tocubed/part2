@@ -3,6 +3,7 @@
 #include <core/manager.hpp>
 #include <world/components.hpp>
 
+#include <pugixml.hpp>
 #include <SFML/Graphics/Image.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/VertexArray.hpp>
@@ -61,10 +62,20 @@ private:
 	// might use something else instead of unique_ptr
 	std::vector<std::vector<std::size_t>> tileLayers;
 
-	std::vector<EntityIndex> tileLayerEntities;
 	std::vector<std::unique_ptr<sf::VertexArray>> tileLayerVertices;
 	std::vector<int> tileLayerZLevels;
 
 	std::unordered_map<std::string, std::size_t> tileLayersByName;
 	std::set<std::pair<int, std::size_t>> tileLayersByZLevel;
+
+private:
+	std::vector<EntityIndex> childEntities;
+
+	void loadCharacter(const std::string& animFile, TileLocation location);
+	void parseCharacter(auto xml);
+
+private:
+	std::string mapFileLocation;
+
+	std::string correctFilePath(std::string file);
 };

@@ -97,15 +97,11 @@ void loop() {
 
 void addPlayer()
 {
-	auto player = manager.createEntity();
+	auto player =
+	    Character::createCharacter(manager, "assets/images/mainCharacter.png");
 
 	manager.addTag<TPlayer>(player);
-	manager.addComponent(player, CLocation{15 * 32, 15 * 32, 9999999});
-	manager.addComponent(player, CDesiredMovement{Direction::NONE});
-	manager.addComponent(player, CMovement{Direction::DOWN, TileLocation{0, 0}});
-
-	// TODO Clean this up, add all animations
-	Character::loadAnimations(manager, player, "assets/images/mainCharacter.png");
+	manager.getComponent<CLocation>(player) = {15 * 32, 15 * 32, 99};
 }
 
 int main(int argc, char** argv) {

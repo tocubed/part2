@@ -2,6 +2,7 @@
 
 #include <core/manager.hpp>
 #include <render/drawable.hpp>
+#include <render/character.hpp>
 
 #include <pugixml.hpp>
 
@@ -12,7 +13,7 @@
 #include <sstream>
 #include <unordered_map>
 
-Map::Map(Manager& manager) : manager(manager)
+Map::Map(Manager& manager) : manager(manager), location{0, 0}
 {
 }
 
@@ -22,17 +23,20 @@ void Map::setSize(std::size_t width, std::size_t height)
 	mapHeight = height;
 }
 
-void Map::setLocation(TileLocation location)
+void Map::setLocation(TileLocation newLocation)
 {
-	this->location = location;
+	TileLocation difference = 
+		{newLocation.x - location.x, newLocation.y - location.y};
 
-	for(auto e: tileLayerEntities)
+	for(auto e: childEntities)
 	{
 		auto& entityLocation = manager.getComponent<CLocation>(e);
 		
-		entityLocation.x = location.toLocation().x;
-		entityLocation.y = location.toLocation().y;
+		entityLocation.x += difference.toLocation().x;
+		entityLocation.y += difference.toLocation().y;
 	}
+
+	location = newLocation;
 }
 
 void Map::createTileset(std::size_t numTiles)
@@ -83,7 +87,6 @@ auto Map::createTileLayer(std::string&& name, int zLevel)
 {
 	tileLayers.emplace_back(mapWidth * mapHeight);
 
-	tileLayerEntities.push_back(manager.createEntity());
 	tileLayerVertices.emplace_back(new sf::VertexArray);
 	tileLayerZLevels.push_back(zLevel);
 
@@ -162,16 +165,64 @@ void Map::finalizeTileLayer(std::size_t index)
 	auto drawable = new GenericDrawable(vertices, tilesetTexture);
 	auto zLevel = tileLayerZLevels[index];
 
-	auto layerEntity = tileLayerEntities[index];
+	auto layerEntity = manager.createEntity();
+
 	manager.addComponent<CDrawable>(layerEntity, CDrawable{drawable});
 	manager.addComponent<CLocation>(
 	    layerEntity,
 	    CLocation{location.toLocation().x, location.toLocation().y, zLevel});
 	manager.addTag<TMapLayer>(layerEntity);
+
+	childEntities.push_back(layerEntity);
+}
+
+std::string Map::correctFilePath(std::string file)
+{
+	std::string path; 
+	if(!std::ifstream(file))
+	{
+		// May be a relative path
+		path = mapFileLocation;
+		path = path.substr(0, path.find_last_of('/') + 1);
+		path += file;
+	}
+	else
+		path = file;
+
+	return path;
+}
+
+void Map::loadCharacter(const std::string& animFile, TileLocation location)
+{
+	auto character = Character::createCharacter(manager, animFile);
+
+	manager.getComponent<CLocation>(character) = 
+		{32 * location.x, 32 * location.y, 99};
+
+	childEntities.push_back(character);
+}
+
+void Map::parseCharacter(auto xml)
+{
+	std::string animFile;
+	for(auto property: xml.child("properties").children("property"))
+	{
+		if(property.attribute("name").value() == std::string("AnimationFile"))
+			animFile = property.attribute("value").value();
+	}
+
+	auto x = xml.attribute("x").as_int() / 32;
+	auto y = xml.attribute("y").as_int() / 32;
+
+	animFile = correctFilePath(animFile);
+
+	loadCharacter(animFile, TileLocation{x, y});
 }
 
 void Map::loadFromFile(const std::string& mapFile)
 {
+	mapFileLocation = mapFile;
+
 	pugi::xml_document mapXML;
 	auto result = mapXML.load_file(mapFile.c_str());
 
@@ -207,25 +258,9 @@ void Map::loadFromFile(const std::string& mapFile)
 
 		sf::Image tilesetImage;
 
-		if(!std::ifstream(source))
-		{
-			// May be a relative path
-			std::string path = mapFile;
-			path = path.substr(0, path.find_last_of('/') + 1);
-			path += source;
-
-			auto result = tilesetImage.loadFromFile(path.c_str());
-
-			// Image loaded from file
-			assert(result);
-		}
-		else
-		{
-			auto result = tilesetImage.loadFromFile(source);
-
-			// Image loaded from file
-			assert(result);
-		}
+		auto path = correctFilePath(source);
+		auto result = tilesetImage.loadFromFile(path.c_str());
+		assert(result); // Image loaded from file
 
 		addFromTileset(startID, tilesetImage);
 
@@ -248,7 +283,7 @@ void Map::loadFromFile(const std::string& mapFile)
 		// Layer data encoding is CSV	
 		assert(data.attribute("encoding").value() == std::string("csv"));
 
-		auto zLevel = i * 1000;
+		auto zLevel = i * 10;
 		auto layerIndex = createTileLayer(name, zLevel);
 
 		auto& tiles = getTileLayerArray(layerIndex);
@@ -280,5 +315,14 @@ void Map::loadFromFile(const std::string& mapFile)
 		i++;
 	}
 
-	// TODO Object and image layers
+	for(auto objects: map.children("objectgroup"))
+		for(auto object: objects.children("object"))
+		{
+			auto type = object.attribute("type").value();
+
+			if(type == std::string("Character"))
+				parseCharacter(object);
+		}
+
+	// TODO Image layers
 }
