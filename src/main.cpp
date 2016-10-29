@@ -95,14 +95,30 @@ void loop() {
 	}
 }
 
-void addPlayer()
+EntityIndex addPlayer()
 {
 	auto player =
 	    Character::createCharacter(manager, "assets/images/mainCharacter.png");
 
 	manager.addTag<TPlayer>(player);
 	manager.getComponent<CLocation>(player) = {15 * 32, 15 * 32, 99};
+
+	return player;
 }
+
+EntityIndex addFollower(EntityIndex entityAhead)
+{
+	auto follower = 
+		Character::createCharacter(manager, "assets/images/orc1Enemy.png");
+
+	manager.addTag<TFollower>(follower);
+	manager.getComponent<CLocation>(follower) = { 16 * 32, 15 * 32, 99 };
+	manager.addComponent(follower, CFollowOrder{ entityAhead });
+
+	return follower;
+}
+
+
 
 int main(int argc, char** argv) {
 
@@ -120,7 +136,8 @@ int main(int argc, char** argv) {
 	animationSystem = &animationSystem_;
 
 	overworld.loadMap("assets/maps/lake.tmx", TileLocation{0, 0});
-	addPlayer();
+	EntityIndex player =  addPlayer();
+	EntityIndex follower1 = addFollower(player);
 	
 	quit = false;
 

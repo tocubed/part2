@@ -202,7 +202,7 @@ void Map::loadCharacter(const std::string& animFile, TileLocation location)
 	childEntities.push_back(character);
 }
 
-void Map::parseCharacter(auto xml)
+void Map::parseCharacter(pugi::xml_node xml)
 {
 	std::string animFile;
 	for(auto property: xml.child("properties").children("property"))

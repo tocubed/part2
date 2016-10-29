@@ -11,11 +11,13 @@ using ComponentList = ecs::TypeList<
 	CLocation,
 	CMovement,
 	CDesiredMovement,
-	CEventMoved
+	CEventMoved,
+	CFollowOrder
 >;
 
 using TagList = ecs::TypeList<
 	TPlayer,
+	TFollower,
 	TMapLayer
 >;
 
