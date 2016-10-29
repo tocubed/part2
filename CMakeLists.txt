@@ -30,6 +30,13 @@ target_sources(${PROJECT_NAME} PRIVATE
 target_include_directories(${PROJECT_NAME} PRIVATE 
 	${CMAKE_SOURCE_DIR}/deps/pugixml/src)
 
+# ChaiScript
+target_include_directories(${PROJECT_NAME} PRIVATE 
+	${CMAKE_SOURCE_DIR}/deps/ChaiScript/include)
+if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+	target_link_libraries(${PROJECT_NAME} PRIVATE dl pthread)
+endif()
+
 # Copy assets to build directory
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND 

@@ -7,5 +7,5 @@ namespace chaiscript {
 }
 
 namespace Script {
-	std::shared_ptr<chaiscript::Module> createChaiScriptBindings();
+	std::shared_ptr<chaiscript::Module> createChaiScriptStdLib();
 }
