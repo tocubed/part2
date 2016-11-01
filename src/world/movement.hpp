@@ -15,19 +15,73 @@ public:
 	{
 	}
 
-	void announceMoved(EntityIndex who, CLocation location, Direction direction, 
+	void announceMoved(EntityIndex who, Direction direction, 
 	                   bool successful, bool complete) {
 		auto moved = manager.createEntity();
 
 		manager.addTag<TEvent>(moved);
 		manager.addComponent<CEventMoved>(
-		    moved, CEventMoved{who, location, direction, successful, complete});
+		    moved, CEventMoved{who, direction, successful, complete});
+	}
+
+	void handleFollowers(
+	    EntityIndex beingFollowed, TileLocation prevLocation,
+	    const std::vector<std::pair<EntityIndex, EntityIndex>>& followers) 
+	{
+		for(auto& pair: followers)
+		{
+			auto follower = pair.first;
+			auto following = pair.second;	
+
+			if(following != beingFollowed)
+				continue;
+
+			TileLocation followerStart;
+			TileLocation followerEnd = prevLocation;
+
+			auto& movement = manager.getComponent<CMovement>(follower);
+			auto& location = manager.getComponent<CLocation>(follower);
+
+			if(movement.moving)
+				followerStart = movement.destination;
+			else
+				followerStart = TileLocation::fromLocation(location);
+
+			auto xDiff = followerEnd.x - followerStart.x;
+			auto yDiff = followerEnd.y - followerStart.y;
+
+			auto& desired = manager.getComponent<CDesiredMovement>(follower);
+
+			if(xDiff == 0)
+			{
+				if(yDiff > 0)
+					desired.direction = DOWN;
+				else if(yDiff < 0)
+					desired.direction = UP;
+			}
+			else if(yDiff == 0)
+			{
+				if(xDiff > 0)
+					desired.direction = RIGHT;
+				else if(xDiff < 0)
+					desired.direction = LEFT;
+			}
+		}
 	}
 
 	void handleDesired()
 	{
+		std::vector<std::pair<EntityIndex, EntityIndex>> followers;
+		manager.forEntitiesHaving<TFollower, CFollowOrder>(
+		[this, &followers](EntityIndex eI)
+		{
+			auto& followOrder = manager.getComponent<CFollowOrder>(eI);	
+
+			followers.push_back(std::make_pair(eI, followOrder.entityAhead));
+		});
+
 		manager.forEntitiesHaving<CMovement, CDesiredMovement, CLocation>(
-		[this](EntityIndex eI)
+		[this, &followers](EntityIndex eI)
 		{
 			auto& movement = manager.getComponent<CMovement>(eI);
 			if(movement.moving)
@@ -53,96 +107,21 @@ public:
 			}
 
 			movement.direction = desired.direction;
+			desired.direction = NONE;
 
 			if(!overworld.isCollidable(destination))
 			{
 				movement.destination = destination;
 				movement.moving = true;
+
+				handleFollowers(
+				    eI, TileLocation::fromLocation(location), followers);
 			}
 
-			announceMoved(eI, location, movement.direction, movement.moving, false);
-		});
-
-		manager.forEntitiesHaving<TFollower>(
-			[this](EntityIndex eI1)
-		{
-			auto& movement = manager.getComponent<CMovement>(eI1);
-			auto& desired = manager.getComponent<CDesiredMovement>(eI1);
-			auto& location = manager.getComponent<CLocation>(eI1);
-			auto destination = TileLocation::fromLocation(location);
-
-			std::deque<CEventMoved> eventMovedList;
-			manager.forEntitiesHaving<TEvent>(
-				[this, &eventMovedList](EntityIndex eI2)
-			{
-				eventMovedList.push_back(manager.getComponent<CEventMoved>(eI2));
-			});
-
-			if (eventMovedList.size() == 0)
-			{
-				return;
-			}
-
-			for (std::deque<CEventMoved>::iterator it = eventMovedList.begin();
-				it != eventMovedList.end(); ++it)
-			{
-				if (manager.getComponent<CFollowOrder>(eI1).entityAhead == (*it).who)
-				{
-					if (!((*it).successful) || (*it).complete) {
-						break;
-					}
-
-					if (location.x < (*it).prevLocation.x
-						&& location.y == (*it).prevLocation.y) {
-						desired.direction = Direction::RIGHT;
-						destination.x += 1;
-						movement.moving = true;
-						break;
-					}
-
-					if (location.x > (*it).prevLocation.x
-						&& location.y == (*it).prevLocation.y) {
-						desired.direction = Direction::LEFT;
-						destination.x -= 1;
-						movement.moving = true;
-						break;
-					}
-
-					if (location.x == (*it).prevLocation.x
-						&& location.y < (*it).prevLocation.y) {
-						desired.direction = Direction::DOWN;
-						destination.y += 1;
-						movement.moving = true;
-						break;
-					}
-
-					if (location.x == (*it).prevLocation.x
-						&& location.y >(*it).prevLocation.y) {
-						desired.direction = Direction::UP;
-						destination.y -= 1;
-						movement.moving = true;
-						break;
-					}
-
-					else
-					{
-						movement.moving = false;
-						break;
-					}
-				}
-			}
-
-			if (!movement.moving) {
-				return;
-			}
-
-			movement.direction = desired.direction;
-			movement.destination = destination;
-			announceMoved(eI1, location, movement.direction, movement.moving, false);
+			announceMoved(eI, movement.direction, movement.moving, false);
 		});
 	}
 	
-
 	void move(sf::Time delta)
 	{
 		// TODO Fix this to work better with an animation system
@@ -162,7 +141,7 @@ public:
 
 				if(destination.x == location.x && destination.y == location.y)
 				{
-					announceMoved(eI, location, movement.direction, movement.moving, true);
+					announceMoved(eI, movement.direction, movement.moving, true);
 					movement.moving = false;
 					return;
 				}

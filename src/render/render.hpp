@@ -18,8 +18,13 @@ public:
 		  view(renderTarget.getView()),
 		  renderList([this](EntityIndex a, EntityIndex b)
 		  {
-			  return this->manager.getComponent<CLocation>(a).zLevel <
-			         this->manager.getComponent<CLocation>(b).zLevel;
+		  	  auto& aLoc = this->manager.getComponent<CLocation>(a);
+		  	  auto& bLoc = this->manager.getComponent<CLocation>(b);
+
+			  return aLoc.zLevel < bLoc.zLevel || 
+			  	(aLoc.zLevel == bLoc.zLevel && aLoc.y < bLoc.y) ||
+				(aLoc.zLevel == bLoc.zLevel && aLoc.y == bLoc.y &&
+				 !this->manager.hasTag<TPlayer>(a));
 		  })
 	{}
 

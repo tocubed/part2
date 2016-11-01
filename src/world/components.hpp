@@ -68,7 +68,6 @@ struct CDesiredMovement
 struct CEventMoved
 {
 	EntityIndex who;
-	CLocation prevLocation;
 	Direction direction;
 	bool successful;
 
