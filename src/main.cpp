@@ -2,7 +2,9 @@
 #include <input/input.hpp>
 #include <render/animation.hpp>
 #include <render/character.hpp>
+#include <render/dialoguebox.hpp>
 #include <render/render.hpp>
+#include <script/dialogue.hpp>
 #include <world/movement.hpp>
 #include <world/overworld.hpp>
 
@@ -43,6 +45,7 @@ void update(sf::Time delta) {
 	{
 		manager.deleteEntity(eI);
 	});
+
 }
 
 void render(sf::Time delta) {
@@ -121,12 +124,22 @@ EntityIndex addFollower(EntityIndex entityAhead)
 	return follower;
 }
 
-
+void addDialogueBox()
+{
+	Dialogue::createDialogue(
+	    manager,
+	    "<b>You: </b>What am I doing with my life?<br/>"
+		"<b>Orcs: </b><i>Here comes dat orc!</i><br/>"
+		"<b>oh shit warlock: </b>"
+		"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi magna enim, semper a ex id, laoreet rutrum ex. Morbi fermentum ipsum et sapien luctus egestas. Phasellus vitae purus non eros mollis semper. Etiam laoreet euismod vulputate.");
+}
 
 int main(int argc, char** argv) {
 
 	std::string a;
-	sf::RenderWindow window_(sf::VideoMode(800, 600), "Milk");
+	sf::RenderWindow window_(
+	    sf::VideoMode(480, 480), "Milk",
+	    sf::Style::Titlebar | sf::Style::Close);
 	RenderSystem renderSystem_(manager, window_);
 	MovementSystem movementSystem_(manager, overworld);
 	InputSystem inputSystem_(manager);
@@ -146,6 +159,8 @@ int main(int argc, char** argv) {
 	{
 		following = addFollower(following);
 	}
+
+	addDialogueBox();
 	
 	quit = false;
 

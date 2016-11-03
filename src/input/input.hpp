@@ -3,6 +3,8 @@
 #include <core/manager.hpp>
 #include <core/system.hpp>
 
+#include <render/dialoguebox.hpp>
+
 class InputSystem : System
 {
 public:
@@ -12,6 +14,28 @@ public:
 
 	void update(sf::Time delta)
 	{
+		bool dialogueUp = false;
+		manager.forEntitiesHaving<TDialogue>(
+		[this, &dialogueUp](EntityIndex eI)
+		{
+			dialogueUp = true;
+
+			auto& drawable = manager.getComponent<CDrawable>(eI);
+			auto dialogue = static_cast<DialogueBox*>(drawable.drawable);
+
+			if(dialogue->allDisplayed())
+				manager.deleteEntity(eI);
+			else
+			{
+				dialogue->displayMoreCharacters();
+				if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+					dialogue->displayMoreLines();
+			}
+		});
+
+		if(dialogueUp)
+			return;
+
 		manager.forEntitiesHaving<TPlayer, CDesiredMovement>(
 		[this](EntityIndex eI)
 		{

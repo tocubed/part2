@@ -40,7 +40,7 @@ public:
 		{
 			auto& location = manager.getComponent<CLocation>(eI);
 
-			view.setCenter(location.x, location.y);
+			view.setCenter(location.x + 16, location.y + 16);
 		});
 	}
 
