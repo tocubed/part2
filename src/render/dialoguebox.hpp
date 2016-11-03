@@ -5,6 +5,7 @@
 #include <SFML/System.hpp>
 
 #include <cassert>
+#include <cctype>
 #include <string>
 #include <unordered_map>
 
@@ -86,7 +87,7 @@ private:
 
 	void appendText(const std::string& str, unsigned int style = 0)
 	{
-		bool bold = (style & sf::Text::Style::Bold != 0);
+		bool bold = (style & sf::Text::Style::Bold) != 0;
 
 		unsigned int maxLineWidth = dimensions.x - 16;
 
@@ -148,7 +149,7 @@ private:
 		}
 
 		if(i != text.size())
-			while(i > 0 && !std::iswspace(text[i]))
+			while(i > 0 && !std::isspace(text[i]))
 				i--;
 
 		return i;

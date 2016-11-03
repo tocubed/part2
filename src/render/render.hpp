@@ -24,7 +24,7 @@ public:
 			  return aLoc.zLevel < bLoc.zLevel || 
 			  	(aLoc.zLevel == bLoc.zLevel && aLoc.y < bLoc.y) ||
 				(aLoc.zLevel == bLoc.zLevel && aLoc.y == bLoc.y &&
-				 !this->manager.hasTag<TPlayer>(a));
+				 !this->manager.hasTag<TPlayer>(a) && this->manager.hasTag<TPlayer>(b));
 		  })
 	{}
 

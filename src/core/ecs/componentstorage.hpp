@@ -3,6 +3,7 @@
 #include <core/ecs/typedefs.hpp>
 
 #include <tuple>
+#include <type_traits>
 #include <unordered_map>
 #include <utility>
 
@@ -36,14 +37,14 @@ public:
 	void addComponents(EntityIndex eI, Ts&&... components)
 	{
 		int dummy[] = 
-			{(getComponent<Ts>(eI) = std::forward<Ts>(components), 0)...};
+			{(getComponent<std::remove_reference_t<Ts>>(eI) = std::forward<Ts>(components), 0)...};
 		(void)dummy;
 	}
 
 	template <typename T>
 	auto& addComponent(EntityIndex eI, T&& component)
 	{
-		auto&& c = getComponent<T>(eI);
+		auto&& c = getComponent<std::remove_reference_t<T>>(eI);
 		c = std::forward<T>(component);
 
 		return c;

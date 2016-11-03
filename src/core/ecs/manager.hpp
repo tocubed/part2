@@ -5,6 +5,7 @@
 #include <core/ecs/signature.hpp>
 
 #include <deque>
+#include <type_traits>
 #include <vector>
 
 namespace ecs {
@@ -101,7 +102,7 @@ public:
 	void addComponents(EntityIndex eI, Ts&&... componentz)
 	{
 		auto& e = getEntity(eI);
-		e.signature.template setComponents<Ts...>();
+		e.signature.template setComponents<std::remove_reference_t<Ts>...>();
 
 		components.addComponents(eI, std::forward<Ts>(componentz)...);
 	}
@@ -110,7 +111,7 @@ public:
 	auto& addComponent(EntityIndex eI, T&& component)
 	{
 		auto& e = getEntity(eI);
-		e.signature.template setComponent<T>();
+		e.signature.template setComponent<std::remove_reference_t<T>>();
 
 		return components.addComponent(eI, std::forward<T>(component));
 	}
