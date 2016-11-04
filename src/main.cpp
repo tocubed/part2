@@ -104,7 +104,8 @@ EntityIndex addPlayer()
 	    Character::createCharacter(manager, "assets/images/mainCharacter.png");
 
 	manager.addTag<TPlayer>(player);
-	manager.getComponent<CLocation>(player) = {7 * 32, 19 * 32, 99};
+	//manager.getComponent<CLocation>(player) = {7 * 32, 19 * 32, 99};
+	manager.getComponent<CLocation>(player) = { 107 * 32, 119 * 32, 99 };
 
 	return player;
 }
@@ -151,7 +152,18 @@ int main(int argc, char** argv) {
 	inputSystem = &inputSystem_;
 	animationSystem = &animationSystem_;
 
-	overworld.loadMap("assets/maps/t01.tmx", TileLocation{0, 0});
+	for(auto i = 0u; i < 7; i++)
+		for(auto j = 0u; j < 5; j++)
+		{
+			TileLocation location{ 30 * i, 30 * j };
+
+			auto index = std::to_string(1 + i + j * 7);
+			if(index.size() == 1)
+				index = "0" + index;
+			
+			overworld.loadMap("assets/maps/t" + index + ".tmx", location);
+		}
+	
 	EntityIndex player =  addPlayer();
 
 	EntityIndex following = player;
