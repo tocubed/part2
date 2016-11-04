@@ -15,7 +15,7 @@ public:
 	DialogueBox(sf::Vector2i dimensions, sf::Texture& texture, sf::Font& font)
 		: dimensions(dimensions), font(font)
 	{
-		visibleLines = dimensions.y / 30;
+		visibleLines = (dimensions.y - 32) / 32;
 
 		box.setTexture(texture);
 	}
@@ -89,7 +89,7 @@ private:
 	{
 		bool bold = (style & sf::Text::Style::Bold) != 0;
 
-		unsigned int maxLineWidth = dimensions.x - 16;
+		unsigned int maxLineWidth = dimensions.x - 24;
 
 		auto remaining = str;
 		while(remaining.size() > 0)
@@ -123,7 +123,7 @@ private:
 	void appendNewline()
 	{
 		lines.emplace_back();
-		currentLineWidth = 16;
+		currentLineWidth = 24;
 	}
 
 	mutable std::vector<std::vector<sf::Text>> lines;
@@ -173,6 +173,8 @@ private:
 
 		target.draw(box, states);
 
+		states.transform *= sf::Transform().translate(0, 16);
+
 		auto characters = 0u;
 		for(auto i = currentLine; i < currentLine + visibleLines; i++)
 		{
@@ -198,7 +200,7 @@ private:
 				target.draw(text, states); 
 			}
 
-			states.transform *= sf::Transform().translate(0, 30);
+			states.transform *= sf::Transform().translate(0, 32);
 		}
 
 		currentLinesDisplayed = true;

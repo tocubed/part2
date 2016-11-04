@@ -37,7 +37,7 @@ namespace Dialogue
 
 	static EntityIndex createDialogue(Manager& manager, const std::string& text)
 	{
-		sf::Vector2i dimensions{15 * 32, 3 * 32};
+		sf::Vector2i dimensions{15 * 32, 4 * 32};
 
 		auto dialogue = manager.createEntity();
 
