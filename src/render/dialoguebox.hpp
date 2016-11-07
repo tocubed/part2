@@ -23,8 +23,10 @@ public:
 	void setText(const std::string& richText)
 	{	
 		clearText();
+		
 		currentLine = 0;
 		visibleCharacters = 0;
+		currentLinesDisplayed = false;
 
 		pugi::xml_document richDoc;
 		richDoc.load_string(
@@ -59,7 +61,8 @@ public:
 
 	bool allDisplayed() const
 	{
-		return currentLine >= lines.size();
+		return currentLinesDisplayed &&
+		       ((currentLine + visibleLines) >= lines.size());
 	}
 
 	void displayMoreCharacters()

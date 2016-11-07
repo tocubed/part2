@@ -11,7 +11,9 @@ using ComponentList = ecs::TypeList<
 >;
 
 using TagList = ecs::TypeList<
-	TDialogue
+	TDialogue,
+	TMenu,
+	TPrompt
 >;
 
 } // namespace Script

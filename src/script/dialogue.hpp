@@ -1,39 +1,96 @@
 #pragma once
 
 #include <core/manager.hpp>
+#include <render/boxframe.hpp>
 #include <render/dialoguebox.hpp>
+#include <render/menubox.hpp>
 
 namespace Dialogue
 {
 	struct Statics
 	{
-		sf::Texture* texture;
+		sf::Texture* boxBorder;
+		sf::Texture* boxBackground;
 		sf::Font* font;
 
 		bool loaded;
 	};
 
-    static DialogueBox*
-    loadDialogueBox(sf::Vector2i dimensions, const std::string& text) 
+	static Statics getStatics()
 	{
 	    static Statics statics;
 
 		if(!statics.loaded)
 		{
-			statics.texture = new sf::Texture;
+			statics.boxBorder = new sf::Texture;
+			statics.boxBackground = new sf::Texture;
 			statics.font = new sf::Font;
 
-			statics.texture->loadFromFile("assets/images/dialoguebox.png");
-			statics.font->loadFromFile("assets/fonts/test.ttf");
+			statics.boxBorder->loadFromFile("assets/images/boxborder.png");
+		    statics.boxBackground->
+				loadFromFile("assets/images/boxbackground.png");
+
+			statics.boxBorder->setRepeated(true);
+			statics.boxBackground->setRepeated(true);
+
+		    statics.font->loadFromFile("assets/fonts/test.ttf");
 
 			statics.loaded = true;
 		}
 
-		auto box = new DialogueBox(dimensions, *statics.texture, *statics.font);
+		return statics;
+	}
+
+    static DialogueBox*
+    loadDialogueBox(sf::Vector2i dimensions, const std::string& text) 
+	{
+		auto statics = getStatics();
+
+	    auto boxTexture = Render::createBoxFrame(
+	        *statics.boxBorder, *statics.boxBackground, dimensions);
+
+	    auto box = new DialogueBox(dimensions, *boxTexture, *statics.font);
 		box->setText(text);
 
 		return box;
 	}
+
+    static MenuBox*
+    loadMenuBox(const std::vector<std::string>& options) 
+	{
+		auto statics = getStatics();
+
+	    auto box = new MenuBox(
+	        *statics.font, *statics.boxBorder, *statics.boxBackground);
+	    box->setOptions(options);
+
+		return box;
+	}
+
+    static EntityIndex
+    createMenu(Manager& manager, const std::vector<std::string>& options)
+	{
+		auto menu = manager.createEntity();
+
+		CLocation location{};
+		manager.forEntitiesHaving<TPlayer>(
+		[&manager, &location](EntityIndex player)
+		{
+			location = manager.getComponent<CLocation>(player);
+		});
+
+		location.x += 3 * 32;
+		location.y -= 0 * 32;
+
+		location.zLevel = 1000;
+
+		manager.addComponent(menu, CLocation{location});
+	    manager.addComponent(
+	        menu, CDrawable{loadMenuBox(options)});
+	    manager.addTag<TMenu>(menu);
+
+		return menu;
+    }
 
 	static EntityIndex createDialogue(Manager& manager, const std::string& text)
 	{

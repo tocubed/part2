@@ -5,6 +5,7 @@
 #include <render/dialoguebox.hpp>
 #include <render/render.hpp>
 #include <script/dialogue.hpp>
+#include <script/script.hpp>
 #include <world/movement.hpp>
 #include <world/overworld.hpp>
 
@@ -24,18 +25,24 @@ InputSystem* inputSystem;
 MovementSystem* movementSystem;
 RenderSystem* renderSystem;
 AnimationSystem* animationSystem;
+ScriptSystem* scriptSystem;
 
 bool quit;
 
 void update(sf::Time delta) {
 
+	inputSystem->clearKeyPresses();
+
 	sf::Event event;
 	while(window->pollEvent(event)) {
 		if(event.type == sf::Event::Closed)
 			quit = true;
+		else if(event.type == sf::Event::KeyPressed)
+			inputSystem->setKeyPressed(event.key.code);
 	}
 
 	inputSystem->update(delta);
+	scriptSystem->update(delta);
 	movementSystem->update(delta);
 	animationSystem->update(delta);
 	renderSystem->update(delta);
@@ -45,7 +52,6 @@ void update(sf::Time delta) {
 	{
 		manager.deleteEntity(eI);
 	});
-
 }
 
 void render(sf::Time delta) {
@@ -127,12 +133,18 @@ EntityIndex addFollower(EntityIndex entityAhead)
 
 void addDialogueBox()
 {
-	Dialogue::createDialogue(
-	    manager,
-	    "<b>You: </b>What am I doing with my life?<br/>"
-		"<b>Orcs: </b><i>Here comes dat orc!</i><br/>"
-		"<b>oh shit warlock: </b>"
-		"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi magna enim, semper a ex id, laoreet rutrum ex. Morbi fermentum ipsum et sapien luctus egestas. Phasellus vitae purus non eros mollis semper. Etiam laoreet euismod vulputate.");
+	scriptSystem->runScript(R"(
+	dialog("<b>...</b><br/><b>...</b><br/><b>...</b><br/><b>...</b><br/><b>...</b><br/>", fun() {
+		dialog("Preparing teleporter...<br/>!..<br/>.!.<br/>..!", fun() {
+			dialog("<u>!WARNING!</u>\tTeleportation unstable", fun() {
+				prompt("Would you like to teleport?", ["Yes", "No"], [
+				fun() { dialog("<s>Okay, here we...</s> NOT IMPLEMENTED"); },
+				fun() { dialog("No problem!"); }
+				]);
+			});
+		});
+	});
+	)");
 }
 
 int main(int argc, char** argv) {
@@ -145,12 +157,14 @@ int main(int argc, char** argv) {
 	MovementSystem movementSystem_(manager, overworld);
 	InputSystem inputSystem_(manager);
 	AnimationSystem animationSystem_(manager);
+	ScriptSystem scriptSystem_(manager);
 	
 	window = &window_;
 	renderSystem = &renderSystem_;
 	movementSystem = &movementSystem_;
 	inputSystem = &inputSystem_;
 	animationSystem = &animationSystem_;
+	scriptSystem = &scriptSystem_;
 
 	for(auto i = 0u; i < 7; i++)
 		for(auto j = 0u; j < 5; j++)
