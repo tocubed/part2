@@ -127,6 +127,11 @@ bool Map::isCollidable(TileLocation location)
 	}
 }
 
+std::string Map::getInteractScript(TileLocation location)
+{
+	return interactScripts[location];
+}
+
 // TODO More control over visibility
 void Map::finalizeTileLayer(std::size_t index)
 {
@@ -205,16 +210,31 @@ void Map::loadCharacter(const std::string& animFile, TileLocation location)
 void Map::parseCharacter(pugi::xml_node xml)
 {
 	std::string animFile;
+	std::string interactFile;
 	for(auto property: xml.child("properties").children("property"))
 	{
 		if(property.attribute("name").value() == std::string("AnimationFile"))
 			animFile = property.attribute("value").value();
+
+		if(property.attribute("name").value() == std::string("InteractFile"))
+			interactFile = property.attribute("value").value();
 	}
 
 	auto x = xml.attribute("x").as_int() / 32;
 	auto y = xml.attribute("y").as_int() / 32;
 
 	animFile = correctFilePath(animFile);
+	interactFile = correctFilePath(interactFile);
+
+	// Load interact script
+	std::ifstream ifstream(interactFile);
+	if(ifstream)
+	{
+		std::stringstream stream;
+		stream << ifstream.rdbuf();
+
+		interactScripts[TileLocation{x, y}] = stream.str();
+	}
 
 	loadCharacter(animFile, TileLocation{x, y});
 }

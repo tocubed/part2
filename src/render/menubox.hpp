@@ -13,7 +13,8 @@ class MenuBox : public sf::Drawable, public sf::Transformable
 public:
 	MenuBox(sf::Font& font, 
 		const sf::Texture& boxBorder, const sf::Texture& boxBackground)
-		: font(font), boxBorder(boxBorder), boxBackground(boxBackground) 
+		: font(font), boxBorder(boxBorder), boxBackground(boxBackground), 
+		  currentChoice()
 	{
 	}
 

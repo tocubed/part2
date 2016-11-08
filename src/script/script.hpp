@@ -3,13 +3,14 @@
 #include <core/manager.hpp>
 #include <core/system.hpp>
 #include <script/chaiscript.hpp>
+#include <world/overworld.hpp>
 
 #include <functional>
 
 class ScriptSystem : System
 {
 public:
-	ScriptSystem(Manager& manager);
+	ScriptSystem(Manager& manager, Overworld& world);
 
 	void update(sf::Time delta);
 
@@ -33,4 +34,6 @@ private:
 	bool prompt, promptUp;
 	std::vector<std::string> promptOptions;
 	std::vector<std::function<void()>> promptContinuations;
+
+	Overworld& overworld;
 };

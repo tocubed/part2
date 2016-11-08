@@ -26,6 +26,7 @@ public:
 	void setLocation(TileLocation location);
 
 	bool isCollidable(TileLocation location);
+	std::string getInteractScript(TileLocation location);
 
 private:
 	Manager& manager;
@@ -78,4 +79,7 @@ private:
 	std::string mapFileLocation;
 
 	std::string correctFilePath(std::string file);
+
+private:
+	std::unordered_map<TileLocation, std::string> interactScripts;
 };

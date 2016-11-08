@@ -68,6 +68,7 @@ public:
 			// Interaction
 			if(!movement.moving)
 			{
+				// TODO What if already interacting?
 				if(keyPressed[sf::Keyboard::Space])
 				{
 					auto interactLocation = TileLocation::fromLocation(

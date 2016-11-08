@@ -31,7 +31,7 @@ public:
 		mapsByLocation[location] = maps.size() - 1;
 	}
 
-	bool isCollidable(TileLocation location)
+	TileLocation getMapLocation(TileLocation location)
 	{
 		const auto floor_div = [](int x, int y)
 		{
@@ -45,7 +45,14 @@ public:
 		TileLocation mapLocation;
 		mapLocation.x = floor_div(location.x, (int)mapSize) * (int)mapSize;
 		mapLocation.y = floor_div(location.y, (int)mapSize) * (int)mapSize;
-		
+
+		return mapLocation;
+	}
+
+	bool isCollidable(TileLocation location)
+	{
+		auto mapLocation = getMapLocation(location);
+
 		auto it = mapsByLocation.find(mapLocation);
 
 		if(it == mapsByLocation.end())
@@ -55,6 +62,24 @@ public:
 			auto& map = *maps[std::get<1>(*it)];
 
 			return map.isCollidable(
+			    TileLocation{
+			        location.x - mapLocation.x, location.y - mapLocation.y});
+		}
+	}
+
+	std::string getInteractScript(TileLocation location)
+	{
+		auto mapLocation = getMapLocation(location);
+
+		auto it = mapsByLocation.find(mapLocation);
+
+		if(it == mapsByLocation.end())
+			return ""; // out of bounds
+		else
+		{
+			auto& map = *maps[std::get<1>(*it)];
+
+			return map.getInteractScript(
 			    TileLocation{
 			        location.x - mapLocation.x, location.y - mapLocation.y});
 		}

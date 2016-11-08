@@ -110,8 +110,7 @@ EntityIndex addPlayer()
 	    Character::createCharacter(manager, "assets/images/mainCharacter.png");
 
 	manager.addTag<TPlayer>(player);
-	//manager.getComponent<CLocation>(player) = {7 * 32, 19 * 32, 99};
-	manager.getComponent<CLocation>(player) = { 107 * 32, 119 * 32, 99 };
+	manager.getComponent<CLocation>(player) = {7 * 32, 19 * 32, 99};
 
 	return player;
 }
@@ -157,7 +156,7 @@ int main(int argc, char** argv) {
 	MovementSystem movementSystem_(manager, overworld);
 	InputSystem inputSystem_(manager);
 	AnimationSystem animationSystem_(manager);
-	ScriptSystem scriptSystem_(manager);
+	ScriptSystem scriptSystem_(manager, overworld);
 	
 	window = &window_;
 	renderSystem = &renderSystem_;

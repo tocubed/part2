@@ -4,8 +4,8 @@
 
 #include <chaiscript/chaiscript.hpp>
 
-ScriptSystem::ScriptSystem(Manager& manager)
-	: System(manager), chai(Script::getChaiScript()),
+ScriptSystem::ScriptSystem(Manager& manager, Overworld& overworld)
+	: System(manager), overworld(overworld), chai(Script::getChaiScript()),
 	  prompt{}, promptUp{}
 {
 	chai.add_global(chaiscript::var(this), "script");
@@ -92,7 +92,7 @@ void ScriptSystem::update(sf::Time delta)
 	{
 		auto& interact = manager.getComponent<CInteract>(eI);
 
-
+		runScript(overworld.getInteractScript(interact.location));
 	});
 }
 

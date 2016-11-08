@@ -1,0 +1,6 @@
+
+prompt("Hello! Would you like a cookie?", ["Yes", "No"],
+[
+fun() { dialog("Don't have any."); },
+fun() { dialog("I insist."); }
+]);
