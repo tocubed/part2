@@ -7,7 +7,8 @@
 namespace Input {
 
 using ComponentList = ecs::TypeList<
-	CMenuClosed
+	CMenuClosed,
+	CInteract
 >;
 
 using TagList = ecs::TypeList<

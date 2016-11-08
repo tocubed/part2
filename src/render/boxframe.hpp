@@ -8,8 +8,8 @@ static sf::Texture* createBoxFrame(
     const sf::Texture& border, const sf::Texture& background,
     sf::Vector2i dimensions) 
 {
-	auto xOffset = border.getSize().x;
-	auto yOffset = border.getSize().y;
+	int xOffset = border.getSize().x;
+	int yOffset = border.getSize().y;
 
 	sf::Sprite borderSprite(border, {0, 0, dimensions.x, dimensions.y});
 	sf::Sprite bgSprite(

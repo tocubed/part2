@@ -22,7 +22,7 @@ public:
 	    const std::vector<std::string>& options,
 	    const std::vector<std::function<void()>>& continuations);
 
-	void runScript(std::string src);
+	void runScript(std::string script);
 
 private:
 	chaiscript::ChaiScript_Basic& chai;	

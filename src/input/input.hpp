@@ -36,9 +36,11 @@ public:
 		if(handleDialog())
 			return;
 
-		manager.forEntitiesHaving<TPlayer, CDesiredMovement>(
+		manager.forEntitiesHaving<TPlayer>(
 		[this](EntityIndex eI)
 		{
+			// Movement
+			auto& movement = manager.getComponent<CMovement>(eI);
 			auto& desired = manager.getComponent<CDesiredMovement>(eI);
 
 			desired.direction = Direction::NONE;
@@ -63,9 +65,32 @@ public:
 				desired.direction = Direction::RIGHT;
 			}
 
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+			// Interaction
+			if(!movement.moving)
 			{
-				// Do some interaction 
+				if(keyPressed[sf::Keyboard::Space])
+				{
+					auto interactLocation = TileLocation::fromLocation(
+					    manager.getComponent<CLocation>(eI));
+
+					switch(movement.direction)
+					{
+					case UP:
+						interactLocation.y -= 1;
+						break;
+					case DOWN:
+						interactLocation.y += 1;
+						break;
+					case LEFT:
+						interactLocation.x -= 1;
+						break;
+					case RIGHT:
+						interactLocation.x += 1;
+						break;
+					}
+
+					announceInteract(interactLocation);
+				}
 			}
 		});
 	}
@@ -137,5 +162,13 @@ public:
 		
 		manager.addTag<TEvent>(event);
 		manager.addComponent(event, CMenuClosed{i});
+	}
+
+	void announceInteract(TileLocation location)
+	{
+		auto event = manager.createEntity();
+
+		manager.addTag<TEvent>(event);
+		manager.addComponent(event, CInteract{location});
 	}
 };

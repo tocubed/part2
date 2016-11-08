@@ -47,11 +47,13 @@ ScriptSystem::ScriptSystem(Manager& manager)
 
 void ScriptSystem::update(sf::Time delta)
 {
+	// Dialog
 	manager.forEntitiesHaving<TEvent, TDialogClosed>([this](EntityIndex)
 	{
 		dialogContinuation();
 	});
 
+	// Menu
 	manager.forEntitiesHaving<TEvent, CMenuClosed>([this](EntityIndex eI)
 	{
 		auto choice = manager.getComponent<CMenuClosed>(eI).choice;
@@ -71,6 +73,7 @@ void ScriptSystem::update(sf::Time delta)
 		menuContinuations[choice]();
 	});
 
+	// Prompt
 	if(prompt && !promptUp)
 		manager.forEntitiesHaving<TPrompt>([this](EntityIndex eI)
 		{
@@ -83,6 +86,14 @@ void ScriptSystem::update(sf::Time delta)
 				promptUp = true;
 			}
 		});
+
+	// Interaction
+	manager.forEntitiesHaving<TEvent, CInteract>([this](EntityIndex eI)
+	{
+		auto& interact = manager.getComponent<CInteract>(eI);
+
+
+	});
 }
 
 void ScriptSystem::dialogBox(std::string text, std::function<void()> continuation)
@@ -115,7 +126,7 @@ void ScriptSystem::promptBox(
 	promptContinuations = continuations;
 }
 
-void ScriptSystem::runScript(std::string src)
+void ScriptSystem::runScript(std::string script)
 {
-	chai(src);
+	chai(script);
 }

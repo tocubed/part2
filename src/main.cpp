@@ -166,8 +166,8 @@ int main(int argc, char** argv) {
 	animationSystem = &animationSystem_;
 	scriptSystem = &scriptSystem_;
 
-	for(auto i = 0u; i < 7; i++)
-		for(auto j = 0u; j < 5; j++)
+	for(auto i = 0; i < 7; i++)
+		for(auto j = 0; j < 5; j++)
 		{
 			TileLocation location{ 30 * i, 30 * j };
 
