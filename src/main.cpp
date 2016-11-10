@@ -130,22 +130,6 @@ EntityIndex addFollower(EntityIndex entityAhead)
 	return follower;
 }
 
-void addDialogueBox()
-{
-	scriptSystem->runScript(R"(
-	dialog("<b>...</b><br/><b>...</b><br/><b>...</b><br/><b>...</b><br/><b>...</b><br/>", fun() {
-		dialog("Preparing teleporter...<br/>!..<br/>.!.<br/>..!", fun() {
-			dialog("<u>!WARNING!</u>\tTeleportation unstable", fun() {
-				prompt("Would you like to teleport?", ["Yes", "No"], [
-				fun() { dialog("<s>Okay, here we...</s> NOT IMPLEMENTED"); },
-				fun() { dialog("No problem!"); }
-				]);
-			});
-		});
-	});
-	)");
-}
-
 int main(int argc, char** argv) {
 
 	std::string a;
@@ -185,8 +169,6 @@ int main(int argc, char** argv) {
 		following = addFollower(following);
 	}
 
-	addDialogueBox();
-	
 	quit = false;
 
 	loop();
