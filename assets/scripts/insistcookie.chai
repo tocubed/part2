@@ -1,0 +1,28 @@
+use("ycombinator.chai");
+
+fun(){
+
+// Use YCombinator to convert this function into a recursive version
+var almostInsist = fun(insist)
+{
+	return (fun[insist]()
+	{
+		prompt("I insist.", ["Yes", "No"],
+		[
+			fun() { dialog("Don't have any."); },
+			insist // recurse here
+		]);
+	});
+};
+
+// Fully recursive insist function
+var insist = YCombinator(almostInsist);
+
+// Insist player
+prompt("Hello! Would you like a cookie?", ["Yes", "No"],
+[
+	fun() { dialog("Don't have any."); },
+	insist
+]);
+
+}();

@@ -149,7 +149,7 @@
   <object id="1" type="Character" x="608" y="224" width="32" height="32">
    <properties>
     <property name="AnimationFile" type="file" value="../images/orc1Enemy.png"/>
-    <property name="InteractFile" type="file" value="../scripts/sayhello.chai"/>
+    <property name="InteractFile" type="file" value="../scripts/insistcookie.chai"/>
    </properties>
   </object>
  </objectgroup>

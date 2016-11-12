@@ -5,88 +5,19 @@
 #include <chaiscript/chaiscript.hpp>
 
 ScriptSystem::ScriptSystem(Manager& manager, Overworld& overworld)
-	: System(manager), overworld(overworld), chai(Script::getChaiScript()),
-	  prompt{}, promptUp{}
+	: System(manager), overworld(overworld), chai(Script::getChaiScript())
 {
 	chai.add_global(chaiscript::var(this), "script");
+	
+	chai.add(chaiscript::fun(&ScriptSystem::openDialog), "dialog");
+	chai.add(chaiscript::fun(&ScriptSystem::openMenu), "menu");
+	chai.add(chaiscript::fun(&ScriptSystem::openPrompt), "prompt");
 
-	// Dialog box
-	chai.add(chaiscript::fun(&ScriptSystem::dialogBox), "dialogBox");
-	chai(R"(
-	def dialog(string text, continuation)
-	{
-		script.dialogBox(text, continuation);
-	}
-
-	def dialog(string text)
-	{
-		dialog(text, fun(){});
-	}
-	)");
-
-	// Menu box
-	chai.add(chaiscript::fun(&ScriptSystem::menuBox), "menuBox");
-	chai.add(chaiscript::vector_conversion<std::vector<std::string>>());
-	chai.add(chaiscript::vector_conversion<std::vector<std::function<void()>>>());
-	chai(R"(
-	def menu(options, continuations)
-	{
-		script.menuBox(options, continuations);
-	}
-	)");
-
-	// Prompt box
-	chai.add(chaiscript::fun(&ScriptSystem::promptBox), "promptBox");
-	chai(R"(
-	def prompt(text, options, continuations)
-	{
-		script.promptBox(text, options, continuations);
-	}
-	)");
+	chai(R"(use("init.chai");)");
 }
 
 void ScriptSystem::update(sf::Time delta)
 {
-	// Dialog
-	manager.forEntitiesHaving<TEvent, TDialogClosed>([this](EntityIndex)
-	{
-		dialogContinuation();
-	});
-
-	// Menu
-	manager.forEntitiesHaving<TEvent, CMenuClosed>([this](EntityIndex eI)
-	{
-		auto choice = manager.getComponent<CMenuClosed>(eI).choice;
-
-		if(prompt)
-		{
-			manager.forEntitiesHaving<TPrompt>([this](EntityIndex eI)
-			{
-				manager.deleteEntity(eI);
-			});
-
-			prompt = false;
-			promptOptions.clear();
-			promptContinuations.clear();
-		}
-		
-		menuContinuations[choice]();
-	});
-
-	// Prompt
-	if(prompt && !promptUp)
-		manager.forEntitiesHaving<TPrompt>([this](EntityIndex eI)
-		{
-			auto& drawable = manager.getComponent<CDrawable>(eI);	
-
-			auto dialog = static_cast<DialogueBox*>(drawable.drawable);
-			if(dialog->allDisplayed())
-			{
-				menuBox(promptOptions, promptContinuations);
-				promptUp = true;
-			}
-		});
-
 	// Interaction
 	manager.forEntitiesHaving<TEvent, CInteract>([this](EntityIndex eI)
 	{
@@ -94,39 +25,145 @@ void ScriptSystem::update(sf::Time delta)
 
 		runScript(overworld.getInteractScript(interact.location));
 	});
+
+	for(auto it = latentFunctions.begin(); it != latentFunctions.end(); )
+	{
+		if((*it)())
+			it = latentFunctions.erase(it);
+		else
+			++it;
+	}
 }
 
-void ScriptSystem::dialogBox(std::string text, std::function<void()> continuation)
+void ScriptSystem::openDialog(std::string text, std::function<void()> callback)
 {
-	Dialogue::createDialogue(manager, text);
+	auto dialog = Dialogue::createDialogue(manager, text);
 
-	dialogContinuation = continuation;
+	auto waitForDialogClose = [=]()
+	{
+		return manager.isDeleted(dialog);
+	};
+
+	auto callCallback = [=]() 
+	{ 
+		callback(); 
+		return true; 
+	};
+
+	doLatentInOrder({waitForDialogClose, callCallback});
 }
 
-void ScriptSystem::menuBox(
+void ScriptSystem::openMenu(
     const std::vector<std::string>& options,
-    const std::vector<std::function<void()>>& continuations)
+    const std::vector<std::function<void()>>& callbacks)
 {
-	Dialogue::createMenu(manager, options);
+	auto menu = Dialogue::createMenu(manager, options);
 
-	menuContinuations = continuations;
+	auto waitForMenuClose = [=]()
+	{
+		return manager.isDeleted(menu);
+	};
+
+	auto callChosenCallback = [=]()
+	{
+		bool called = false;
+
+		manager.forEntitiesHaving<TEvent, CMenuClosed>(
+		[=, &called](EntityIndex eI)
+		{
+			// TODO Check that the correct menu was closed
+			auto choice = manager.getComponent<CMenuClosed>(eI).choice;
+
+			callbacks[choice]();
+			called = true;
+		});
+
+		return called;
+	};
+
+	doLatentInOrder({waitForMenuClose, callChosenCallback});
 }
 
-void ScriptSystem::promptBox(
+void ScriptSystem::openPrompt(
 	const std::string& text,
     const std::vector<std::string>& options,
-    const std::vector<std::function<void()>>& continuations)
+    const std::vector<std::function<void()>>& callbacks)
 {
-	auto dialogue = Dialogue::createDialogue(manager, text);
-	manager.addTag<TPrompt>(dialogue);
+	auto dialog = Dialogue::createDialogue(manager, text);
+	manager.addTag<TPrompt>(dialog);
 
-	prompt = true;
-	promptUp = false;
-	promptOptions = options;
-	promptContinuations = continuations;
+	auto waitForDialog = [=]()
+	{
+		auto& drawable = manager.getComponent<CDrawable>(dialog);	
+		auto dialogBox = static_cast<DialogueBox*>(drawable.drawable);
+
+		return dialogBox->allDisplayed();
+	};
+
+	auto displayMenu = [=]()
+	{
+		auto menu = Dialogue::createMenu(manager, options);
+
+		auto waitForMenuClosed = [=]()
+		{
+			return manager.isDeleted(menu);
+		};
+
+		auto callChosenCallback = [=]()
+		{
+			bool called = false;
+
+			manager.forEntitiesHaving<TEvent, CMenuClosed>(
+			[=, &called](EntityIndex eI)
+			{
+				// TODO Check that the correct menu was closed
+				auto choice = manager.getComponent<CMenuClosed>(eI).choice;
+
+				callbacks[choice]();
+				called = true;
+			});
+
+			return called;
+		};
+
+		auto closeDialog = [=]()
+		{
+			manager.deleteEntity(dialog);
+			return true;
+		};
+
+		doLatentInOrder({waitForMenuClosed, callChosenCallback, closeDialog});
+
+		return true;
+	};
+
+	doLatentInOrder({waitForDialog, displayMenu});
 }
 
 void ScriptSystem::runScript(std::string script)
 {
 	chai(script);
+}
+
+void ScriptSystem::doLatent(std::function<bool()> func)
+{
+	latentFunctions.push_back(func);
+}
+
+void ScriptSystem::doLatentInOrder(std::vector<std::function<bool()>> funcs)
+{
+	auto index = 0;
+
+	auto combined = [index, funcs]() mutable
+	{
+		while(index < funcs.size())
+			if(funcs[index]())
+				index++;
+			else
+				break;
+
+		return index >= funcs.size();
+	};
+
+	doLatent(combined);
 }

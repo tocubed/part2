@@ -11,7 +11,10 @@ namespace Script {
 
 static std::unique_ptr<chaiscript::ChaiScript_Basic> createChaiScript()
 {
-	auto chai = std::make_unique<chaiscript::ChaiScript_Basic>(createChaiScriptStdLib(), createChaiScriptParser());
+	auto chai = std::unique_ptr<chaiscript::ChaiScript_Basic>(
+	    new chaiscript::ChaiScript_Basic(
+	        createChaiScriptStdLib(), createChaiScriptParser(), {},
+	        {"assets/scripts/"}));
 
 	chai->add(createChaiScriptBindings());
 

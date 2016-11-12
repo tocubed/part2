@@ -111,10 +111,14 @@ public:
 
 			if(keyPressed[sf::Keyboard::Space])
 			{
-				if(dialogue->allDisplayed() && !manager.hasTag<TPrompt>(eI))
+				if(dialogue->allDisplayed())
 				{
-					announceDialogClosed();
-					manager.deleteEntity(eI);
+					// TODO Remove this workaround for prompts
+					if(!manager.hasTag<TPrompt>(eI))
+					{	
+						announceDialogClosed();
+						manager.deleteEntity(eI);
+					}
 				}
 				else
 					dialogue->displayMoreLines();

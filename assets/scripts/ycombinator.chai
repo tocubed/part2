@@ -1,0 +1,9 @@
+// The YCombinator takes a function and returns a recursive version
+// Due to limitations, the passed function must not take arguments
+def YCombinator(Function f)
+{
+	return (fun[f]()
+	{
+		f(YCombinator(f))();
+	});
+}

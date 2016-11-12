@@ -1,0 +1,19 @@
+def dialog(string text, Function callback)
+{
+	script.dialog(text, callback);
+}
+
+def dialog(string text)
+{
+	dialog(text, fun() {});
+}
+
+def menu(Vector options, Vector callbacks)
+{
+	script.menu(options, callbacks);
+}
+
+def prompt(string text, Vector options, Vector callbacks)
+{
+	script.prompt(text, options, callbacks);
+}

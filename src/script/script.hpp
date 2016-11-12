@@ -6,6 +6,7 @@
 #include <world/overworld.hpp>
 
 #include <functional>
+#include <list>
 
 class ScriptSystem : System
 {
@@ -14,26 +15,23 @@ public:
 
 	void update(sf::Time delta);
 
-	void dialogBox(std::string text, std::function<void ()> continuation);
-	void menuBox(
+	void openDialog(std::string text, std::function<void()> callback);
+	void openMenu(
 	    const std::vector<std::string>& options,
-	    const std::vector<std::function<void()>>& continuations);
-	void promptBox(
+	    const std::vector<std::function<void()>>& callbacks);
+	void openPrompt(
 		const std::string& text,
 	    const std::vector<std::string>& options,
-	    const std::vector<std::function<void()>>& continuations);
+	    const std::vector<std::function<void()>>& callbacks);
 
 	void runScript(std::string script);
 
+	void doLatent(std::function<bool()> func);
+	void doLatentInOrder(std::vector<std::function<bool()>> funcs);
+
 private:
+	Overworld& overworld;
 	chaiscript::ChaiScript_Basic& chai;	
 
-	std::function<void()> dialogContinuation;
-	std::vector<std::function<void()>> menuContinuations;
-
-	bool prompt, promptUp;
-	std::vector<std::string> promptOptions;
-	std::vector<std::function<void()>> promptContinuations;
-
-	Overworld& overworld;
+	std::list<std::function<bool()>> latentFunctions;
 };
