@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" nextobjectid="2">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" nextobjectid="9">
  <tileset firstgid="1" name="forest_tiles" tilewidth="32" tileheight="32" tilecount="256" columns="16">
   <image source="../images/forest_tiles.png" width="512" height="512"/>
  </tileset>
@@ -146,10 +146,42 @@
 </data>
  </layer>
  <objectgroup name="Characters">
-  <object id="1" type="Character" x="608" y="224" width="32" height="32">
+  <object id="3" type="Character" x="576" y="288" width="32" height="32">
    <properties>
     <property name="OnInteract" type="file" value="../scripts/insistcookie.chai"/>
+    <property name="Orientation" value="Right"/>
     <property name="Spritesheet" type="file" value="../images/orc1Enemy.png"/>
+   </properties>
+  </object>
+  <object id="4" type="Character" x="352" y="288" width="32" height="32">
+   <properties>
+    <property name="Collidable" type="bool" value="false"/>
+    <property name="OnInteract">face(player);
+
+prompt(&quot;Good thing you can walk through me, eh?&quot;, 
+[&quot;Yes&quot;, &quot;Not really&quot;],
+[
+fun() { }, // Do nothing if yes 
+fun() { dialog(&quot;Fancy being stuck here, eh?&quot;); }
+]);</property>
+    <property name="Orientation" value="Down"/>
+    <property name="Spritesheet" type="file" value="../images/mainCharacter.png"/>
+   </properties>
+  </object>
+  <object id="7" type="Character" x="832" y="416" width="32" height="32">
+   <properties>
+    <property name="OnInteract">face(player);
+
+dialog(&quot;&lt;b&gt;God&lt;/b&gt; created &lt;i&gt;me&lt;/i&gt; to preach about the &lt;u&gt;horrors&lt;/u&gt; of pArSI&lt;s&gt;NG&lt;/s&gt; &lt;i&gt;X&lt;/i&gt;ML and &lt;b&gt;&lt;i&gt;U　N　I C O D e　ッッッッッッ&lt;/i&gt;&lt;/b&gt;&quot;);</property>
+    <property name="Orientation" value="Left"/>
+    <property name="Spritesheet" type="file" value="../images/orc1Enemy.png"/>
+   </properties>
+  </object>
+  <object id="8" type="Character" x="448" y="416" width="32" height="32">
+   <properties>
+    <property name="OnInteract" value="dialog(&quot;I'm supposed to be facing the TV, but &lt;i&gt;someone&lt;/i&gt; was lazy in implementing things.&quot;);"/>
+    <property name="Orientation" value="Up"/>
+    <property name="Spritesheet" type="file" value="../images/mainCharacter.png"/>
    </properties>
   </object>
  </objectgroup>

@@ -281,8 +281,10 @@ void Map::parseCharacter(pugi::xml_node xml)
 				stream << ifstream.rdbuf();
 				script = stream.str();
 			}
-			else
+			else if(property.attribute("value").empty())
 				script = property.child_value();
+			else
+				script = property.attribute("value").value();
 
 			scripts[scriptName] = script;
 		}
