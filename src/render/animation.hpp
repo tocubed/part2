@@ -42,8 +42,8 @@ public:
 				animationName += "_down"; break;
 			}
 
-			animatedSprite.playAnimation(animationName, true);
-			animatedSprite.setPlaySpeed(sf::milliseconds(1000));
+			animatedSprite.playAnimation(animationName);
+			animatedSprite.setPlaySpeed(sf::milliseconds(100));
 		});
 	}
 
@@ -81,7 +81,7 @@ public:
 					animationName += "left"; break;
 				}
 
-				animatedSprite.playAnimation(animationName, false);
+				animatedSprite.playAnimation(animationName);
 				animatedSprite.setPlaySpeed(sf::milliseconds(25));
 			}
 		});

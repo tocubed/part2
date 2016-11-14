@@ -66,22 +66,21 @@ public:
 			        location.x - mapLocation.x, location.y - mapLocation.y});
 		}
 	}
-
-	std::string getInteractScript(TileLocation location)
+	
+	EntityIndex getScriptedEntity(TileLocation location)
 	{
 		auto mapLocation = getMapLocation(location);
 
 		auto it = mapsByLocation.find(mapLocation);
 
 		if(it == mapsByLocation.end())
-			return ""; // out of bounds
+			return -1; // out of bounds
 		else
 		{
 			auto& map = *maps[std::get<1>(*it)];
 
-			return map.getInteractScript(
-			    TileLocation{
-			        location.x - mapLocation.x, location.y - mapLocation.y});
+			return map.getScriptedEntity(TileLocation{
+			    location.x - mapLocation.x, location.y - mapLocation.y});
 		}
 	}
 

@@ -13,17 +13,53 @@ ScriptSystem::ScriptSystem(Manager& manager, Overworld& overworld)
 	chai.add(chaiscript::fun(&ScriptSystem::openMenu), "menu");
 	chai.add(chaiscript::fun(&ScriptSystem::openPrompt), "prompt");
 
+	chai.add(chaiscript::user_type<EntityIndex>(), "Entity");
+
+	chai.add(chaiscript::user_type<TileLocation>(), "Location");
+	chai.add(chaiscript::fun(&TileLocation::x), "x");
+	chai.add(chaiscript::fun(&TileLocation::y), "y");
+
+	chai.add(chaiscript::user_type<Direction>(), "Direction");
+	chai.add_global_const(chaiscript::const_var(Direction::UP), "UP");
+	chai.add_global_const(chaiscript::const_var(Direction::DOWN), "DOWN");
+	chai.add_global_const(chaiscript::const_var(Direction::RIGHT), "RIGHT");
+	chai.add_global_const(chaiscript::const_var(Direction::LEFT), "LEFT");
+
+	chai.add(chaiscript::fun(&ScriptSystem::getTileLocation), "location");
+	chai.add(chaiscript::fun(&ScriptSystem::makeEntityFace), "face");
+
+	chai.add_global(chaiscript::var(NULL_ENTITY), "self");
+	chai.add_global(chaiscript::var(NULL_ENTITY), "player");
+
 	chai(R"(use("init.chai");)");
 }
 
 void ScriptSystem::update(sf::Time delta)
 {
+	if(chai.eval<EntityIndex>("player") == NULL_ENTITY)
+	{
+		auto player = NULL_ENTITY;
+
+		manager.forEntitiesHaving<TPlayer>(
+		    [&player](EntityIndex eI) { player = eI; });
+
+		chai.set_global(chaiscript::var(player), "player");
+	}
+
 	// Interaction
 	manager.forEntitiesHaving<TEvent, CInteract>([this](EntityIndex eI)
 	{
 		auto& interact = manager.getComponent<CInteract>(eI);
 
-		runScript(overworld.getInteractScript(interact.location));
+		auto e = overworld.getScriptedEntity(interact.location);
+		if(e == NULL_ENTITY)
+			return;
+
+		auto& scripts = manager.getComponent<CScripts>(e);
+
+		chai.set_global(chaiscript::var(e), "self");
+
+		runScript(scripts["OnInteract"]);
 	});
 
 	for(auto it = latentFunctions.begin(); it != latentFunctions.end(); )
@@ -140,6 +176,22 @@ void ScriptSystem::openPrompt(
 	doLatentInOrder({waitForDialog, displayMenu});
 }
 
+TileLocation ScriptSystem::getTileLocation(EntityIndex entity) const
+{
+	return TileLocation::fromLocation(manager.getComponent<CLocation>(entity));
+}
+
+bool ScriptSystem::makeEntityFace(EntityIndex character, Direction dir)
+{
+	auto& movement = manager.getComponent<CMovement>(character);
+	if(movement.moving)
+		return false;
+
+	movement.direction = dir;
+
+	return true;
+}
+
 void ScriptSystem::runScript(std::string script)
 {
 	chai(script);
@@ -167,3 +219,4 @@ void ScriptSystem::doLatentInOrder(std::vector<std::function<bool()>> funcs)
 
 	doLatent(combined);
 }
+

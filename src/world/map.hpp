@@ -26,7 +26,7 @@ public:
 	void setLocation(TileLocation location);
 
 	bool isCollidable(TileLocation location);
-	std::string getInteractScript(TileLocation location);
+	EntityIndex getScriptedEntity(TileLocation location);
 
 private:
 	Manager& manager;
@@ -34,7 +34,7 @@ private:
 	std::size_t mapWidth;
 	std::size_t mapHeight;
 
-	TileLocation location;
+	TileLocation mapLocation;
 
 private:
 	void createTileset(std::size_t numTiles);
@@ -72,7 +72,9 @@ private:
 private:
 	std::vector<EntityIndex> childEntities;
 
-	void loadCharacter(const std::string& animFile, TileLocation location);
+	void loadCharacter(
+	    const std::string& animFile, TileLocation location, bool collidable,
+	    const std::map<std::string, std::string>& scripts);
 	void parseCharacter(pugi::xml_node xml);
 
 private:

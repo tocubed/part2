@@ -19,6 +19,8 @@ var almostInsist = fun(insist)
 var insist = YCombinator(almostInsist);
 
 // Insist player
+face(player);
+
 prompt("Hello! Would you like a cookie?", ["Yes", "No"],
 [
 	fun() { dialog("Don't have any."); },

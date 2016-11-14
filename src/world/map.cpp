@@ -13,7 +13,7 @@
 #include <sstream>
 #include <unordered_map>
 
-Map::Map(Manager& manager) : manager(manager), location{0, 0}
+Map::Map(Manager& manager) : manager(manager), mapLocation{0, 0}
 {
 }
 
@@ -26,7 +26,7 @@ void Map::setSize(std::size_t width, std::size_t height)
 void Map::setLocation(TileLocation newLocation)
 {
 	TileLocation difference = 
-		{newLocation.x - location.x, newLocation.y - location.y};
+		{newLocation.x - mapLocation.x, newLocation.y - mapLocation.y};
 
 	for(auto e: childEntities)
 	{
@@ -36,7 +36,7 @@ void Map::setLocation(TileLocation newLocation)
 		entityLocation.y += difference.toLocation().y;
 	}
 
-	location = newLocation;
+	mapLocation = newLocation;
 }
 
 void Map::createTileset(std::size_t numTiles)
@@ -120,6 +120,19 @@ bool Map::isCollidable(TileLocation location)
 {
 	auto it = tileLayersByName.find("Collision");
 
+	for(auto e: childEntities)
+		if(manager.hasTag<TTileCollidable>(e))
+		{
+			auto childLoc =
+			    TileLocation::fromLocation(manager.getComponent<CLocation>(e));
+
+			childLoc.x -= mapLocation.x;
+			childLoc.y -= mapLocation.y;
+
+			if(childLoc == location)
+			   return true;	
+		}
+
 	if(it == tileLayersByName.end())
 		return false; // no collision layer
 	else
@@ -130,9 +143,22 @@ bool Map::isCollidable(TileLocation location)
 	}
 }
 
-std::string Map::getInteractScript(TileLocation location)
+EntityIndex Map::getScriptedEntity(TileLocation location)
 {
-	return interactScripts[location];
+	for(auto e: childEntities)
+		if(manager.hasComponent<CScripts>(e))
+		{
+			auto childLoc =
+			    TileLocation::fromLocation(manager.getComponent<CLocation>(e));
+
+			childLoc.x -= mapLocation.x;
+			childLoc.y -= mapLocation.y;
+
+			if(childLoc == location)
+				return e;
+		}
+
+	return NULL_ENTITY;
 }
 
 // TODO More control over visibility
@@ -177,8 +203,8 @@ void Map::finalizeTileLayer(std::size_t index)
 
 	manager.addComponent<CDrawable>(layerEntity, CDrawable{drawable});
 	manager.addComponent<CLocation>(
-	    layerEntity,
-	    CLocation{location.toLocation().x, location.toLocation().y, zLevel});
+	    layerEntity, CLocation{mapLocation.toLocation().x,
+	                           mapLocation.toLocation().y, zLevel});
 	manager.addTag<TMapLayer>(layerEntity);
 
 	childEntities.push_back(layerEntity);
@@ -197,49 +223,75 @@ std::string Map::correctFilePath(std::string file)
 	else
 		path = file;
 
+	assert(std::ifstream(path)); // Corrected file path is valid
+
 	return path;
 }
 
-void Map::loadCharacter(const std::string& animFile, TileLocation location)
+void Map::loadCharacter(
+    const std::string& animFile, TileLocation location, bool collidable,
+    const std::map<std::string, std::string>& scripts) 
 {
 	auto character = Character::createCharacter(manager, animFile);
 
 	manager.getComponent<CLocation>(character) = 
 		{32 * location.x, 32 * location.y, 99};
 
+	manager.addComponent(character, CScripts{scripts});
+
+	if(collidable)
+		manager.addTag<TTileCollidable>(character);
+
 	childEntities.push_back(character);
 }
 
 void Map::parseCharacter(pugi::xml_node xml)
 {
-	std::string animFile;
-	std::string interactFile;
+	std::string spriteSheet;
+	bool collidable = true;
+
+	std::map<std::string, std::string> scripts;
+
 	for(auto property: xml.child("properties").children("property"))
 	{
-		if(property.attribute("name").value() == std::string("AnimationFile"))
-			animFile = property.attribute("value").value();
+		auto name = property.attribute("name").value();
 
-		if(property.attribute("name").value() == std::string("InteractFile"))
-			interactFile = property.attribute("value").value();
+		if(name == std::string("Spritesheet"))
+		{
+			spriteSheet = property.attribute("value").value();
+			spriteSheet = correctFilePath(spriteSheet);
+		}
+		else if(name == std::string("Collidable"))
+		{
+			collidable = property.attribute("value").as_bool();
+		}
+		else // Script
+		{
+			auto scriptName = property.attribute("name").value();
+			
+			std::string script;
+			if(property.attribute("type").value() == std::string("file"))
+			{
+				std::string scriptFile = property.attribute("value").value();
+				scriptFile = correctFilePath(scriptFile);
+
+				std::ifstream ifstream(scriptFile);
+				std::stringstream stream;
+
+				stream << ifstream.rdbuf();
+				script = stream.str();
+			}
+			else
+				script = property.child_value();
+
+			scripts[scriptName] = script;
+		}
 	}
 
 	auto x = xml.attribute("x").as_int() / 32;
 	auto y = xml.attribute("y").as_int() / 32;
 
-	animFile = correctFilePath(animFile);
-	interactFile = correctFilePath(interactFile);
-
-	// Load interact script
-	std::ifstream ifstream(interactFile);
-	if(ifstream)
-	{
-		std::stringstream stream;
-		stream << ifstream.rdbuf();
-
-		interactScripts[TileLocation{x, y}] = stream.str();
-	}
-
-	loadCharacter(animFile, TileLocation{x, y});
+	loadCharacter(spriteSheet, TileLocation{x, y}, collidable, scripts);
 }
 
 void Map::loadFromFile(const std::string& mapFile)

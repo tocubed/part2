@@ -18,7 +18,8 @@ using ComponentList = ecs::TypeList<
 using TagList = ecs::TypeList<
 	TPlayer,
 	TFollower,
-	TMapLayer
+	TMapLayer,
+	TTileCollidable
 >;
 
 } // namespace World

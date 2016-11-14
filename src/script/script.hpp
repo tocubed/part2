@@ -24,6 +24,9 @@ public:
 	    const std::vector<std::string>& options,
 	    const std::vector<std::function<void()>>& callbacks);
 
+	TileLocation getTileLocation(EntityIndex entity) const;
+	bool makeEntityFace(EntityIndex character, Direction dir);
+
 	void runScript(std::string script);
 
 	void doLatent(std::function<bool()> func);
