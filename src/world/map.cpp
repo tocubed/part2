@@ -81,6 +81,9 @@ void Map::finalizeTileset()
 
 	// Texture resource loads on GPU
 	assert(loaded); 
+
+	// Clear image resource
+	tileset.create(0, 0);
 }
 
 auto Map::createTileLayer(std::string&& name, int zLevel)
@@ -148,8 +151,8 @@ void Map::finalizeTileLayer(std::size_t index)
 			auto i = x + mapWidth * y;
 
 			auto tile = tiles[i];
-			auto tx = tile % (tileset.getSize().x / 32);
-			auto ty = tile / (tileset.getSize().x / 32);
+			auto tx = tile % (tilesetTexture.getSize().x / 32);
+			auto ty = tile / (tilesetTexture.getSize().x / 32);
 
 			sf::Vertex* quad = &vertices[i * 4];
 			
