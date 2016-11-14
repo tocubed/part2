@@ -170,7 +170,7 @@ void Map::finalizeTileLayer(std::size_t index)
 	auto bounds = vertices.getBounds();
 
 	// Create the entity
-	auto drawable = new GenericDrawable(vertices, tilesetTexture);
+	auto drawable = std::make_shared<GenericDrawable>(vertices, tilesetTexture);
 	auto zLevel = tileLayerZLevels[index];
 
 	auto layerEntity = manager.createEntity();

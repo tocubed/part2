@@ -41,7 +41,7 @@ namespace Dialogue
 		return statics;
 	}
 
-    static DialogueBox*
+    static std::unique_ptr<DialogueBox>
     loadDialogueBox(sf::Vector2i dimensions, const std::string& text) 
 	{
 		auto statics = getStatics();
@@ -49,18 +49,19 @@ namespace Dialogue
 	    auto boxTexture = Render::createBoxFrame(
 	        *statics.boxBorder, *statics.boxBackground, dimensions);
 
-	    auto box = new DialogueBox(dimensions, *boxTexture, *statics.font);
-		box->setText(text);
+	    auto box = std::make_unique<DialogueBox>(
+	        dimensions, *boxTexture, *statics.font);
+	    box->setText(text);
 
 		return box;
 	}
 
-    static MenuBox*
+    static std::unique_ptr<MenuBox>
     loadMenuBox(const std::vector<std::string>& options) 
 	{
 		auto statics = getStatics();
 
-	    auto box = new MenuBox(
+	    auto box = std::make_unique<MenuBox>(
 	        *statics.font, *statics.boxBorder, *statics.boxBackground);
 	    box->setOptions(options);
 

@@ -9,7 +9,7 @@
 
 namespace Character
 {
-	void loadWalkingAnimations(AnimatedSprite* sprite)
+	void loadWalkingAnimations(AnimatedSprite& sprite)
 	{
 	    static std::array<std::string, 4> directions = 
 			{"up", "left", "down", "right"};
@@ -25,12 +25,12 @@ namespace Character
 			for(auto j = 0u; j < frames.size(); j++)
 				frames[j] += rows[i];
 
-			sprite->addAnimation("walk_" + directions[i], frames);
+			sprite.addAnimation("walk_" + directions[i], frames);
 		}
     };
 
 	// TODO Combine similar code
-	void loadIdleAnimations(AnimatedSprite* sprite)
+	void loadIdleAnimations(AnimatedSprite& sprite)
 	{
 	    static std::array<std::string, 4> directions = 
 			{"up", "left", "down", "right"};
@@ -46,13 +46,13 @@ namespace Character
 			for(auto j = 0u; j < frames.size(); j++)
 				frames[j] += rows[i];
 
-			sprite->addAnimation("idle_" + directions[i], frames);
+			sprite.addAnimation("idle_" + directions[i], frames);
 		}
 	}
 
 	std::map<std::string, std::shared_ptr<sf::Texture>> spriteSheets;
 
-	AnimatedSprite* loadAnimations(std::string file)
+	std::unique_ptr<AnimatedSprite> loadAnimations(std::string file)
 	{
 		std::shared_ptr<sf::Texture> spriteSheet;
 		
@@ -67,12 +67,12 @@ namespace Character
 			assert(loaded); // Spritesheet loaded successfuly
 		}
 
-	    auto animatedSprite =
-	        new AnimatedSprite(*spriteSheet, sf::Vector2i(64, 64));
-		animatedSprite->setPosition(-16.f, -32.f);
+	    auto animatedSprite = std::make_unique<AnimatedSprite>(
+	        *spriteSheet, sf::Vector2i(64, 64));
+	    animatedSprite->setPosition(-16.f, -32.f);
 
-		loadWalkingAnimations(animatedSprite);
-		loadIdleAnimations(animatedSprite);
+		loadWalkingAnimations(*animatedSprite);
+		loadIdleAnimations(*animatedSprite);
 
 		return animatedSprite;
     }

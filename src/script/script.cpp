@@ -95,9 +95,9 @@ void ScriptSystem::openPrompt(
 	auto waitForDialog = [=]()
 	{
 		auto& drawable = manager.getComponent<CDrawable>(dialog);	
-		auto dialogBox = static_cast<DialogueBox*>(drawable.drawable);
+		auto& dialogBox = static_cast<DialogueBox&>(*drawable.drawable);
 
-		return dialogBox->allDisplayed();
+		return dialogBox.allDisplayed();
 	};
 
 	auto displayMenu = [=]()

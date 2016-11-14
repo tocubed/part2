@@ -1,11 +1,13 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+
+#include <memory>
 #include <iostream>
 
 struct CDrawable
 {
-    sf::Drawable* drawable;
+	std::shared_ptr<sf::Drawable> drawable;
 };
 
 class GenericDrawable : public sf::Drawable, public sf::Transformable

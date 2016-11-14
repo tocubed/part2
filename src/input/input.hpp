@@ -105,13 +105,13 @@ public:
 			dialogueUp = true;
 
 			auto& drawable = manager.getComponent<CDrawable>(eI);
-			auto dialogue = static_cast<DialogueBox*>(drawable.drawable);
+			auto& dialogue = static_cast<DialogueBox&>(*drawable.drawable);
 
-			dialogue->displayMoreCharacters();
+			dialogue.displayMoreCharacters();
 
 			if(keyPressed[sf::Keyboard::Space])
 			{
-				if(dialogue->allDisplayed())
+				if(dialogue.allDisplayed())
 				{
 					// TODO Remove this workaround for prompts
 					if(!manager.hasTag<TPrompt>(eI))
@@ -121,7 +121,7 @@ public:
 					}
 				}
 				else
-					dialogue->displayMoreLines();
+					dialogue.displayMoreLines();
 			}
 		});
 
@@ -137,16 +137,16 @@ public:
 			menuUp = true;
 
 			auto& drawable = manager.getComponent<CDrawable>(eI);
-			auto menu = static_cast<MenuBox*>(drawable.drawable);
+			auto& menu = static_cast<MenuBox&>(*drawable.drawable);
 
 			if(keyPressed[sf::Keyboard::Up])
-				menu->decreaseChoice();
+				menu.decreaseChoice();
 			if(keyPressed[sf::Keyboard::Down])
-				menu->increaseChoice();
+				menu.increaseChoice();
 
 			if (keyPressed[sf::Keyboard::Space])
 			{
-				announceMenuClosed(menu->getCurrentChoice());
+				announceMenuClosed(menu.getCurrentChoice());
 				manager.deleteEntity(eI);
 			}
 		});
