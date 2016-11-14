@@ -19,7 +19,7 @@ public:
 
 	void loadMap(const std::string& mapFile, TileLocation location)
 	{
-		maps.emplace_back(new Map(manager));
+		maps.emplace_back(std::make_unique<Map>(manager));
 
 		auto& map = *maps.back();
 

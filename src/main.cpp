@@ -13,28 +13,30 @@
 #include <SFML/System.hpp>
 
 #include <cstdlib>
+#include <memory>
 #include <sstream>
 #include <string>
 
 Manager manager;
 Overworld overworld(manager, 30);
 
-sf::RenderWindow* window;
+std::unique_ptr<sf::RenderWindow> window;
 
-InputSystem* inputSystem;
-MovementSystem* movementSystem;
-RenderSystem* renderSystem;
-AnimationSystem* animationSystem;
-ScriptSystem* scriptSystem;
+std::unique_ptr<InputSystem> inputSystem;
+std::unique_ptr<MovementSystem> movementSystem;
+std::unique_ptr<RenderSystem> renderSystem;
+std::unique_ptr<AnimationSystem> animationSystem;
+std::unique_ptr<ScriptSystem> scriptSystem;
 
 bool quit;
 
-void update(sf::Time delta) {
-
+void update(sf::Time delta) 
+{
 	inputSystem->clearKeyPresses();
 
 	sf::Event event;
-	while(window->pollEvent(event)) {
+	while(window->pollEvent(event))
+	{
 		if(event.type == sf::Event::Closed)
 			quit = true;
 		else if(event.type == sf::Event::KeyPressed)
@@ -54,8 +56,8 @@ void update(sf::Time delta) {
 	});
 }
 
-void render(sf::Time delta) {
-
+void render(sf::Time delta)
+{
 	window->clear(sf::Color::Black);
 
 	renderSystem->render(delta);
@@ -65,14 +67,17 @@ void render(sf::Time delta) {
 
 unsigned int fpsCounter;
 sf::Time fpsTimer;
-void loop() {
+
+void loop() 
+{
 	sf::Clock clock;
 	sf::Time accumulator;
 
 	const auto max_frame_time = sf::milliseconds(100);
 	const auto update_time_step = sf::milliseconds(30);
 
-	while(!quit) {
+	while(!quit) 
+	{
 		auto elapsed = clock.restart();
 
 		if(elapsed > max_frame_time)
@@ -87,7 +92,7 @@ void loop() {
 
 		render(accumulator);
 
-		// FPS Counter
+		// Display fps
 		fpsTimer += elapsed;
 		fpsCounter++;
 
@@ -130,29 +135,22 @@ EntityIndex addFollower(EntityIndex entityAhead)
 	return follower;
 }
 
-int main(int argc, char** argv) {
-
-	std::string a;
-	sf::RenderWindow window_(
+int main(int argc, char** argv) 
+{
+	window = std::make_unique<sf::RenderWindow>(
 	    sf::VideoMode(480, 480), "Milk",
 	    sf::Style::Titlebar | sf::Style::Close);
-	RenderSystem renderSystem_(manager, window_);
-	MovementSystem movementSystem_(manager, overworld);
-	InputSystem inputSystem_(manager);
-	AnimationSystem animationSystem_(manager);
-	ScriptSystem scriptSystem_(manager, overworld);
-	
-	window = &window_;
-	renderSystem = &renderSystem_;
-	movementSystem = &movementSystem_;
-	inputSystem = &inputSystem_;
-	animationSystem = &animationSystem_;
-	scriptSystem = &scriptSystem_;
 
+	renderSystem = std::make_unique<RenderSystem>(manager, *window);
+	movementSystem = std::make_unique<MovementSystem>(manager, overworld);
+	inputSystem = std::make_unique<InputSystem>(manager);
+	animationSystem = std::make_unique<AnimationSystem>(manager);
+	scriptSystem = std::make_unique<ScriptSystem>(manager, overworld);
+	
 	for(auto i = 0; i < 7; i++)
 		for(auto j = 0; j < 5; j++)
 		{
-			TileLocation location{ 30 * i, 30 * j };
+			TileLocation location{30 * i, 30 * j};
 
 			auto index = std::to_string(1 + i + j * 7);
 			if(index.size() == 1)
@@ -161,7 +159,7 @@ int main(int argc, char** argv) {
 			overworld.loadMap("assets/maps/t" + index + ".tmx", location);
 		}
 	
-	EntityIndex player =  addPlayer();
+	EntityIndex player = addPlayer();
 
 	EntityIndex following = player;
 	for(auto i = 0u; i < 32; i++)
@@ -172,8 +170,7 @@ int main(int argc, char** argv) {
 	quit = false;
 
 	loop();
-	window_.close();
+	window->close();
 
 	return EXIT_SUCCESS;
-
 }

@@ -87,7 +87,7 @@ auto Map::createTileLayer(std::string&& name, int zLevel)
 {
 	tileLayers.emplace_back(mapWidth * mapHeight);
 
-	tileLayerVertices.emplace_back(new sf::VertexArray);
+	tileLayerVertices.emplace_back(std::make_unique<sf::VertexArray>());
 	tileLayerZLevels.push_back(zLevel);
 
 	auto index = tileLayers.size() - 1;
