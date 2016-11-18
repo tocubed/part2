@@ -15,6 +15,10 @@ public:
 
 	void update(sf::Time delta);
 
+	void freezePlayer(bool freeze);
+	void walkPath(EntityIndex character, std::vector<TileLocation> path);
+	bool walkToLocation(EntityIndex character, TileLocation destination);
+
 	void openDialog(std::string text, std::function<void()> callback);
 	void openMenu(
 	    const std::vector<std::string>& options,

@@ -39,6 +39,9 @@ public:
 		manager.forEntitiesHaving<TPlayer>(
 		[this](EntityIndex eI)
 		{
+			if(manager.getComponent<CPlayer>(eI).freeze)
+				return;
+
 			// Movement
 			auto& movement = manager.getComponent<CMovement>(eI);
 			auto& desired = manager.getComponent<CDesiredMovement>(eI);

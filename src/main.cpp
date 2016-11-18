@@ -115,6 +115,8 @@ EntityIndex addPlayer()
 	    Character::createCharacter(manager, "assets/images/mainCharacter.png");
 
 	manager.addTag<TPlayer>(player);
+	manager.addComponent(player, CPlayer{false});
+
 	manager.getComponent<CLocation>(player) = {7 * 32, 19 * 32, 99};
 
 	return player;

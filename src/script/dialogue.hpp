@@ -80,6 +80,7 @@ namespace Dialogue
 			location = manager.getComponent<CLocation>(player);
 		});
 
+		// TODO Better location for menu
 		location.x += 3 * 32;
 		location.y -= 0 * 32;
 

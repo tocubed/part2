@@ -26,7 +26,9 @@ ScriptSystem::ScriptSystem(Manager& manager, Overworld& overworld)
 	chai.add_global_const(chaiscript::const_var(Direction::LEFT), "LEFT");
 
 	chai.add(chaiscript::fun(&ScriptSystem::getTileLocation), "location");
+
 	chai.add(chaiscript::fun(&ScriptSystem::makeEntityFace), "face");
+	chai.add(chaiscript::fun(&ScriptSystem::walkToLocation), "walk_to");
 
 	chai.add_global(chaiscript::var(NULL_ENTITY), "self");
 	chai.add_global(chaiscript::var(NULL_ENTITY), "player");
@@ -69,6 +71,135 @@ void ScriptSystem::update(sf::Time delta)
 		else
 			++it;
 	}
+}
+
+void ScriptSystem::walkPath(EntityIndex character, std::vector<TileLocation> path)
+{
+	unsigned int i = 0;
+
+	auto latentWalk = [=]() mutable
+	{
+		auto location = 
+	    	TileLocation::fromLocation(manager.getComponent<CLocation>(character));
+		auto moving =
+			manager.getComponent<CMovement>(character).moving;
+
+		if(path[i] == location && !moving)
+		{
+			i++;
+
+			if(i == path.size())
+				return true;
+
+			// Move to new destination
+			auto direction = TileLocation::directionDiff(location, path[i]);
+
+			auto& desired = manager.getComponent<CDesiredMovement>(character);
+			desired.direction = direction;
+		}
+
+		return false;
+	};
+	
+	doLatent(latentWalk);
+}
+
+bool ScriptSystem::walkToLocation(EntityIndex character, TileLocation destination)
+{
+	auto start =
+	    TileLocation::fromLocation(manager.getComponent<CLocation>(character));
+
+	std::set<TileLocation> closed;
+	std::set<TileLocation> open({start});
+
+	std::map<TileLocation, TileLocation> cameFrom;
+
+	struct DefaultInfinity
+	{
+		unsigned int value = ~0u;
+	};
+	std::map<TileLocation, DefaultInfinity> gScore;
+	std::map<TileLocation, DefaultInfinity> fScore;
+
+	auto costEstimate = [=](TileLocation a, TileLocation b)
+	{
+		return std::abs(b.x - a.x) + std::abs(b.y - a.y);
+	};
+
+	gScore[start].value = 0;
+	fScore[start].value = costEstimate(start, destination);
+
+	bool found = false;
+	while(!open.empty())
+	{
+		unsigned int bestScore = ~0u;
+		TileLocation current; 
+
+		for(auto node: open)
+		{
+			if(fScore[node].value <= bestScore)
+			{
+				current = node;
+				bestScore = fScore[current].value;
+			}
+		}
+		if(current == destination)
+		{
+			found = true;
+			break;
+		}
+
+		open.erase(current);
+		closed.insert(current);
+		for(int d = Direction::UP; d != Direction::NONE; ++d)
+		{
+			auto dir = static_cast<Direction>(d);
+			TileLocation neighbor = TileLocation::moveDirection(current, dir);
+			if(closed.count(neighbor) > 0)
+				continue;
+
+			if(overworld.isCollidable(neighbor))
+				continue;
+
+			auto tentative = gScore[current].value + 1;
+			if(open.count(neighbor) == 0)
+				open.insert(neighbor);
+			else if(tentative >= gScore[neighbor].value)
+				continue;
+
+			cameFrom[neighbor] = current;
+			gScore[neighbor].value = tentative;
+			fScore[neighbor].value =
+			    gScore[neighbor].value + costEstimate(neighbor, destination);
+		}
+	}
+
+	if(found)
+	{
+		auto current = destination;
+
+		std::vector<TileLocation> path;
+		path.push_back(current);
+
+		while(cameFrom.count(current) != 0)
+		{
+			current = cameFrom[current];
+			path.push_back(current);
+		}
+
+		std::reverse(path.begin(), path.end());
+
+		walkPath(character, path);
+	}
+
+	return found;
+}
+
+void ScriptSystem::freezePlayer(bool freeze)
+{
+	auto& player = manager.getComponent<CPlayer>(chai.eval<EntityIndex>("player"));
+
+	player.freeze = freeze;
 }
 
 void ScriptSystem::openDialog(std::string text, std::function<void()> callback)

@@ -12,7 +12,8 @@ using ComponentList = ecs::TypeList<
 	CMovement,
 	CDesiredMovement,
 	CEventMoved,
-	CFollowOrder
+	CFollowOrder,
+	CPlayer
 >;
 
 using TagList = ecs::TypeList<

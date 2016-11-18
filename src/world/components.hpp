@@ -13,6 +13,11 @@ struct CLocation
 	int zLevel; 
 };
 
+enum Direction
+{
+	UP, DOWN, LEFT, RIGHT, NONE
+};
+
 struct TileLocation
 {
 	int x;
@@ -28,9 +33,51 @@ struct TileLocation
 		return CLocation{x * 32, y * 32, 0};
 	}
 
+	bool operator<(const TileLocation& rhs) const
+	{
+		return (x < rhs.x) || (x == rhs.x && y < rhs.y);
+	}
+
 	bool operator==(const TileLocation& rhs) const
 	{
 		return (x == rhs.x) && (y == rhs.y);
+	}
+
+	static auto moveDirection(const TileLocation& location, Direction direction)
+	{
+		TileLocation newLocation{location};
+
+		switch(direction)
+		{
+		case UP:
+			newLocation.y -= 1;
+			break;
+		case DOWN:
+			newLocation.y += 1;
+			break;
+		case RIGHT:
+			newLocation.x += 1;
+			break;
+		case LEFT:
+			newLocation.x -= 1;
+			break;
+		}
+
+		return newLocation;
+	}
+
+	static auto directionDiff(TileLocation a, TileLocation b)
+	{
+		if(a.y > b.y)
+			return UP;
+		if(a.y < b.y)
+			return DOWN;
+		if(a.x > b.x)
+			return LEFT;
+		if(a.x < b.x)
+			return RIGHT;
+
+		return NONE;
 	}
 };
 
@@ -46,11 +93,6 @@ namespace std {
 		}
 	};	
 } // namespace std
-
-enum Direction
-{
-	UP, DOWN, LEFT, RIGHT, NONE
-};
 
 struct CMovement
 {
@@ -77,4 +119,9 @@ struct CEventMoved
 struct CFollowOrder
 {
 	EntityIndex entityAhead;
+};
+
+struct CPlayer
+{
+	bool freeze;
 };
