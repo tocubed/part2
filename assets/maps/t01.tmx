@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" nextobjectid="9">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" nextobjectid="11">
  <tileset firstgid="1" name="forest_tiles" tilewidth="32" tileheight="32" tilecount="256" columns="16">
   <image source="../images/forest_tiles.png" width="512" height="512"/>
  </tileset>
@@ -162,33 +162,79 @@ prompt(&quot;Merciless Mom: HI KID, GO GET MILK FOR MY CEREAL!&quot;,
 [&quot;Yes&quot;, &quot;No&quot;],
 [
 
-fun() { dialog(&quot;Kid: Sure Mom, but I have a name.”, 
+fun() { dialog(&quot;Kid: Sure Mom, but I have a name.&quot;,
 fun() { dialog(&quot;Merciless Mom: SHUTUP KID NUMBER 2! YOU'D BETTER HURRY AND GET MY MILK, I'M HUNGRY!&quot;);}
-);}, 
+);},
 
 fun() { dialog(&quot;Kid: I want to play video games instead. WOW Games just released a new game.&quot;,
-fun() { dialog(&quot;Merciless Mom: TOO BAD, GET ME MY MILK OR I'LL BREAK YOUR COMPUTER&quot;);}
+fun() { dialog(&quot;Merciless Mom: TOO BAD, GET ME MY MILK OR I'LL BREAK YOUR COMPUTER!&quot;);}
 );}
-
 ]);</property>
     <property name="Orientation" value="Down"/>
-    <property name="Spritesheet" type="file" value="../images/mainCharacter.png"/>
-   </properties>
-  </object>
-  <object id="7" type="Character" x="832" y="416" width="32" height="32">
-   <properties>
-    <property name="OnInteract">face(player);
-
-dialog(&quot;&lt;b&gt;God&lt;/b&gt; created &lt;i&gt;me&lt;/i&gt; to preach about the &lt;u&gt;horrors&lt;/u&gt; of pArSI&lt;s&gt;NG&lt;/s&gt; &lt;i&gt;X&lt;/i&gt;ML and &lt;b&gt;&lt;i&gt;U　N　I C O D e　ッッッッッッ&lt;/i&gt;&lt;/b&gt;&quot;);</property>
-    <property name="Orientation" value="Left"/>
-    <property name="Spritesheet" type="file" value="../images/orc1Enemy.png"/>
+    <property name="Spritesheet" type="file" value="../images/mom.png"/>
    </properties>
   </object>
   <object id="8" type="Character" x="448" y="416" width="32" height="32">
    <properties>
-    <property name="OnInteract" value="dialog(&quot;I'm supposed to be facing the TV, but &lt;i&gt;someone&lt;/i&gt; was lazy in implementing things.&quot;);"/>
+    <property name="OnInteract">face(player);
+
+prompt(&quot;Decent Dad: Hello son, I think you're mom wants to speak with you.&quot;, 
+[&quot;OK&quot;, &quot;No&quot;],
+[
+
+fun() { dialog(&quot;Kid: Dammit, what does she want now?&quot;,
+fun() { dialog(&quot;Decent Dad: No clue, but you better do what she wants because I'm watching TV so leave me alone.&quot;);}
+);},
+
+fun() { dialog(&quot;Kid: Aww, come on puffy pops, she's gonna make me do something. Why can't you talk to her?&quot;,
+fun() { dialog(&quot;Decent Dad: Just go talk to her. I'm watching TV so leave me alone.&quot;);}
+);}
+]);</property>
     <property name="Orientation" value="Up"/>
-    <property name="Spritesheet" type="file" value="../images/mainCharacter.png"/>
+    <property name="Spritesheet" type="file" value="../images/uselessfollower1.png"/>
+   </properties>
+  </object>
+  <object id="9" type="Character" x="833" y="678" width="32" height="32">
+   <properties>
+    <property name="Collidable" type="bool" value="true"/>
+    <property name="OnInteract">face(player);
+
+prompt(&quot;Caring Courtney: How are you?&quot;, 
+[&quot;Yes&quot;, &quot;No&quot;],
+[
+
+fun() { dialog(&quot;Kid: Good, how about you?&quot;,
+fun() { dialog(&quot;Caring Courtney: I'm good. Watch out for the guy handing out cookies, he looks annoying.&quot;);}
+);},
+
+fun() { dialog(&quot;Kid: Horrible. I have to get some milk for my mom.&quot;,
+fun() { dialog(&quot;Caring Courtney: Oh I see. Watch out for the bum in front of the grocery store, he looks dangerous.&quot;);}
+);}
+]);</property>
+    <property name="Orientation" value="Down"/>
+    <property name="Spritesheet" type="file" value="../images/uselessfollower1.png"/>
+   </properties>
+  </object>
+  <object id="10" type="Character" x="832" y="420" width="32" height="32">
+   <properties>
+    <property name="Collidable" type="bool" value="true"/>
+    <property name="OnInteract">face(player);
+
+prompt(&quot;Perverted Pete: Hi kid, do you want some candy?&quot;, 
+[&quot;Yes&quot;, &quot;No&quot;],
+[
+
+fun() { dialog(&quot;Kid: Heck yea I want some candy.&quot;,
+fun() { dialog(&quot;Perverted Pete: Come into my basement so we can have some Kit-Kat and chill.&quot;, 
+fun() { dialog(&quot;Kid: Nice try you creep.&quot;);}
+);});},
+
+fun() { dialog(&quot;Kid: No thanks you perv.&quot;,
+fun() { dialog(&quot;Perverted Pete: [Series of creepy moans]&quot;);}
+);}
+]);</property>
+    <property name="Orientation" value="Down"/>
+    <property name="Spritesheet" type="file" value="../images/orc1Enemy.png"/>
    </properties>
   </object>
  </objectgroup>

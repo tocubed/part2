@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" nextobjectid="1">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" nextobjectid="2">
  <tileset firstgid="1" name="forest_tiles" tilewidth="32" tileheight="32" tilecount="256" columns="16">
   <image source="../images/forest_tiles.png" width="512" height="512"/>
  </tileset>
@@ -111,4 +111,29 @@
 1967,1967,1967,1967,1967,1967,1967,1967,1967,1967,1967,1967,1967,1967,1967,1967,1967,1967,1967,1967,1967,1967,1967,1967,1967,1967,1967,1967,1967,1967
 </data>
  </layer>
+ <objectgroup name="Characters">
+  <object id="1" type="Character" x="353" y="520" width="32" height="32">
+   <properties>
+    <property name="Collidable" type="bool" value="true"/>
+    <property name="OnInteract">face(player);
+
+prompt(&quot;Bothersome Bum: Hi kid, can I have some change?&quot;, 
+[&quot;Yes&quot;, &quot;No&quot;],
+[
+
+fun() { dialog(&quot;Kid: Sure. Here you go. Now get out of way I need some milk.&quot;,
+fun() { dialog(&quot;Bothersome Bum: Hey kid I appreciate your kindness. Did you say you wanted some milk? I have some right here.&quot;,
+fun() { dialog(&quot;&lt;i&gt;Hands kid some chunky looking milk&lt;/i&gt;&quot;);}
+);} );},
+
+fun() { dialog(&quot;Kid: I don't have time for this! Get out of my way so I can get back to playing video games!&quot;,
+fun() { dialog(&quot;Bothersome Bum: You dam inconsiderate kid!&quot;,
+fun() { dialog(&quot;&lt;i&gt;Drugs the kid and beats him up&lt;/i&gt;&quot;);}
+);});}
+]);</property>
+    <property name="Orientation" value="Down"/>
+    <property name="Spritesheet" type="file" value="../images/wizard.png"/>
+   </properties>
+  </object>
+ </objectgroup>
 </map>
