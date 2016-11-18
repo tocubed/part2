@@ -158,11 +158,18 @@
     <property name="Collidable" type="bool" value="false"/>
     <property name="OnInteract">face(player);
 
-prompt(&quot;Good thing you can walk through me, eh?&quot;, 
-[&quot;Yes&quot;, &quot;Not really&quot;],
+prompt(&quot;Merciless Mom: HI KID, GO GET MILK FOR MY CEREAL!&quot;, 
+[&quot;Yes&quot;, &quot;No&quot;],
 [
-fun() { }, // Do nothing if yes 
-fun() { dialog(&quot;Fancy being stuck here, eh?&quot;); }
+
+fun() { dialog(&quot;Kid: Sure Mom, but I have a name.”, 
+fun() { dialog(&quot;Merciless Mom: SHUTUP KID NUMBER 2! YOU'D BETTER HURRY AND GET MY MILK, I'M HUNGRY!&quot;);}
+);}, 
+
+fun() { dialog(&quot;Kid: I want to play video games instead. WOW Games just released a new game.&quot;,
+fun() { dialog(&quot;Merciless Mom: TOO BAD, GET ME MY MILK OR I'LL BREAK YOUR COMPUTER&quot;);}
+);}
+
 ]);</property>
     <property name="Orientation" value="Down"/>
     <property name="Spritesheet" type="file" value="../images/mainCharacter.png"/>
