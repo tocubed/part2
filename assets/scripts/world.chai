@@ -39,3 +39,8 @@ def face(Entity e)
 {
 	face(location(e));
 }
+
+def walk_to(Entity c, Location l)
+{
+	script.walk_to(c, l);
+}
