@@ -155,19 +155,27 @@
   </object>
   <object id="4" type="Character" x="352" y="288" width="32" height="32">
    <properties>
-    <property name="Collidable" type="bool" value="false"/>
-    <property name="OnInteract">face(player);
+    <property name="Collidable" type="bool" value="true"/>
+    <property name="OnInteract">global mom_already_walked = false;
+global mom_walk_to_kitchen = fun() { 
+    if(!mom_already_walked) {
+	walk_relative(3, 9);
+	mom_already_walked = true;
+    }
+};
+
+face(player);
 
 prompt(&quot;Merciless Mom: HI KID, GO GET MILK FOR MY CEREAL!&quot;, 
 [&quot;Yes&quot;, &quot;No&quot;],
 [
 
 fun() { dialog(&quot;Kid: Sure Mom, but I have a name.&quot;,
-fun() { dialog(&quot;Merciless Mom: SHUTUP KID NUMBER 2! YOU'D BETTER HURRY AND GET MY MILK, I'M HUNGRY!&quot;);}
+fun() { dialog(&quot;Merciless Mom: SHUTUP KID NUMBER 2! YOU'D BETTER HURRY AND GET MY MILK, I'M HUNGRY!&quot;, mom_walk_to_kitchen); }
 );},
 
 fun() { dialog(&quot;Kid: I want to play video games instead. WOW Games just released a new game.&quot;,
-fun() { dialog(&quot;Merciless Mom: TOO BAD, GET ME MY MILK OR I'LL BREAK YOUR COMPUTER!&quot;);}
+fun() { dialog(&quot;Merciless Mom: TOO BAD, GET ME MY MILK OR I'LL BREAK YOUR COMPUTER!&quot;, mom_walk_to_kitchen);}
 );}
 ]);</property>
     <property name="Orientation" value="Down"/>
