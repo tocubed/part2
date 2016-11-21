@@ -17,3 +17,13 @@ def prompt(string text, Vector options, Vector callbacks)
 {
 	script.prompt(text, options, callbacks);
 }
+
+def fade(bool out, Function callback)
+{
+	script.fade(out, callback);
+}
+
+def fade(bool out)
+{
+	script.fade(out, fun() {});
+}

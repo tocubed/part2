@@ -14,6 +14,8 @@ ScriptSystem::ScriptSystem(Manager& manager, Overworld& overworld)
 	chai.add(chaiscript::fun(&ScriptSystem::openPrompt), "prompt");
 
 	chai.add(chaiscript::user_type<EntityIndex>(), "Entity");
+	chai.add(chaiscript::bootstrap::standard_library::vector_type<
+	            std::vector<EntityIndex>>("EntityVector"));
 
 	chai.add(chaiscript::user_type<TileLocation>(), "Location");
 	chai.add(chaiscript::fun(&TileLocation::x), "x");
@@ -29,6 +31,12 @@ ScriptSystem::ScriptSystem(Manager& manager, Overworld& overworld)
 
 	chai.add(chaiscript::fun(&ScriptSystem::makeEntityFace), "face");
 	chai.add(chaiscript::fun(&ScriptSystem::walkToLocation), "walk_to");
+	chai.add(chaiscript::fun(&ScriptSystem::freezePlayer), "freeze_player");
+	chai.add(chaiscript::fun(&ScriptSystem::teleport), "teleport");
+
+	chai.add(chaiscript::fun(&ScriptSystem::screenFade), "fade");
+
+	chai.add(chaiscript::fun(&ScriptSystem::getFollowers), "followers");
 
 	chai.add_global(chaiscript::var(NULL_ENTITY), "self");
 	chai.add_global(chaiscript::var(NULL_ENTITY), "player");
@@ -195,6 +203,15 @@ bool ScriptSystem::walkToLocation(EntityIndex character, TileLocation destinatio
 	return found;
 }
 
+void ScriptSystem::teleport(EntityIndex character, TileLocation destination)
+{
+	auto location = destination.toLocation();
+
+	auto& charLocation = manager.getComponent<CLocation>(character);
+	charLocation.x = location.x;
+	charLocation.y = location.y;
+}
+
 void ScriptSystem::freezePlayer(bool freeze)
 {
 	auto& player = manager.getComponent<CPlayer>(chai.eval<EntityIndex>("player"));
@@ -307,6 +324,30 @@ void ScriptSystem::openPrompt(
 	doLatentInOrder({waitForDialog, displayMenu});
 }
 
+std::vector<EntityIndex> ScriptSystem::getFollowers(EntityIndex character) const
+{
+	std::map<EntityIndex, EntityIndex> followerMap;
+
+	manager.forEntitiesHaving<TFollower, CFollowOrder>(
+	[=, &followerMap](EntityIndex follower)
+	{
+		auto following = manager.getComponent<CFollowOrder>(follower).entityAhead;
+
+		followerMap[following] = follower;
+	});
+
+	std::vector<EntityIndex> followers;
+
+	auto current = character;
+	while(followerMap.count(current) != 0)
+	{
+		current = followerMap[current];
+		followers.push_back(current);
+	}
+
+	return followers;
+}
+
 TileLocation ScriptSystem::getTileLocation(EntityIndex entity) const
 {
 	return TileLocation::fromLocation(manager.getComponent<CLocation>(entity));
@@ -321,6 +362,43 @@ bool ScriptSystem::makeEntityFace(EntityIndex character, Direction dir)
 	movement.direction = dir;
 
 	return true;
+}
+
+void ScriptSystem::screenFade(bool out, std::function<void()> callback)
+{
+	auto fader = manager.createEntity();
+	
+	manager.addComponent(fader, CLocation{-500000, -500000, 10000});
+
+	auto rectangle =
+	    std::make_shared<sf::RectangleShape>(sf::Vector2f(1000000, 1000000));
+	manager.addComponent(fader, CDrawable{rectangle}); 
+
+	int opacity = out ? 0 : 255;
+	rectangle->setFillColor(sf::Color(0, 0, 0, opacity));
+
+	auto fadeRectangle = [=]() mutable
+	{
+		opacity += (out ? 10 : -10);
+
+		rectangle->setFillColor(sf::Color(0, 0, 0, opacity));
+
+		return out ? opacity >= 255 : opacity <= 0;
+	};
+
+	auto removeRectangle = [=]()
+	{
+		manager.deleteEntity(fader);
+		return true;
+	};
+
+	auto callCallback = [=]()
+	{
+		callback();
+		return true;
+	};
+
+	doLatentInOrder({fadeRectangle, removeRectangle, callCallback});
 }
 
 void ScriptSystem::runScript(std::string script)

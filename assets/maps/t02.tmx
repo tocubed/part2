@@ -112,10 +112,20 @@
 </data>
  </layer>
  <objectgroup name="Characters">
-  <object id="1" type="Character" x="353" y="520" width="32" height="32">
+  <object id="1" type="Character" x="352" y="512" width="32" height="32">
    <properties>
     <property name="Collidable" type="bool" value="true"/>
-    <property name="OnInteract">face(player);
+    <property name="OnInteract">global get_rekt_by_bum = fun()
+{
+    freeze_player(true);
+    fade(true, fun(){
+	teleport(player, 14, 19 + 30 * 4);
+	dialog(&quot;&lt;i&gt;A little while later...&lt;/i&gt;&quot;);
+	fade(false, fun() { freeze_player(false); });
+    });
+};
+
+face(player);
 
 prompt(&quot;Bothersome Bum: Hi kid, can I have some change?&quot;, 
 [&quot;Yes&quot;, &quot;No&quot;],
@@ -123,12 +133,14 @@ prompt(&quot;Bothersome Bum: Hi kid, can I have some change?&quot;,
 
 fun() { dialog(&quot;Kid: Sure. Here you go. Now get out of way I need some milk.&quot;,
 fun() { dialog(&quot;Bothersome Bum: Hey kid I appreciate your kindness. Did you say you wanted some milk? I have some right here.&quot;,
-fun() { dialog(&quot;&lt;i&gt;Hands kid some chunky looking milk&lt;/i&gt;&quot;);}
+fun() { dialog(&quot;&lt;i&gt;Hands kid some chunky looking milk&lt;/i&gt;&quot;,
+	get_rekt_by_bum);}
 );} );},
 
 fun() { dialog(&quot;Kid: I don't have time for this! Get out of my way so I can get back to playing video games!&quot;,
 fun() { dialog(&quot;Bothersome Bum: You dam inconsiderate kid!&quot;,
-fun() { dialog(&quot;&lt;i&gt;Drugs the kid and beats him up&lt;/i&gt;&quot;);}
+fun() { dialog(&quot;&lt;i&gt;Drugs the kid and beats him up&lt;/i&gt;&quot;,
+	get_rekt_by_bum);}
 );});}
 ]);</property>
     <property name="Orientation" value="Down"/>

@@ -16,8 +16,10 @@ public:
 	void update(sf::Time delta);
 
 	void freezePlayer(bool freeze);
+
 	void walkPath(EntityIndex character, std::vector<TileLocation> path);
 	bool walkToLocation(EntityIndex character, TileLocation destination);
+	void teleport(EntityIndex character, TileLocation destination);
 
 	void openDialog(std::string text, std::function<void()> callback);
 	void openMenu(
@@ -28,8 +30,12 @@ public:
 	    const std::vector<std::string>& options,
 	    const std::vector<std::function<void()>>& callbacks);
 
+	std::vector<EntityIndex> getFollowers(EntityIndex character) const;
+
 	TileLocation getTileLocation(EntityIndex entity) const;
 	bool makeEntityFace(EntityIndex character, Direction dir);
+
+	void screenFade(bool out, std::function<void()> callback);
 
 	void runScript(std::string script);
 

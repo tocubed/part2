@@ -117,7 +117,8 @@ EntityIndex addPlayer()
 	manager.addTag<TPlayer>(player);
 	manager.addComponent(player, CPlayer{false});
 
-	manager.getComponent<CLocation>(player) = {7 * 32, 19 * 32, 99};
+	manager.getComponent<CLocation>(player) = {29 * 32, 19 * 32, 99};
+	//manager.getComponent<CLocation>(player) = {7 * 32, 19 * 32, 99};
 
 	return player;
 }

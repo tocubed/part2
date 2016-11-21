@@ -64,3 +64,34 @@ def walk_relative(int x, int y)
 {
 	walk_relative(self, x, y);
 }
+
+def teleport(Entity c, Location l)
+{
+	var followers = range(followers(c));
+	for(follower: followers)
+	{
+		script.teleport(follower, l);
+	}
+
+	script.teleport(c, l);
+}
+
+def teleport(Entity c, int x, int y)
+{
+	var newloc = location(c);
+
+	newloc.x = x;
+	newloc.y = y;
+
+	teleport(c, newloc);
+}
+
+def freeze_player(bool freeze)
+{
+	script.freeze_player(freeze);
+}
+
+def followers(Entity c)
+{
+	return script.followers(c);
+}

@@ -1,4 +1,5 @@
 #include <script/bindings.hpp>
+#include <core/ecs/typedefs.hpp>
 
 #include <chaiscript/chaiscript.hpp>
 

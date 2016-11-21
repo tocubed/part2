@@ -156,14 +156,20 @@
   <object id="4" type="Character" x="352" y="288" width="32" height="32">
    <properties>
     <property name="Collidable" type="bool" value="true"/>
-    <property name="OnInteract">global mom_already_walked = false;
+    <property name="OnInteract">global spoke_with_mom;
+if(spoke_with_mom.is_var_undef()) {
+    spoke_with_mom = false;
+}
+
 global mom_walk_to_kitchen = fun() { 
-    if(!mom_already_walked) {
+    if(!spoke_with_mom) {
 	walk_relative(3, 9);
-	mom_already_walked = true;
+	spoke_with_mom = true;
     }
 };
 
+if(!spoke_with_mom)
+{
 face(player);
 
 prompt(&quot;Merciless Mom: HI KID, GO GET MILK FOR MY CEREAL!&quot;, 
@@ -177,7 +183,12 @@ fun() { dialog(&quot;Merciless Mom: SHUTUP KID NUMBER 2! YOU'D BETTER HURRY AND 
 fun() { dialog(&quot;Kid: I want to play video games instead. WOW Games just released a new game.&quot;,
 fun() { dialog(&quot;Merciless Mom: TOO BAD, GET ME MY MILK OR I'LL BREAK YOUR COMPUTER!&quot;, mom_walk_to_kitchen);}
 );}
-]);</property>
+]);
+}
+else
+{
+dialog(&quot;Kid: I should get that milk.&quot;);
+}</property>
     <property name="Orientation" value="Down"/>
     <property name="Spritesheet" type="file" value="../images/mom.png"/>
    </properties>
@@ -202,7 +213,7 @@ fun() { dialog(&quot;Decent Dad: Just go talk to her. I'm watching TV so leave m
     <property name="Spritesheet" type="file" value="../images/uselessfollower1.png"/>
    </properties>
   </object>
-  <object id="9" type="Character" x="833" y="678" width="32" height="32">
+  <object id="9" type="Character" x="832" y="672" width="32" height="32">
    <properties>
     <property name="Collidable" type="bool" value="true"/>
     <property name="OnInteract">face(player);
@@ -223,7 +234,7 @@ fun() { dialog(&quot;Caring Courtney: Oh I see. Watch out for the bum in front o
     <property name="Spritesheet" type="file" value="../images/uselessfollower1.png"/>
    </properties>
   </object>
-  <object id="10" type="Character" x="832" y="420" width="32" height="32">
+  <object id="10" type="Character" x="832" y="416" width="32" height="32">
    <properties>
     <property name="Collidable" type="bool" value="true"/>
     <property name="OnInteract">face(player);
