@@ -54,6 +54,11 @@ public:
 		return playing;
 	}
 
+	std::string getCurrentAnimation() const
+	{
+		return currentAnimation;
+	}
+
 	void stopAnimation()
 	{
 		playing = false;
@@ -79,7 +84,7 @@ public:
 			animationFrameIndex += 1;
 			if(looping)
 				animationFrameIndex %= animation.size();
-			else if(animationFrameIndex == animation.size())
+			else if(animationFrameIndex >= animation.size())
 			{
 				stopAnimation();
 				return;

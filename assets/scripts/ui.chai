@@ -27,3 +27,8 @@ def fade(bool out)
 {
 	script.fade(out, fun() {});
 }
+
+def play(Entity c, string name, int speed, Function callback)
+{
+	script.play(c, name, speed, callback);
+}

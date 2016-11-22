@@ -1,5 +1,6 @@
 #include <script/script.hpp>
 
+#include <render/animatedsprite.hpp>
 #include <script/dialogue.hpp>
 
 #include <chaiscript/chaiscript.hpp>
@@ -34,6 +35,7 @@ ScriptSystem::ScriptSystem(Manager& manager, Overworld& overworld)
 	chai.add(chaiscript::fun(&ScriptSystem::freezePlayer), "freeze_player");
 	chai.add(chaiscript::fun(&ScriptSystem::teleport), "teleport");
 
+	chai.add(chaiscript::fun(&ScriptSystem::playAnimation), "play");
 	chai.add(chaiscript::fun(&ScriptSystem::screenFade), "fade");
 
 	chai.add(chaiscript::fun(&ScriptSystem::getFollowers), "followers");
@@ -210,6 +212,30 @@ void ScriptSystem::teleport(EntityIndex character, TileLocation destination)
 	auto& charLocation = manager.getComponent<CLocation>(character);
 	charLocation.x = location.x;
 	charLocation.y = location.y;
+}
+
+void ScriptSystem::playAnimation(
+    EntityIndex character, std::string animationName, int playSpeedMS,
+    std::function<void()> callback)
+{
+	auto& drawable = manager.getComponent<CDrawable>(character);
+	auto& animation = static_cast<AnimatedSprite&>(*(drawable.drawable));
+
+	animation.playAnimation(animationName, false);
+	animation.setPlaySpeed(sf::milliseconds(playSpeedMS));
+
+	auto waitForAnimation = [=]()
+	{
+		return !animation.isPlaying();
+	};
+
+	auto callCallback = [=]() 
+	{ 
+		callback(); 
+		return true; 
+	};
+
+	doLatentInOrder({waitForAnimation, callCallback});
 }
 
 void ScriptSystem::freezePlayer(bool freeze)

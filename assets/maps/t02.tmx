@@ -121,7 +121,8 @@
     fade(true, fun(){
 	teleport(player, 14, 19 + 30 * 4);
 	dialog(&quot;&lt;i&gt;A little while later...&lt;/i&gt;&quot;);
-	fade(false, fun() { freeze_player(false); });
+	play(player, &quot;stand_up&quot;, 200, fun() {freeze_player(false);});
+	fade(false);
     });
 };
 

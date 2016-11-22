@@ -74,7 +74,12 @@ namespace Character
 		loadWalkingAnimations(*animatedSprite);
 		loadIdleAnimations(*animatedSprite);
 
-		return animatedSprite;
+	    static std::vector<std::size_t> standUpAnimation{
+	        20 * 13 + 5, 20 * 13 + 4, 20 * 13 + 3,
+	        20 * 13 + 2, 20 * 13 + 1, 20 * 13};
+		animatedSprite->addAnimation("stand_up", standUpAnimation);
+
+	    return animatedSprite;
     }
 
 	// TODO This should go under world/character.hpp

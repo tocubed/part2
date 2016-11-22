@@ -21,6 +21,10 @@ public:
 	bool walkToLocation(EntityIndex character, TileLocation destination);
 	void teleport(EntityIndex character, TileLocation destination);
 
+	void playAnimation(
+	    EntityIndex character, std::string animationName, int playSpeedMS, 
+	    std::function<void()> callback);
+
 	void openDialog(std::string text, std::function<void()> callback);
 	void openMenu(
 	    const std::vector<std::string>& options,
