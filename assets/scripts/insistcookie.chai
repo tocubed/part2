@@ -7,9 +7,9 @@ var almostInsist = fun(insist)
 {
 	return (fun[insist]()
 	{
-		prompt("I insist.", ["Yes", "No"],
+		prompt("<b>Generous Goblin</b>: I insist.", ["Yes", "No"],
 		[
-			fun() { dialog("Don't have any."); },
+			fun() { dialog("<b>Greedy Goblin</b> : You can't have any!"); },
 			insist // recurse here
 		]);
 	});
@@ -21,9 +21,9 @@ var insist = YCombinator(almostInsist);
 // Insist player
 face(player);
 
-prompt("Hello! Would you like a cookie?", ["Yes", "No"],
+prompt("<b> Generous Goblin</b> : Hello! Would you like some milk?", ["Yes", "No"],
 [
-	fun() { dialog("Don't have any."); },
+	fun() { dialog("<b>Greedy Goblin</b> : You can't have any!"); },
 	insist
 ]);
 
