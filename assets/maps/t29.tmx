@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" nextobjectid="1">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" nextobjectid="3">
  <tileset firstgid="1" name="forest_tiles" tilewidth="32" tileheight="32" tilecount="256" columns="16">
   <image source="../images/forest_tiles.png" width="512" height="512"/>
  </tileset>
@@ -219,4 +219,48 @@
 549,549,549,549,549,549,549,549,549,549,549,549,549,549,549,549,549,549,549,549,549,549,549,549,549,549,549,549,549,549
 </data>
  </layer>
+ <objectgroup name="Characters">
+  <object id="1" type="Character" x="459" y="491" width="32" height="32">
+   <properties>
+    <property name="Collidable" type="bool" value="false"/>
+    <property name="OnInteract">face(player);
+
+prompt(&quot;Merciless Mom: HI KID, GO GET MILK FOR MY CEREAL!&quot;, 
+[&quot;Yes&quot;, &quot;No&quot;],
+[
+
+fun() { dialog(&quot;Kid: Sure Mom, but I have a name.&quot;,
+fun() { dialog(&quot;Merciless Mom: SHUTUP KID NUMBER 2! YOU'D BETTER HURRY AND GET MY MILK, I'M HUNGRY!&quot;);}
+);},
+
+fun() { dialog(&quot;Kid: I want to play video games instead. WOW Games just released a new game.&quot;,
+fun() { dialog(&quot;Merciless Mom: TOO BAD, GET ME MY MILK OR I'LL BREAK YOUR COMPUTER!&quot;);}
+);}
+]);</property>
+    <property name="Orientation" value="Down"/>
+    <property name="Spritesheet" type="file" value="../images/sunBather.png"/>
+   </properties>
+  </object>
+  <object id="2" type="Character" x="651" y="476" width="32" height="32">
+   <properties>
+    <property name="Collidable" type="bool" value="false"/>
+    <property name="OnInteract">face(player);
+
+prompt(&quot;Merciless Mom: HI KID, GO GET MILK FOR MY CEREAL!&quot;, 
+[&quot;Yes&quot;, &quot;No&quot;],
+[
+
+fun() { dialog(&quot;Kid: Sure Mom, but I have a name.&quot;,
+fun() { dialog(&quot;Merciless Mom: SHUTUP KID NUMBER 2! YOU'D BETTER HURRY AND GET MY MILK, I'M HUNGRY!&quot;);}
+);},
+
+fun() { dialog(&quot;Kid: I want to play video games instead. WOW Games just released a new game.&quot;,
+fun() { dialog(&quot;Merciless Mom: TOO BAD, GET ME MY MILK OR I'LL BREAK YOUR COMPUTER!&quot;);}
+);}
+]);</property>
+    <property name="Orientation" value="Down"/>
+    <property name="Spritesheet" type="file" value="../images/surferBro.png"/>
+   </properties>
+  </object>
+ </objectgroup>
 </map>

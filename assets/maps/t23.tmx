@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" nextobjectid="1">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" nextobjectid="4">
  <tileset firstgid="1" name="forest_tiles" tilewidth="32" tileheight="32" tilecount="256" columns="16">
   <image source="../images/forest_tiles.png" width="512" height="512"/>
  </tileset>
@@ -182,4 +182,60 @@
 389,389,389,389,389,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,389,389,389
 </data>
  </layer>
+ <objectgroup name="Characters">
+  <object id="1" type="Character" x="282" y="420" width="32" height="32">
+   <properties>
+    <property name="Collidable" type="bool" value="true"/>
+    <property name="OnInteract">face(player);
+
+fun() { dialog(&quot;Barista Beth: What can I help you with today?&quot;,
+fun() { dialog(&quot;Kid: I need milk.&quot;,
+fun() { dialog(&quot;Kid: No it has to be milk. Can you just give me the milk half?&quot;,
+fun() { dialog(&quot;Barista: It doesn’t work that way.&quot;);}
+);});});}</property>
+    <property name="Orientation" value="Down"/>
+    <property name="Spritesheet" type="file" value="../images/barista.png"/>
+   </properties>
+  </object>
+  <object id="2" type="Character" x="472" y="512" width="32" height="32">
+   <properties>
+    <property name="Collidable" type="bool" value="false"/>
+    <property name="OnInteract">face(player);
+
+prompt(&quot;Not a Morning Person:  Ugghh mmpphhh grumble.&quot;, 
+[&quot;What?&quot;, &quot;Bye&quot;],
+[
+
+fun() { dialog(&quot;Kid: What was that?&quot;,
+fun() { dialog(&quot;Grumpy Not Morning Person: Go Away I Need My Coffee!&quot;);}
+);},
+
+fun() { dialog(&quot;Kid:Whatever&quot;);}
+]);</property>
+    <property name="Orientation" value="Down"/>
+    <property name="Spritesheet" type="file" value="../images/notMorningPerson.png"/>
+   </properties>
+  </object>
+  <object id="3" type="Character" x="400" y="491" width="32" height="32">
+   <properties>
+    <property name="Collidable" type="bool" value="false"/>
+    <property name="OnInteract">face(player);
+
+prompt(&quot;Greedy Business Man: Have you heard of Milk-To-Door? It’s all the rage, and I just so happen to have access to a screaming deal! Are you interested?.&quot;, 
+[&quot;Ya&quot;, &quot;No&quot;],
+[
+
+fun() { dialog(&quot;Kid:That would have solved everything, I would have never had to come here! I wish I could go back in time...&quot;,
+fun() { dialog(&quot;Dick Business Man: But then you never would have met me and heard of it, you need to consider the repercussions when dealing with time. Amateur. Well anyway, I just need to see your address so we can set up the deliveries.&quot;);}
+);},
+
+fun() { dialog(&quot;Kid: My mom told me not to tell strangers my address, creep.&quot;,
+fun() { dialog(&quot;Salty Business Man: I’m no creep! Fine, no deal for you!&quot;);}
+);}
+]);</property>
+    <property name="Orientation" value="Down"/>
+    <property name="Spritesheet" type="file" value="../images/businessMan.png"/>
+   </properties>
+  </object>
+ </objectgroup>
 </map>
