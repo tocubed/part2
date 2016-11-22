@@ -224,7 +224,7 @@ void ScriptSystem::playAnimation(
 	animation.playAnimation(animationName, false);
 	animation.setPlaySpeed(sf::milliseconds(playSpeedMS));
 
-	auto waitForAnimation = [=]()
+	auto waitForAnimation = [&animation]()
 	{
 		return !animation.isPlaying();
 	};
