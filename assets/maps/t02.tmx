@@ -127,18 +127,18 @@
 
 face(player);
 
-prompt(&quot;Bothersome Bum: Hi kid, can I have some change?&quot;, 
+prompt(&quot;&lt;b&gt;Bothersome Bum&lt;/b&gt; : Hi kid, can I have some change?&quot;, 
 [&quot;Yes&quot;, &quot;No&quot;],
 [
 
-fun() { dialog(&quot;Kid: Sure. Here you go. Now get out of way I need some milk.&quot;,
-fun() { dialog(&quot;Bothersome Bum: Hey kid I appreciate your kindness. Did you say you wanted some milk? I have some right here.&quot;,
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Sure. Here you go. Now get out of way I need some milk.&quot;,
+fun() { dialog(&quot;&lt;b&gt;Bothersome Bum&lt;/b&gt; : Hey kid I appreciate your kindness. Did you say you wanted some milk? I have some right here.&quot;,
 fun() { dialog(&quot;&lt;i&gt;Hands kid some chunky looking milk&lt;/i&gt;&quot;,
 	get_rekt_by_bum);}
 );} );},
 
-fun() { dialog(&quot;Kid: I don't have time for this! Get out of my way so I can get back to playing video games!&quot;,
-fun() { dialog(&quot;Bothersome Bum: You dam inconsiderate kid!&quot;,
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : I don't have time for this! Get out of my way so I can get back to playing video games!&quot;,
+fun() { dialog(&quot;&lt;b&gt;Bothersome Bum&lt;/b&gt; : You dam inconsiderate kid!&quot;,
 fun() { dialog(&quot;&lt;i&gt;Drugs the kid and beats him up&lt;/i&gt;&quot;,
 	get_rekt_by_bum);}
 );});}

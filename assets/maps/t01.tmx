@@ -172,22 +172,22 @@ if(!spoke_with_mom)
 {
 face(player);
 
-prompt(&quot;Merciless Mom: HI KID, GO GET MILK FOR MY CEREAL!&quot;, 
+prompt(&quot;&lt;b&gt;Merciless Mom&lt;/b&gt; : HI KID, GO GET MILK FOR MY CEREAL!&quot;, 
 [&quot;Yes&quot;, &quot;No&quot;],
 [
 
-fun() { dialog(&quot;Kid: Sure Mom, but I have a name.&quot;,
-fun() { dialog(&quot;Merciless Mom: SHUTUP KID NUMBER 2! YOU'D BETTER HURRY AND GET MY MILK, I'M HUNGRY!&quot;, mom_walk_to_kitchen); }
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Sure Mom, but I have a name.&quot;,
+fun() { dialog(&quot;&lt;b&gt;Merciless Mom&lt;/b&gt; : SHUTUP KID NUMBER 2! YOU'D BETTER HURRY AND GET MY MILK, I'M HUNGRY!&quot;, mom_walk_to_kitchen); }
 );},
 
-fun() { dialog(&quot;Kid: I want to play video games instead. WOW Games just released a new game.&quot;,
-fun() { dialog(&quot;Merciless Mom: TOO BAD, GET ME MY MILK OR I'LL BREAK YOUR COMPUTER!&quot;, mom_walk_to_kitchen);}
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : I want to play video games instead. WOW Games just released a new game.&quot;,
+fun() { dialog(&quot;&lt;b&gt;Merciless Mom&lt;/b&gt; : TOO BAD, GET ME MY MILK OR I'LL BREAK YOUR COMPUTER!&quot;, mom_walk_to_kitchen);}
 );}
 ]);
 }
 else
 {
-dialog(&quot;Kid: I should get that milk.&quot;);
+dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : I should get that milk.&quot;);
 }</property>
     <property name="Orientation" value="Down"/>
     <property name="Spritesheet" type="file" value="../images/mom.png"/>
@@ -197,20 +197,20 @@ dialog(&quot;Kid: I should get that milk.&quot;);
    <properties>
     <property name="OnInteract">face(player);
 
-prompt(&quot;Decent Dad: Hello son, I think you're mom wants to speak with you.&quot;, 
-[&quot;OK&quot;, &quot;No&quot;],
+prompt(&quot;&lt;b&gt;Decent Dad&lt;/b&gt; : Hello son, I think your mom wants to speak with you.&quot;, 
+[&quot;Ok&quot;, &quot;No&quot;],
 [
 
-fun() { dialog(&quot;Kid: Dammit, what does she want now?&quot;,
-fun() { dialog(&quot;Decent Dad: No clue, but you better do what she wants because I'm watching TV so leave me alone.&quot;);}
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Dammit, what does she want now?&quot;,
+fun() { dialog(&quot;&lt;b&gt;Decent Dad&lt;/b&gt; : No clue, but you better do what she wants because I'm watching TV so leave me alone.&quot;);}
 );},
 
-fun() { dialog(&quot;Kid: Aww, come on puffy pops, she's gonna make me do something. Why can't you talk to her?&quot;,
-fun() { dialog(&quot;Decent Dad: Just go talk to her. I'm watching TV so leave me alone.&quot;);}
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Aww, come on puffy pops, she's gonna make me do something. Why can't you talk to her?&quot;,
+fun() { dialog(&quot;&lt;b&gt;Decent Dad&lt;/b&gt; : Just go talk to her. I'm watching TV so leave me alone.&quot;);}
 );}
 ]);</property>
     <property name="Orientation" value="Up"/>
-    <property name="Spritesheet" type="file" value="../images/uselessfollower1.png"/>
+    <property name="Spritesheet" type="file" value="../images/dad.png"/>
    </properties>
   </object>
   <object id="9" type="Character" x="832" y="672" width="32" height="32">
@@ -218,16 +218,16 @@ fun() { dialog(&quot;Decent Dad: Just go talk to her. I'm watching TV so leave m
     <property name="Collidable" type="bool" value="true"/>
     <property name="OnInteract">face(player);
 
-prompt(&quot;Caring Courtney: How are you?&quot;, 
-[&quot;Yes&quot;, &quot;No&quot;],
+prompt(&quot;&lt;b&gt;Caring Courtney&lt;/b&gt; : How are you?&quot;, 
+[&quot;Good&quot;, &quot;Bad&quot;],
 [
 
-fun() { dialog(&quot;Kid: Good, how about you?&quot;,
-fun() { dialog(&quot;Caring Courtney: I'm good. Watch out for the guy handing out cookies, he looks annoying.&quot;);}
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Good, how about you?&quot;,
+fun() { dialog(&quot;&lt;b&gt;Caring Courtney&lt;/b&gt; : I'm good. Hi, I hear some guy is handing out milk over there.&quot;);}
 );},
 
-fun() { dialog(&quot;Kid: Horrible. I have to get some milk for my mom.&quot;,
-fun() { dialog(&quot;Caring Courtney: Oh I see. Watch out for the bum in front of the grocery store, he looks dangerous.&quot;);}
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Horrible. I have to get some milk for my mom.&quot;,
+fun() { dialog(&quot;&lt;b&gt;Caring Courtney&lt;/b&gt; : Oh I see. Watch out for the bum in front of the grocery store, he looks dangerous.&quot;);}
 );}
 ]);</property>
     <property name="Orientation" value="Down"/>
@@ -239,21 +239,21 @@ fun() { dialog(&quot;Caring Courtney: Oh I see. Watch out for the bum in front o
     <property name="Collidable" type="bool" value="true"/>
     <property name="OnInteract">face(player);
 
-prompt(&quot;Perverted Pete: Hi kid, do you want some candy?&quot;, 
+prompt(&quot;&lt;b&gt;Perverted Pete&lt;/b&gt; : Hi kid, do you want some candy?&quot;, 
 [&quot;Yes&quot;, &quot;No&quot;],
 [
 
-fun() { dialog(&quot;Kid: Heck yea I want some candy.&quot;,
-fun() { dialog(&quot;Perverted Pete: Come into my basement so we can have some Kit-Kat and chill.&quot;, 
-fun() { dialog(&quot;Kid: Nice try you creep.&quot;);}
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Heck yea I want some candy.&quot;,
+fun() { dialog(&quot;&lt;b&gt;Perverted Pete&lt;/b&gt; : Come into my basement so we can have some KitKat and chill.&quot;, 
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Nice try you creep.&quot;);}
 );});},
 
-fun() { dialog(&quot;Kid: No thanks you perv.&quot;,
-fun() { dialog(&quot;Perverted Pete: [Series of creepy moans]&quot;);}
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : No thanks you perv.&quot;,
+fun() { dialog(&quot;&lt;b&gt;Perverted Pete&lt;/b&gt; : [Series of creepy moans]&quot;);}
 );}
 ]);</property>
     <property name="Orientation" value="Down"/>
-    <property name="Spritesheet" type="file" value="../images/orc1Enemy.png"/>
+    <property name="Spritesheet" type="file" value="../images/pervPete.png"/>
    </properties>
   </object>
  </objectgroup>
