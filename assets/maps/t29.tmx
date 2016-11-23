@@ -220,7 +220,7 @@
 </data>
  </layer>
  <objectgroup name="Characters">
-  <object id="1" type="Character" x="459" y="491" width="32" height="32">
+  <object id="1" type="Character" x="491.404" y="491.415" width="32" height="32" rotation="91.4662">
    <properties>
     <property name="Collidable" type="bool" value="true"/>
     <property name="OnInteract">face(player);
@@ -240,11 +240,11 @@ fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : No way man, that's gross!&quot;,
 fun() { dialog(&quot;&lt;b&gt;Sinewy Sun Bather&lt;/b&gt; : Come on kid, help a guy out.&quot;);}
 );}
 ]);</property>
-    <property name="Orientation" value="Down"/>
-    <property name="Spritesheet" type="file" value="../images/sunBather.png"/>
+    <property name="Orientation" value="Left"/>
+    <property name="Spritesheet" type="file" value="../images/sunBather2.png"/>
    </properties>
   </object>
-  <object id="2" type="Character" x="651" y="476" width="32" height="32">
+  <object id="2" type="Character" x="683" y="508" width="32" height="32" rotation="-180">
    <properties>
     <property name="Collidable" type="bool" value="true"/>
     <property name="OnInteract">face(player);
@@ -252,8 +252,8 @@ fun() { dialog(&quot;&lt;b&gt;Sinewy Sun Bather&lt;/b&gt; : Come on kid, help a 
 dialog(&quot;&lt;b&gt;Scornful Surfer Bro&lt;/b&gt; : Get off my beach you kook!&quot;,
 fun() { dialog(&quot;&lt;i&gt;Battle Starts&lt;/i&gt;&quot;);}
 )</property>
-    <property name="Orientation" value="Down"/>
-    <property name="Spritesheet" type="file" value="../images/surferBro.png"/>
+    <property name="Orientation" value="Up"/>
+    <property name="Spritesheet" type="file" value="../images/surferBro2.png"/>
    </properties>
   </object>
   <object id="3" type="Character" x="554" y="558" width="32" height="32">
