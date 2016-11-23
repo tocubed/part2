@@ -7,7 +7,7 @@ var almostInsist = fun(insist)
 {
 	return (fun[insist]()
 	{
-		prompt("<b>Generous Goblin</b>: I insist.", ["Yes", "No"],
+		prompt("<b>Generous Goblin</b> : I insist.", ["Yes", "No"],
 		[
 			fun() { dialog("<b>Greedy Goblin</b> : You can't have any!"); },
 			insist // recurse here
