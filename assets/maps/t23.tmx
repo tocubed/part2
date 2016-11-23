@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" nextobjectid="4">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" nextobjectid="5">
  <tileset firstgid="1" name="forest_tiles" tilewidth="32" tileheight="32" tilecount="256" columns="16">
   <image source="../images/forest_tiles.png" width="512" height="512"/>
  </tileset>
@@ -188,29 +188,30 @@
     <property name="Collidable" type="bool" value="true"/>
     <property name="OnInteract">face(player);
 
-fun() { dialog(&quot;Barista Beth: What can I help you with today?&quot;,
-fun() { dialog(&quot;Kid: I need milk.&quot;,
-fun() { dialog(&quot;Kid: No it has to be milk. Can you just give me the milk half?&quot;,
-fun() { dialog(&quot;Barista: It doesn’t work that way.&quot;);}
-);});});}</property>
+dialog(&quot;&lt;b&gt;Bored Barista Beth&lt;/b&gt; : What can I help you with today?&quot;,
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : I need milk.&quot;,
+fun() { dialog(&quot;&lt;b&gt;Bored Barista Beth&lt;/b&gt; : We don't have any. Do you want some half and half?&quot;,
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : No it has to be milk. Can you just give me the milk half?&quot;,
+fun() { dialog(&quot;&lt;b&gt;Bored Barista Beth&lt;/b&gt; : It doesn't work that way.&quot;);}
+);} );} );})</property>
     <property name="Orientation" value="Down"/>
     <property name="Spritesheet" type="file" value="../images/barista.png"/>
    </properties>
   </object>
   <object id="2" type="Character" x="472" y="512" width="32" height="32">
    <properties>
-    <property name="Collidable" type="bool" value="false"/>
+    <property name="Collidable" type="bool" value="true"/>
     <property name="OnInteract">face(player);
 
-prompt(&quot;Not a Morning Person:  Ugghh mmpphhh grumble.&quot;, 
+prompt(&quot;&lt;b&gt;Not a Morning Person&lt;/b&gt; :  Ugghh mmpphhh grumble.&quot;, 
 [&quot;What?&quot;, &quot;Bye&quot;],
 [
 
-fun() { dialog(&quot;Kid: What was that?&quot;,
-fun() { dialog(&quot;Grumpy Not Morning Person: Go Away I Need My Coffee!&quot;);}
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : What was that?&quot;,
+fun() { dialog(&quot;&lt;b&gt;Grumpy Not Morning Person&lt;/b&gt; : Go Away I Need My Coffee!&quot;);}
 );},
 
-fun() { dialog(&quot;Kid:Whatever&quot;);}
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Whatever&quot;);}
 ]);</property>
     <property name="Orientation" value="Down"/>
     <property name="Spritesheet" type="file" value="../images/notMorningPerson.png"/>
@@ -218,23 +219,49 @@ fun() { dialog(&quot;Kid:Whatever&quot;);}
   </object>
   <object id="3" type="Character" x="400" y="491" width="32" height="32">
    <properties>
-    <property name="Collidable" type="bool" value="false"/>
+    <property name="Collidable" type="bool" value="true"/>
     <property name="OnInteract">face(player);
 
-prompt(&quot;Greedy Business Man: Have you heard of Milk-To-Door? It’s all the rage, and I just so happen to have access to a screaming deal! Are you interested?.&quot;, 
+prompt(&quot;&lt;b&gt;Greedy Business Man&lt;/b&gt; : Have you heard of Milk-To-Door? It's all the rage, and I just so happen to have access to a screaming deal! Are you interested?.&quot;, 
 [&quot;Ya&quot;, &quot;No&quot;],
 [
 
-fun() { dialog(&quot;Kid:That would have solved everything, I would have never had to come here! I wish I could go back in time...&quot;,
-fun() { dialog(&quot;Dick Business Man: But then you never would have met me and heard of it, you need to consider the repercussions when dealing with time. Amateur. Well anyway, I just need to see your address so we can set up the deliveries.&quot;);}
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : That would have solved everything, I would have never had to come here! I wish I could go back in time...&quot;,
+fun() { prompt(&quot;&lt;b&gt;Dickhead Business Man&lt;/b&gt; : But then you never would have met me and heard of it, you need to consider the repercussions when dealing with time. Amateur. Well anyway, I just need to see your address so we can set up the deliveries.&quot;, [&quot;Ok&quot;, &quot;No&quot;],
+[
+
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Alright. I don't know my address, but you can follow me home.&quot;,
+fun() { dialog(&quot;&lt;i&gt;Dickhead Business Man is now a follower for the kid&lt;/i&gt;&quot;);}
 );},
 
-fun() { dialog(&quot;Kid: My mom told me not to tell strangers my address, creep.&quot;,
-fun() { dialog(&quot;Salty Business Man: I’m no creep! Fine, no deal for you!&quot;);}
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : My mom told me not to tell strangers my address, you creep.&quot;,
+fun() { dialog(&quot;&lt;b&gt;Salty Business Man&lt;/b&gt; : I'm no creep! Fine, no deal for you!&quot;);}
 );}
+
+]);
+
+});},
+
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : I handle the milk in my house, I don't need some middle man stepping in.&quot;,
+fun() { dialog(&quot;&lt;b&gt;Salty Business Man&lt;/b&gt; : Suit yourself stupid kid.&quot;);});}
+
 ]);</property>
     <property name="Orientation" value="Down"/>
     <property name="Spritesheet" type="file" value="../images/businessMan.png"/>
+   </properties>
+  </object>
+  <object id="4" type="Character" x="574" y="384" width="32" height="32">
+   <properties>
+    <property name="Collidable" type="bool" value="true"/>
+    <property name="OnInteract">face(player);
+
+dialog(&quot;&lt;b&gt;Vexing Vegan&lt;/b&gt; : Have I told you that I am a vegan?&quot;,
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : I don't have time for you. I need to go get some milk.&quot;,
+fun() { dialog(&quot;&lt;b&gt;Vengeful Vexing Vegan&lt;/b&gt; : MILK! HOW DARE YOU ABUSE ANIMALS FOR YOUR SELFISH NEEDS!&quot;,
+fun() { dialog(&quot;&lt;i&gt;Boss Battle Starts&lt;/i&gt;&quot;);}
+);});})</property>
+    <property name="Orientation" value="Down"/>
+    <property name="Spritesheet" type="file" value="../images/veganBoss.png"/>
    </properties>
   </object>
  </objectgroup>

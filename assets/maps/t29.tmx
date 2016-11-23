@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" nextobjectid="3">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" nextobjectid="4">
  <tileset firstgid="1" name="forest_tiles" tilewidth="32" tileheight="32" tilecount="256" columns="16">
   <image source="../images/forest_tiles.png" width="512" height="512"/>
  </tileset>
@@ -222,19 +222,22 @@
  <objectgroup name="Characters">
   <object id="1" type="Character" x="459" y="491" width="32" height="32">
    <properties>
-    <property name="Collidable" type="bool" value="false"/>
+    <property name="Collidable" type="bool" value="true"/>
     <property name="OnInteract">face(player);
 
-prompt(&quot;Merciless Mom: HI KID, GO GET MILK FOR MY CEREAL!&quot;, 
-[&quot;Yes&quot;, &quot;No&quot;],
+prompt(&quot;&lt;b&gt;Sinewy Sun Bather&lt;/b&gt; : Hey kid, my back is frying. Mind rubbing lotion all over me?&quot;, 
+[&quot;Sure&quot;, &quot;No&quot;],
 [
 
-fun() { dialog(&quot;Kid: Sure Mom, but I have a name.&quot;,
-fun() { dialog(&quot;Merciless Mom: SHUTUP KID NUMBER 2! YOU'D BETTER HURRY AND GET MY MILK, I'M HUNGRY!&quot;);}
-);},
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : I can't believe I'm doing this, but flip over.&quot;,
+fun() { dialog(&quot;&lt;b&gt;Sinewy Sun Bather&lt;/b&gt; : Oooo that feels nice. Thanks kid, you're a life saver! You know, skin cancer and all.&quot;,
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Well, all done. That was gross; I need to wash my hands...&quot;,
+fun() { dialog(&quot;&lt;b&gt;Sinewy Sun Bather&lt;/b&gt; : I'll show you where the bathroom is.&quot;,
+fun() { dialog(&quot;&lt;i&gt;Sinewy Sun Bather is now a follower for the kid.&lt;/i&gt;&quot;);}
+);});});});},
 
-fun() { dialog(&quot;Kid: I want to play video games instead. WOW Games just released a new game.&quot;,
-fun() { dialog(&quot;Merciless Mom: TOO BAD, GET ME MY MILK OR I'LL BREAK YOUR COMPUTER!&quot;);}
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : No way man, that's gross!&quot;,
+fun() { dialog(&quot;&lt;b&gt;Sinewy Sun Bather&lt;/b&gt; : Come on kid, help a guy out.&quot;);}
 );}
 ]);</property>
     <property name="Orientation" value="Down"/>
@@ -243,23 +246,24 @@ fun() { dialog(&quot;Merciless Mom: TOO BAD, GET ME MY MILK OR I'LL BREAK YOUR C
   </object>
   <object id="2" type="Character" x="651" y="476" width="32" height="32">
    <properties>
-    <property name="Collidable" type="bool" value="false"/>
+    <property name="Collidable" type="bool" value="true"/>
     <property name="OnInteract">face(player);
 
-prompt(&quot;Merciless Mom: HI KID, GO GET MILK FOR MY CEREAL!&quot;, 
-[&quot;Yes&quot;, &quot;No&quot;],
-[
-
-fun() { dialog(&quot;Kid: Sure Mom, but I have a name.&quot;,
-fun() { dialog(&quot;Merciless Mom: SHUTUP KID NUMBER 2! YOU'D BETTER HURRY AND GET MY MILK, I'M HUNGRY!&quot;);}
-);},
-
-fun() { dialog(&quot;Kid: I want to play video games instead. WOW Games just released a new game.&quot;,
-fun() { dialog(&quot;Merciless Mom: TOO BAD, GET ME MY MILK OR I'LL BREAK YOUR COMPUTER!&quot;);}
-);}
-]);</property>
+dialog(&quot;&lt;b&gt;Scornful Surfer Bro&lt;/b&gt; : Get off my beach you kook!&quot;,
+fun() { dialog(&quot;&lt;i&gt;Battle Starts&lt;/i&gt;&quot;);}
+)</property>
     <property name="Orientation" value="Down"/>
     <property name="Spritesheet" type="file" value="../images/surferBro.png"/>
+   </properties>
+  </object>
+  <object id="3" type="Character" x="554" y="558" width="32" height="32">
+   <properties>
+    <property name="Collidable" type="bool" value="true"/>
+    <property name="OnInteract">face(player);
+
+dialog(&quot;&lt;b&gt;Scrawny Skeleton&lt;/b&gt; : Man, if only I can find some milk so I can get back home and play video games.&quot;)</property>
+    <property name="Orientation" value="Down"/>
+    <property name="Spritesheet" type="file" value="../images/skeleton1Follower.png"/>
    </properties>
   </object>
  </objectgroup>
