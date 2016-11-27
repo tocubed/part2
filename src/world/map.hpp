@@ -72,7 +72,7 @@ private:
 private:
 	std::vector<EntityIndex> childEntities;
 
-	void loadCharacter(
+	EntityIndex loadCharacter(
 	    const std::string& animFile, TileLocation location, bool collidable,
 	    const std::map<std::string, std::string>& scripts);
 	void parseCharacter(pugi::xml_node xml);

@@ -39,6 +39,7 @@ ScriptSystem::ScriptSystem(Manager& manager, Overworld& overworld)
 	chai.add(chaiscript::fun(&ScriptSystem::screenFade), "fade");
 
 	chai.add(chaiscript::fun(&ScriptSystem::getFollowers), "followers");
+	chai.add(chaiscript::fun(&ScriptSystem::becomeFollower), "follow");
 
 	chai.add_global(chaiscript::var(NULL_ENTITY), "self");
 	chai.add_global(chaiscript::var(NULL_ENTITY), "player");
@@ -83,7 +84,9 @@ void ScriptSystem::update(sf::Time delta)
 	}
 }
 
-void ScriptSystem::walkPath(EntityIndex character, std::vector<TileLocation> path)
+void ScriptSystem::walkPath(
+    EntityIndex character, std::vector<TileLocation> path,
+    std::function<void()> callback)
 {
 	unsigned int i = 0;
 
@@ -110,11 +113,19 @@ void ScriptSystem::walkPath(EntityIndex character, std::vector<TileLocation> pat
 
 		return false;
 	};
+
+	auto callCallback = [=]()
+	{
+		callback();
+		return true;
+	};
 	
-	doLatent(latentWalk);
+	doLatentInOrder({latentWalk, callCallback});
 }
 
-bool ScriptSystem::walkToLocation(EntityIndex character, TileLocation destination)
+bool ScriptSystem::walkToLocation(
+    EntityIndex character, TileLocation destination,
+    std::function<void()> callback) 
 {
 	auto start =
 	    TileLocation::fromLocation(manager.getComponent<CLocation>(character));
@@ -199,7 +210,7 @@ bool ScriptSystem::walkToLocation(EntityIndex character, TileLocation destinatio
 
 		std::reverse(path.begin(), path.end());
 
-		walkPath(character, path);
+		walkPath(character, path, callback);
 	}
 
 	return found;
@@ -372,6 +383,45 @@ std::vector<EntityIndex> ScriptSystem::getFollowers(EntityIndex character) const
 	}
 
 	return followers;
+}
+
+void ScriptSystem::becomeFollower(EntityIndex character, EntityIndex following)
+{
+	auto followers = getFollowers(following);
+
+	auto toFollow = followers.size() == 0 ? following : followers.back();
+
+	freezePlayer(true);
+
+	manager.addTag<TFollower>(character);
+	manager.addComponent(character, CFollowOrder{toFollow});
+	
+	if(manager.hasTag<TTileCollidable>(character))
+		manager.removeTag<TTileCollidable>(character);
+
+	auto location =
+	    TileLocation::fromLocation(manager.getComponent<CLocation>(toFollow));
+
+	auto direction = manager.getComponent<CMovement>(toFollow).direction;
+
+	for(auto dir: std::vector<Direction>{direction, UP, DOWN, LEFT, RIGHT, NONE})
+	{
+		auto finishWalk = [=]()
+		{
+			makeEntityFace(character, dir);
+			freezePlayer(false);
+		};
+
+		// Opposite direction
+		Direction moveDir;
+
+		if(dir <= 1) moveDir = (Direction)(1 - dir);
+		else if(dir <= 3) moveDir = (Direction)(5 - dir);
+
+		auto behind = TileLocation::moveDirection(location, moveDir);
+		if(walkToLocation(character, behind, finishWalk))
+			break;
+	}
 }
 
 TileLocation ScriptSystem::getTileLocation(EntityIndex entity) const

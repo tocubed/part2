@@ -165,7 +165,7 @@ int main(int argc, char** argv)
 	EntityIndex player = addPlayer();
 
 	EntityIndex following = player;
-	for(auto i = 0u; i < 32; i++)
+	for(auto i = 0u; i < 0; i++)
 	{
 		following = addFollower(following);
 	}

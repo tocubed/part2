@@ -40,9 +40,14 @@ def face(Entity e)
 	face(location(e));
 }
 
+def walk_to(Entity c, Location l, Function callback)
+{
+	script.walk_to(c, l, callback);
+}
+
 def walk_to(Entity c, Location l)
 {
-	script.walk_to(c, l);
+	script.walk_to(c, l, fun(){});
 }
 
 def walk_to(Location l)
@@ -94,4 +99,14 @@ def freeze_player(bool freeze)
 def followers(Entity c)
 {
 	return script.followers(c);
+}
+
+def follow(Entity c, Entity following)
+{
+	script.follow(c, following);
+}
+
+def follow(Entity following)
+{
+	follow(self, following);
 }

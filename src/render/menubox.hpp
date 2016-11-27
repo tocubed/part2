@@ -73,6 +73,11 @@ public:
 		setCurrentChoice((currentChoice + lines.size() - 1u) % lines.size());
 	}
 
+	sf::Vector2i getDimensions()
+	{
+		return dimensions;
+	}
+
 private:
 	sf::Sprite box;
 	const sf::Texture& boxBorder;

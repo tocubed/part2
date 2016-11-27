@@ -120,12 +120,14 @@
     freeze_player(true);
     fade(true, fun(){
 	teleport(player, 14, 19 + 30 * 4);
+	teleport(self, 14, 18 + 30 * 4);
+	face(player);
 	dialog(&quot;&lt;i&gt;A little while later...&lt;/i&gt;&quot;, 
-	fun() { dialog(&quot;&lt;b&gt;Kid:&lt;/b&gt; : Ughh. Where am I and why does my head hurt so much?&quot;,
+	fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Ughh. Where am I and why does my head hurt so much?&quot;,
 	fun() { dialog(&quot;&lt;b&gt;Bothersome Bum&lt;/b&gt; : Oh... Uh... You definitely didn't get drugged and taken to another island so I could sell you off to slavery.&quot;, 	
 	fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Umm... Alright, but I still have to get some milk for my mom.&quot;,
 	fun() { dialog(&quot;&lt;b&gt;Bothersom Bum&lt;/b&gt; : I should follow you around so you don't run awa-- UHHHH, I MEANT TO KEEP YOU SAFE.&quot;,
-	fun() { dialog(&quot;&lt;i&gt;Bothersome Bum is now a follower for the kid.&lt;/i&gt;&quot;);}
+	fun() { dialog(&quot;&lt;i&gt;Bothersome Bum is now your follower.&lt;/i&gt;&quot;, fun(){ follow(player); });}
 	);});});});});
 	play(player, &quot;stand_up&quot;, 200, fun() {freeze_player(false);});
 	fade(false);
@@ -145,7 +147,7 @@ fun() { dialog(&quot;&lt;i&gt;Kid takes the chunky looking rotten milk and takes
 );} );},
 
 fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : I don't have time for this! Get out of my way so I can get back to playing video games!&quot;,
-fun() { dialog(&quot;&lt;b&gt;Bothersome Bum&lt;/b&gt; : You dam inconsiderate kid!&quot;,
+fun() { dialog(&quot;&lt;b&gt;Bothersome Bum&lt;/b&gt; : You damn inconsiderate kid!&quot;,
 fun() { dialog(&quot;&lt;i&gt;Bum drugs the kid and beats him up.&lt;/i&gt;&quot;,
 	get_rekt_by_bum);}
 );});}

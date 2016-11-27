@@ -228,7 +228,7 @@ std::string Map::correctFilePath(std::string file)
 	return path;
 }
 
-void Map::loadCharacter(
+EntityIndex Map::loadCharacter(
     const std::string& animFile, TileLocation location, bool collidable,
     const std::map<std::string, std::string>& scripts) 
 {
@@ -243,11 +243,14 @@ void Map::loadCharacter(
 		manager.addTag<TTileCollidable>(character);
 
 	childEntities.push_back(character);
+
+	return character;
 }
 
 void Map::parseCharacter(pugi::xml_node xml)
 {
 	std::string spriteSheet;
+	Direction facing = DOWN;
 	bool collidable = true;
 
 	std::map<std::string, std::string> scripts;
@@ -264,6 +267,10 @@ void Map::parseCharacter(pugi::xml_node xml)
 		else if(name == std::string("Collidable"))
 		{
 			collidable = property.attribute("value").as_bool();
+		}
+		else if(name == std::string("Orientation"))
+		{
+			facing = directionFromString(property.attribute("value").value());
 		}
 		else // Script
 		{
@@ -293,7 +300,10 @@ void Map::parseCharacter(pugi::xml_node xml)
 	auto x = xml.attribute("x").as_int() / 32;
 	auto y = xml.attribute("y").as_int() / 32;
 
-	loadCharacter(spriteSheet, TileLocation{x, y}, collidable, scripts);
+	auto character =
+	    loadCharacter(spriteSheet, TileLocation{x, y}, collidable, scripts);
+
+	manager.getComponent<CMovement>(character).direction = facing;
 }
 
 void Map::loadFromFile(const std::string& mapFile)

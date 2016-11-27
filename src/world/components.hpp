@@ -15,8 +15,21 @@ struct CLocation
 
 enum Direction
 {
-	UP, DOWN, LEFT, RIGHT, NONE
+	UP = 0, DOWN = 1, LEFT = 2, RIGHT = 3, NONE
 };
+
+static Direction directionFromString(const std::string& direction)
+{
+	if(direction == "Up")
+		return UP;
+	if(direction == "Down")
+		return DOWN;
+	if(direction == "Left")
+		return LEFT;
+	if(direction == "Right")
+		return RIGHT;
+	return NONE;
+}
 
 struct TileLocation
 {

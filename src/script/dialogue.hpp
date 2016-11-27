@@ -80,15 +80,19 @@ namespace Dialogue
 			location = manager.getComponent<CLocation>(player);
 		});
 
-		// TODO Better location for menu
-		location.x += 3 * 32;
-		location.y -= 0 * 32;
+		location.x += 8 * 32;
+		location.y += 8 * 32 - 4 * 32 /* dialog box y-dimension */;
 
 		location.zLevel = 1000;
 
+		std::shared_ptr<MenuBox> menuBox = loadMenuBox(options);
+
+		auto dimensions = menuBox->getDimensions();
+		location.x -= dimensions.x;
+		location.y -= dimensions.y;
+
 		manager.addComponent(menu, CLocation{location});
-	    manager.addComponent(
-	        menu, CDrawable{loadMenuBox(options)});
+	    manager.addComponent(menu, CDrawable{menuBox});
 	    manager.addTag<TMenu>(menu);
 
 		return menu;

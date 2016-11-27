@@ -17,8 +17,12 @@ public:
 
 	void freezePlayer(bool freeze);
 
-	void walkPath(EntityIndex character, std::vector<TileLocation> path);
-	bool walkToLocation(EntityIndex character, TileLocation destination);
+	void walkPath(
+	    EntityIndex character, std::vector<TileLocation> path,
+	    std::function<void()> callback);
+	bool walkToLocation(
+	    EntityIndex character, TileLocation destination,
+	    std::function<void()> callback);
 	void teleport(EntityIndex character, TileLocation destination);
 
 	void playAnimation(
@@ -35,6 +39,7 @@ public:
 	    const std::vector<std::function<void()>>& callbacks);
 
 	std::vector<EntityIndex> getFollowers(EntityIndex character) const;
+	void becomeFollower(EntityIndex character, EntityIndex following);
 
 	TileLocation getTileLocation(EntityIndex entity) const;
 	bool makeEntityFace(EntityIndex character, Direction dir);
