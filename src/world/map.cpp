@@ -413,3 +413,9 @@ void Map::loadFromFile(const std::string& mapFile)
 
 	// TODO Image layers
 }
+
+void Map::unload()
+{
+	for(auto e: childEntities)
+		manager.deleteEntity(e);
+}

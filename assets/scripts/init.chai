@@ -1,2 +1,3 @@
 use("ui.chai");
 use("world.chai");
+use("combat.chai");

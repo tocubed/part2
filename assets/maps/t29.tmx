@@ -250,8 +250,8 @@ fun() { dialog(&quot;&lt;b&gt;Sinewy Sun Bather&lt;/b&gt; : Come on kid, help a 
     <property name="OnInteract">face(player);
 
 dialog(&quot;&lt;b&gt;Scornful Surfer Bro&lt;/b&gt; : Get off my beach you kook!&quot;,
-fun() { dialog(&quot;&lt;i&gt;Battle Starts&lt;/i&gt;&quot;);}
-)</property>
+fun() {do_combat(&quot;beach&quot;, &quot;PLACEHOLDER.EXE&quot;); }
+);</property>
     <property name="Orientation" value="Up"/>
     <property name="Spritesheet" type="file" value="../images/surferBro2.png"/>
    </properties>

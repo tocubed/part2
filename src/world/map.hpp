@@ -20,6 +20,7 @@ public:
 	Map(Manager& manager);
 
 	void loadFromFile(const std::string& mapFile);
+	void unload();
 
 public:
 	void setSize(std::size_t width, std::size_t height);

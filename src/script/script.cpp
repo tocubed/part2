@@ -5,6 +5,14 @@
 
 #include <chaiscript/chaiscript.hpp>
 
+namespace
+{
+	TileLocation constructLocation(int x, int y)
+	{
+		return TileLocation{x, y};
+	}
+}
+
 ScriptSystem::ScriptSystem(Manager& manager, Overworld& overworld)
 	: System(manager), overworld(overworld), chai(Script::getChaiScript())
 {
@@ -19,14 +27,28 @@ ScriptSystem::ScriptSystem(Manager& manager, Overworld& overworld)
 	            std::vector<EntityIndex>>("EntityVector"));
 
 	chai.add(chaiscript::user_type<TileLocation>(), "Location");
+	chai.add(chaiscript::fun(constructLocation), "Location");
 	chai.add(chaiscript::fun(&TileLocation::x), "x");
 	chai.add(chaiscript::fun(&TileLocation::y), "y");
 
+	chai.add(chaiscript::bootstrap::standard_library::map_type<
+	            std::map<EntityIndex, TileLocation>>("EntityLocationMap"));
+
+	/*
 	chai.add(chaiscript::user_type<Direction>(), "Direction");
+	chai.add(chaiscript::fun(constructDirection), "Direction");
 	chai.add_global_const(chaiscript::const_var(Direction::UP), "UP");
 	chai.add_global_const(chaiscript::const_var(Direction::DOWN), "DOWN");
 	chai.add_global_const(chaiscript::const_var(Direction::RIGHT), "RIGHT");
 	chai.add_global_const(chaiscript::const_var(Direction::LEFT), "LEFT");
+	*/
+	chai.add(
+	    chaiscript::fun([&manager](EntityIndex eI) -> Direction {
+		    return manager.getComponent<CMovement>(eI).direction;
+		}), "facing");
+
+	chai.add(chaiscript::bootstrap::standard_library::map_type<
+	            std::map<EntityIndex, Direction>>("EntityDirectionMap"));
 
 	chai.add(chaiscript::fun(&ScriptSystem::getTileLocation), "location");
 
@@ -40,6 +62,9 @@ ScriptSystem::ScriptSystem(Manager& manager, Overworld& overworld)
 
 	chai.add(chaiscript::fun(&ScriptSystem::getFollowers), "followers");
 	chai.add(chaiscript::fun(&ScriptSystem::becomeFollower), "follow");
+
+	chai.add(chaiscript::fun(&ScriptSystem::loadMap), "load_map");
+	chai.add(chaiscript::fun(&ScriptSystem::unloadMap), "unload_map");
 
 	chai.add_global(chaiscript::var(NULL_ENTITY), "self");
 	chai.add_global(chaiscript::var(NULL_ENTITY), "player");
@@ -475,6 +500,16 @@ void ScriptSystem::screenFade(bool out, std::function<void()> callback)
 	};
 
 	doLatentInOrder({fadeRectangle, removeRectangle, callCallback});
+}
+
+void ScriptSystem::loadMap(const std::string& mapFile, TileLocation location)
+{
+	overworld.loadMap(mapFile, location);
+}
+
+void ScriptSystem::unloadMap(TileLocation location)
+{
+	overworld.unloadMap(location);
 }
 
 void ScriptSystem::runScript(std::string script)

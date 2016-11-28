@@ -1,0 +1,74 @@
+global arena_loc = Location(1000, 1000);
+
+global saved_locations;
+global saved_facing;
+
+def teleport_to_arena()
+{
+	saved_locations = EntityLocationMap();
+	saved_facing = EntityDirectionMap();
+
+	saved_locations[player] = location(player);
+	saved_facing[player] = facing(player);
+
+	var arena_ctr = Location(arena_loc.x + 15, arena_loc.y + 15);
+
+	script.teleport(player, Location(arena_ctr.x, arena_ctr.y));
+	script.face(player, UP);
+
+	var followers = range(followers(player));
+	var follower_count = 0;
+
+	for(follower: followers)
+	{
+		follower_count += 1;
+
+		saved_locations[follower] = location(follower);
+		saved_facing[follower] = facing(follower);
+
+		var follower_loc = Location(arena_ctr.x - 4, arena_ctr.y + 1);
+		follower_loc.x += (2 * follower_count - 1) % 9;
+		follower_loc.y += (2 * follower_count - 1) / 9;
+
+		script.teleport(follower, follower_loc);
+		script.face(follower, UP);
+	}
+}
+
+def end_combat()
+{
+	fade(true, fun()
+	{
+		freeze_player(false);
+
+		fade(false);
+
+		script.teleport(player, saved_locations[player]);
+		script.face(player, saved_facing[player]);
+
+		var followers = range(followers(player));
+		for(follower: followers)
+		{
+			script.teleport(follower, saved_locations[follower]);
+			script.face(follower, saved_facing[follower]);
+		}
+
+		script.unload_map(arena_loc);
+	});
+}
+
+def do_combat(string arena, string enemy)
+{
+	script.load_map("assets/maps/arenas/"+arena+".tmx", arena_loc);
+
+	freeze_player(true);
+
+	fade(true, fun()
+	{
+		fade(false);
+
+		teleport_to_arena();
+
+		dialog("Combat is over!", fun() { end_combat(); });
+	});
+}

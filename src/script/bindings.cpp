@@ -1,5 +1,5 @@
 #include <script/bindings.hpp>
-#include <core/ecs/typedefs.hpp>
+#include <core/manager.hpp>
 
 #include <chaiscript/chaiscript.hpp>
 
@@ -12,6 +12,14 @@ std::shared_ptr<chaiscript::Module> Script::createChaiScriptBindings()
 	module->add(chaiscript::vector_conversion<std::vector<std::string>>());
 	module->add(
 	    chaiscript::vector_conversion<std::vector<std::function<void()>>>());
+
+	chaiscript::utility::add_class<Direction>(*module, "Direction", {
+		{UP, "UP"},
+		{DOWN, "DOWN"},
+		{RIGHT, "RIGHT"},
+		{LEFT, "LEFT"},
+		{NONE, "NONE"}
+	});
 
 	return module;
 }

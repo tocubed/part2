@@ -46,6 +46,9 @@ public:
 
 	void screenFade(bool out, std::function<void()> callback);
 
+	void loadMap(const std::string& mapFile, TileLocation location);
+	void unloadMap(TileLocation location);
+
 	void runScript(std::string script);
 
 	void doLatent(std::function<bool()> func);

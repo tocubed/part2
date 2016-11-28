@@ -1,3 +1,9 @@
+def Location::`=`(Location rhs)
+{
+	this.x = rhs.x;
+	this.y = rhs.y;
+}
+
 def location(Entity e)
 {
 	return script.location(e);
@@ -77,7 +83,7 @@ def teleport(Entity c, Location l)
 	{
 		script.teleport(follower, l);
 	}
-
+	
 	script.teleport(c, l);
 }
 

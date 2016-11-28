@@ -31,6 +31,22 @@ public:
 		mapsByLocation[location] = maps.size() - 1;
 	}
 
+	void unloadMap(TileLocation location)
+	{
+		auto it = mapsByLocation.find(location);
+
+		if(it != mapsByLocation.end())
+		{
+			auto i = it->second;
+
+			maps[i]->unload();
+
+			// Erase the map
+			// TODO Reclaim the unused space
+			maps[i] = std::make_unique<Map>(manager);
+		}
+	}
+
 	TileLocation getMapLocation(TileLocation location)
 	{
 		const auto floor_div = [](int x, int y)
