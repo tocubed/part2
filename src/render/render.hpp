@@ -26,7 +26,9 @@ public:
 				(aLoc.zLevel == bLoc.zLevel && aLoc.y == bLoc.y &&
 				 !this->manager.hasTag<TPlayer>(a) && this->manager.hasTag<TPlayer>(b));
 		  })
-	{}
+	{
+		view.setSize(480, 480);
+	}
 
 	void update(sf::Time delta)
 	{
