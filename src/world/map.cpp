@@ -371,6 +371,13 @@ void Map::loadFromFile(const std::string& mapFile)
 		assert(data.attribute("encoding").value() == std::string("csv"));
 
 		auto zLevel = i * 10;
+
+		auto fgProperty =
+		    layer.select_nodes("properties/property[@name=\"Foreground\"]");
+		if(!fgProperty.empty())
+			if(fgProperty[0].node().attribute("value").as_bool())
+				zLevel += 100;
+
 		auto layerIndex = createTileLayer(name, zLevel);
 
 		auto& tiles = getTileLayerArray(layerIndex);
