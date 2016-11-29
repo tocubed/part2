@@ -136,6 +136,14 @@ EntityIndex addFollower(EntityIndex entityAhead)
 	    aheadLocation.x, aheadLocation.y, 99};
 	manager.addComponent(follower, CFollowOrder{ entityAhead });
 
+	auto& scripts = manager.addComponent(follower, CScripts{});
+	scripts["Name"] = "Orc";
+	scripts["OnCombat"] = R"(
+		fun(callback) {
+			dialog("<b>Orc</b> : I won't do nothing!", callback);
+		}
+	)";
+
 	return follower;
 }
 

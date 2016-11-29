@@ -116,3 +116,9 @@ def follow(Entity following)
 {
 	follow(self, following);
 }
+
+def name(Entity e)
+{
+	// YES THIS IS BAD, fix this later
+	return get_script(e, "Name");
+}

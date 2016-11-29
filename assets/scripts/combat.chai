@@ -35,6 +35,55 @@ def teleport_to_arena()
 	}
 }
 
+global follower_choices;
+global follower_actions;
+
+def combat_end()
+{
+	return false;
+}
+
+def combat_loop()
+{
+	prompt("Which follower will you call on?", follower_choices, follower_actions);
+}
+
+def make_follower_action(Entity f)
+{
+	var follower = Entity(f);
+
+	var action = fun[follower]()
+	{
+		var on_combat = eval(get_script(follower, "OnCombat"));
+
+		on_combat(fun() {
+			if(combat_end())
+			{
+				end_combat();
+			}
+			else
+			{
+				combat_loop();
+			}
+		});
+	};
+
+	return action;
+}
+
+def init_followers()
+{
+	follower_choices = [];
+	follower_actions = [];
+
+	var followers = range(followers(player));
+	for(follower: followers)
+	{
+		follower_choices.push_back(name(follower));
+		follower_actions.push_back(make_follower_action(follower));
+	}
+}
+
 def end_combat()
 {
 	fade(true, fun()
@@ -68,7 +117,8 @@ def do_combat(string arena, string enemy)
 		fade(false);
 
 		teleport_to_arena();
+		init_followers();
 
-		dialog("Combat is over!", fun() { end_combat(); });
+		combat_loop();
 	});
 }

@@ -11,6 +11,7 @@ namespace
 	{
 		return TileLocation{x, y};
 	}
+
 }
 
 ScriptSystem::ScriptSystem(Manager& manager, Overworld& overworld)
@@ -23,6 +24,10 @@ ScriptSystem::ScriptSystem(Manager& manager, Overworld& overworld)
 	chai.add(chaiscript::fun(&ScriptSystem::openPrompt), "prompt");
 
 	chai.add(chaiscript::user_type<EntityIndex>(), "Entity");
+	chai.add(chaiscript::fun([](EntityIndex eI) -> EntityIndex
+	{
+		return EntityIndex{eI};
+	}), "Entity");
 	chai.add(chaiscript::bootstrap::standard_library::vector_type<
 	            std::vector<EntityIndex>>("EntityVector"));
 
@@ -65,6 +70,12 @@ ScriptSystem::ScriptSystem(Manager& manager, Overworld& overworld)
 
 	chai.add(chaiscript::fun(&ScriptSystem::loadMap), "load_map");
 	chai.add(chaiscript::fun(&ScriptSystem::unloadMap), "unload_map");
+
+	chai.add(
+	    chaiscript::fun([&manager](EntityIndex who, const std::string& what) {
+		    return manager.getComponent<CScripts>(who)[what];
+		}),
+	    "get_script");
 
 	chai.add_global(chaiscript::var(NULL_ENTITY), "self");
 	chai.add_global(chaiscript::var(NULL_ENTITY), "player");
