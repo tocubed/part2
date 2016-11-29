@@ -6,6 +6,11 @@ global saved_facing;
 global combat_enemy;
 global combat_enemy_loc;
 
+global enemy_action;
+
+global enemy_health;
+global follower_healths;
+
 def teleport_to_arena()
 {
 	saved_locations = EntityLocationMap();
@@ -48,13 +53,60 @@ def teleport_to_arena()
 global follower_choices;
 global follower_actions;
 
+global index_to_follower;
+
+def follower_to_index(Entity f)
+{
+	var follower = Entity(f);
+
+	for(var i = 0; i < index_to_follower.size(); ++i)
+	{
+		if(index_to_follower[i] == f)
+		{
+			return i;
+		}
+	}
+}
+
 def combat_end()
 {
-	return false;
+	return enemy_health <= 0 || follower_healths.size() == 0;
+}
+
+def kill_follower(int i)
+{
+	follower_choices.erase(i);
+	follower_actions.erase(i);
+
+	follower_healths.erase(i);
+
+	index_to_followers.erase(i);
+	
+	// DELETE THE FOLLOWER FOR REAL
+}
+
+def check_if_followers_died()
+{
+	var to_be_killed = [];
+
+	for(var i = 0; i < follower_healths.size(); ++i)
+	{
+		if(follower_healths[i] <= 0)
+		{
+			to_be_killed.push_back(i);
+		}
+	}
+
+	for(follower_i: to_be_killed)
+	{
+		kill_follower(follower_i);
+	}
 }
 
 def combat_loop()
 {
+	check_if_followers_died();
+
 	prompt("Which follower will you call on?", follower_choices, follower_actions);
 }
 
@@ -64,6 +116,8 @@ def make_follower_action(Entity f)
 
 	var action = fun[follower]()
 	{
+		me = follower;
+
 		var on_combat = eval(get_script(follower, "OnCombat"));
 
 		on_combat(fun() {
@@ -73,7 +127,8 @@ def make_follower_action(Entity f)
 			}
 			else
 			{
-				combat_loop();
+				me = combat_enemy;
+				enemy_action(combat_loop);
 			}
 		});
 	};
@@ -81,16 +136,31 @@ def make_follower_action(Entity f)
 	return action;
 }
 
+def init_enemy()
+{
+	enemy_health = 100;
+
+	enemy_action = eval(get_script(combat_enemy, "OnCombat"));
+}
+
 def init_followers()
 {
 	follower_choices = [];
 	follower_actions = [];
+
+	follower_healths = [];
+
+	index_to_follower = [];
 
 	var followers = range(followers(player));
 	for(follower: followers)
 	{
 		follower_choices.push_back(name(follower));
 		follower_actions.push_back(make_follower_action(follower));
+		
+		follower_healths.push_back(100);
+
+		index_to_follower.push_back(follower);
 	}
 }
 
@@ -132,8 +202,26 @@ def do_combat(string arena, Entity enemy)
 		fade(false);
 
 		teleport_to_arena();
+		init_enemy();
 		init_followers();
 
 		combat_loop();
 	});
+}
+
+// Stuff that can be used by OnCombat
+global me;
+
+def damage(Entity e, int damage)
+{
+	if(e == combat_enemy)
+	{
+		enemy_health -= damage;
+	}
+	else
+	{
+		var index = follower_to_index(e);
+
+		followers_health[index] -= damage;
+	}
 }

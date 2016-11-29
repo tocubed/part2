@@ -140,7 +140,11 @@ EntityIndex addFollower(EntityIndex entityAhead)
 	scripts["Name"] = "Orc";
 	scripts["OnCombat"] = R"(
 		fun(callback) {
-			dialog("<b>Orc</b> : I won't do nothing!", callback);
+			dialog("<b>Orc</b> : Yes boss!", fun[callback]()
+			{
+				damage(combat_enemy, 25);
+				callback();
+			});
 		}
 	)";
 

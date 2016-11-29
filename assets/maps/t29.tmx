@@ -321,6 +321,10 @@ fun() { dialog(&quot;&lt;b&gt;Sinewy Sun Bather&lt;/b&gt; : Come on kid, help a 
   <object id="2" type="Character" x="672" y="480" width="32" height="32">
    <properties>
     <property name="Collidable" type="bool" value="true"/>
+    <property name="OnCombat">fun(callback)
+{
+dialog(&quot;&lt;b&gt;Scornful Surfer Bro&lt;/b&gt; : My turn!&quot;, callback);
+}</property>
     <property name="OnInteract">face(player);
 
 dialog(&quot;&lt;b&gt;Scornful Surfer Bro&lt;/b&gt; : Get off my beach you kook!&quot;,
