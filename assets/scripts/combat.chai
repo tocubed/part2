@@ -3,6 +3,9 @@ global arena_loc = Location(1000, 1000);
 global saved_locations;
 global saved_facing;
 
+global combat_enemy;
+global combat_enemy_loc;
+
 def teleport_to_arena()
 {
 	saved_locations = EntityLocationMap();
@@ -12,6 +15,13 @@ def teleport_to_arena()
 	saved_facing[player] = facing(player);
 
 	var arena_ctr = Location(arena_loc.x + 15, arena_loc.y + 15);
+
+	combat_enemy_loc = Location(arena_ctr.x, arena_ctr.y - 4);
+
+	saved_locations[combat_enemy] = location(combat_enemy);
+	saved_facing[combat_enemy] = facing(combat_enemy);
+	script.teleport(combat_enemy, combat_enemy_loc);
+	script.face(combat_enemy, DOWN);
 
 	script.teleport(player, Location(arena_ctr.x, arena_ctr.y));
 	script.face(player, UP);
@@ -92,6 +102,9 @@ def end_combat()
 
 		fade(false);
 
+		script.teleport(combat_enemy, saved_locations[player]);
+		script.face(combat_enemy, saved_facing[player]);
+
 		script.teleport(player, saved_locations[player]);
 		script.face(player, saved_facing[player]);
 
@@ -106,8 +119,10 @@ def end_combat()
 	});
 }
 
-def do_combat(string arena, string enemy)
+def do_combat(string arena, Entity enemy)
 {
+	combat_enemy = enemy;
+
 	script.load_map("assets/maps/arenas/"+arena+".tmx", arena_loc);
 
 	freeze_player(true);
