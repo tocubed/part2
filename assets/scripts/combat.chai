@@ -110,6 +110,9 @@ def combat_loop()
 	prompt("Which follower will you call on?", follower_choices, follower_actions);
 }
 
+global attacking;
+global resume_combat;
+
 def make_follower_action(Entity f)
 {
 	var follower = Entity(f);
@@ -117,10 +120,9 @@ def make_follower_action(Entity f)
 	var action = fun[follower]()
 	{
 		me = follower;
+		attacking = combat_enemy;
 
-		var on_combat = eval(get_script(follower, "OnCombat"));
-
-		on_combat(fun() {
+		resume_combat = fun[follower]() {
 			if(combat_end())
 			{
 				end_combat();
@@ -128,9 +130,18 @@ def make_follower_action(Entity f)
 			else
 			{
 				me = combat_enemy;
-				enemy_action(combat_loop);
+				attacking = follower;
+
+				resume_combat = fun()
+				{
+					combat_loop();
+				};
+
+				enemy_action();
 			}
-		});
+		};
+
+		eval(get_script(follower, "OnCombat"));
 	};
 
 	return action;
@@ -140,7 +151,10 @@ def init_enemy()
 {
 	enemy_health = 100;
 
-	enemy_action = eval(get_script(combat_enemy, "OnCombat"));
+	enemy_action = fun()
+	{
+		eval(get_script(combat_enemy, "OnCombat"));
+	};
 }
 
 def init_followers()
@@ -172,8 +186,8 @@ def end_combat()
 
 		fade(false);
 
-		script.teleport(combat_enemy, saved_locations[player]);
-		script.face(combat_enemy, saved_facing[player]);
+		script.teleport(combat_enemy, saved_locations[combat_enemy]);
+		script.face(combat_enemy, saved_facing[combat_enemy]);
 
 		script.teleport(player, saved_locations[player]);
 		script.face(player, saved_facing[player]);
@@ -223,5 +237,25 @@ def damage(Entity e, int damage)
 		var index = follower_to_index(e);
 
 		followers_health[index] -= damage;
+	}
+}
+
+def walk_to_attack_location(Entity e, Function callback)
+{
+	if(e == combat_enemy)
+	{
+		script.face(e, DOWN);
+		callback();
+	}
+	else
+	{
+		var loc_in_line = location(e);
+
+		walk_to(e, Location(combat_enemy_loc.x, combat_enemy_loc.y + 1), 
+		fun()
+		{
+			script.face(e, UP);
+			callback();
+		});
 	}
 }

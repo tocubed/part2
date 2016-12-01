@@ -139,13 +139,11 @@ EntityIndex addFollower(EntityIndex entityAhead)
 	auto& scripts = manager.addComponent(follower, CScripts{});
 	scripts["Name"] = "Orc";
 	scripts["OnCombat"] = R"(
-		fun(callback) {
-			dialog("<b>Orc</b> : Yes boss!", fun[callback]()
+			dialog("<b>Orc</b> : Yes boss!", fun()
 			{
 				damage(combat_enemy, 25);
-				callback();
+				resume_combat();
 			});
-		}
 	)";
 
 	return follower;
