@@ -50,6 +50,66 @@ namespace Character
 		}
 	}
 
+	void loadSpellcastAnimations(AnimatedSprite& sprite)
+	{
+	    static std::array<std::string, 4> directions = 
+			{"up", "left", "down", "right"};
+
+	    static std::array<std::size_t, 4> rows = 
+			{0 * 13, 1 * 13, 2 * 13, 3 * 13};
+
+	    static std::vector<std::size_t> offsets{0, 1, 2, 3, 4, 5, 6, 1};
+
+		for(auto i = 0u; i < 4; i++)
+		{
+			auto frames = offsets;
+			for(auto j = 0u; j < frames.size(); j++)
+				frames[j] += rows[i];
+
+			sprite.addAnimation("spell_" + directions[i], frames);
+		}
+	}
+
+	void loadThrustAnimations(AnimatedSprite& sprite)
+	{
+	    static std::array<std::string, 4> directions = 
+			{"up", "left", "down", "right"};
+
+	    static std::array<std::size_t, 4> rows = 
+			{4 * 13, 5 * 13, 6 * 13, 7 * 13};
+
+	    static std::vector<std::size_t> offsets{0, 1, 2, 3, 4, 5, 6, 7, 2, 1};
+
+		for(auto i = 0u; i < 4; i++)
+		{
+			auto frames = offsets;
+			for(auto j = 0u; j < frames.size(); j++)
+				frames[j] += rows[i];
+
+			sprite.addAnimation("thrust_" + directions[i], frames);
+		}
+	}
+
+	void loadSlashAnimations(AnimatedSprite& sprite)
+	{
+	    static std::array<std::string, 4> directions = 
+			{"up", "left", "down", "right"};
+
+	    static std::array<std::size_t, 4> rows = 
+			{12 * 13, 13 * 13, 14 * 13, 15 * 13};
+
+	    static std::vector<std::size_t> offsets{0, 1, 2, 3, 4, 5, 2, 1};
+
+		for(auto i = 0u; i < 4; i++)
+		{
+			auto frames = offsets;
+			for(auto j = 0u; j < frames.size(); j++)
+				frames[j] += rows[i];
+
+			sprite.addAnimation("slash_" + directions[i], frames);
+		}
+	}
+
 	std::map<std::string, std::shared_ptr<sf::Texture>> spriteSheets;
 
 	std::unique_ptr<AnimatedSprite> loadAnimations(std::string file)
@@ -73,6 +133,9 @@ namespace Character
 
 		loadWalkingAnimations(*animatedSprite);
 		loadIdleAnimations(*animatedSprite);
+		loadSpellcastAnimations(*animatedSprite);
+		loadThrustAnimations(*animatedSprite);
+		loadSlashAnimations(*animatedSprite);
 
 	    static std::vector<std::size_t> standUpAnimation{
 	        20 * 13 + 5, 20 * 13 + 4, 20 * 13 + 3,
