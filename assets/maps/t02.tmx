@@ -26,7 +26,7 @@
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,136,134,134,134,134,
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,120,167,134,137,137,137,
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,136,134,134,137,156,137,
-1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,136,137,156,137,137,137,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1704,1,1,1,1,1,1,1,1,136,137,156,137,137,137,
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,136,134,134,137,137,156,
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,149,153,153,185,134,137,
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,136,134,137,
@@ -60,10 +60,10 @@
 0,0,0,938,0,0,0,0,1562,1607,1652,1656,1656,1656,1656,1656,1655,1611,1566,0,0,0,0,0,0,136,0,0,0,0,
 0,0,0,938,0,0,0,0,1607,1652,1697,1704,1704,1704,1704,1704,1705,1655,1611,0,0,51,51,0,117,167,0,0,0,0,
 51,0,0,938,0,0,0,0,1652,1697,1299,1704,1299,1704,1299,1704,1299,1705,1655,0,0,0,0,0,136,0,0,0,0,0,
-51,0,0,938,0,0,0,0,1697,1704,1704,1701,1704,1704,1704,1701,1704,1704,1705,0,0,0,0,0,136,0,0,0,0,0,
-0,97,98,938,0,0,0,0,0,0,0,938,0,0,0,938,0,0,0,0,97,98,0,0,136,0,0,0,0,0,
-0,113,114,938,0,0,0,0,0,0,0,938,0,0,0,938,0,0,0,0,113,114,0,97,98,153,153,183,0,0,
-0,0,0,1028,940,940,940,940,940,940,940,985,940,940,940,1029,0,0,0,0,0,0,0,113,114,0,0,136,0,0,
+51,0,0,938,0,0,0,0,1697,1704,1704,1701,1704,1704,1704,1704,1704,1704,1705,0,0,0,0,0,136,0,0,0,0,0,
+0,97,98,938,0,0,0,0,0,0,0,938,0,0,0,1,0,0,0,0,97,98,0,0,136,0,0,0,0,0,
+0,113,114,938,0,0,0,0,0,0,0,938,0,0,0,1,0,0,0,0,113,114,0,97,98,153,153,183,0,0,
+0,0,0,1028,940,940,940,940,940,940,940,1029,1,1,1,1,0,0,0,0,0,0,0,113,114,0,0,136,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,117,121,167,0,0,
 0,0,0,0,0,0,0,0,97,98,0,0,0,97,98,0,0,97,98,97,98,97,98,0,0,136,0,0,0,0,
 0,0,0,0,0,0,0,0,113,114,0,0,0,113,114,0,97,99,100,99,100,99,100,98,0,136,0,0,0,0,
@@ -120,14 +120,12 @@
     freeze_player(true);
     fade(true, fun(){
 	teleport(player, 14, 19 + 30 * 4);
-	teleport(self, 14, 18 + 30 * 4);
-	face(player);
 	dialog(&quot;&lt;i&gt;A little while later...&lt;/i&gt;&quot;, 
-	fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Ughh. Where am I and why does my head hurt so much?&quot;,
+	fun() { dialog(&quot;&lt;b&gt;Kid:&lt;/b&gt; : Ughh. Where am I and why does my head hurt so much?&quot;,
 	fun() { dialog(&quot;&lt;b&gt;Bothersome Bum&lt;/b&gt; : Oh... Uh... You definitely didn't get drugged and taken to another island so I could sell you off to slavery.&quot;, 	
 	fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Umm... Alright, but I still have to get some milk for my mom.&quot;,
 	fun() { dialog(&quot;&lt;b&gt;Bothersom Bum&lt;/b&gt; : I should follow you around so you don't run awa-- UHHHH, I MEANT TO KEEP YOU SAFE.&quot;,
-	fun() { dialog(&quot;&lt;i&gt;Bothersome Bum is now your follower.&lt;/i&gt;&quot;, fun(){ follow(player); });}
+	fun() { dialog(&quot;&lt;i&gt;Bothersome Bum is now a follower for the kid.&lt;/i&gt;&quot;);}
 	);});});});});
 	play(player, &quot;stand_up&quot;, 200, fun() {freeze_player(false);});
 	fade(false);
@@ -147,7 +145,7 @@ fun() { dialog(&quot;&lt;i&gt;Kid takes the chunky looking rotten milk and takes
 );} );},
 
 fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : I don't have time for this! Get out of my way so I can get back to playing video games!&quot;,
-fun() { dialog(&quot;&lt;b&gt;Bothersome Bum&lt;/b&gt; : You damn inconsiderate kid!&quot;,
+fun() { dialog(&quot;&lt;b&gt;Bothersome Bum&lt;/b&gt; : You dam inconsiderate kid!&quot;,
 fun() { dialog(&quot;&lt;i&gt;Bum drugs the kid and beats him up.&lt;/i&gt;&quot;,
 	get_rekt_by_bum);}
 );});}

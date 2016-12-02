@@ -183,7 +183,7 @@
 </data>
  </layer>
  <objectgroup name="Characters">
-  <object id="1" type="Character" x="282" y="420" width="32" height="32">
+  <object id="1" type="Character" x="288" y="416" width="32" height="32">
    <properties>
     <property name="Collidable" type="bool" value="true"/>
     <property name="OnInteract">face(player);
@@ -198,7 +198,7 @@ fun() { dialog(&quot;&lt;b&gt;Bored Barista Beth&lt;/b&gt; : It doesn't work tha
     <property name="Spritesheet" type="file" value="../images/barista.png"/>
    </properties>
   </object>
-  <object id="2" type="Character" x="472" y="512" width="32" height="32">
+  <object id="2" type="Character" x="480" y="512" width="32" height="32">
    <properties>
     <property name="Collidable" type="bool" value="true"/>
     <property name="OnInteract">face(player);
@@ -208,7 +208,7 @@ prompt(&quot;&lt;b&gt;Not a Morning Person&lt;/b&gt; :  Ugghh mmpphhh grumble.&q
 [
 
 fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : What was that?&quot;,
-fun() { dialog(&quot;&lt;b&gt;Grumpy Not Morning Person&lt;/b&gt; : Go Away I Need My Coffee!&quot;);}
+fun() { dialog(&quot;&lt;b&gt;Grumpy Not Morning Person&lt;/b&gt; : Go away I need my coffee!&quot;);}
 );},
 
 fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Whatever&quot;);}
@@ -217,12 +217,12 @@ fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Whatever&quot;);}
     <property name="Spritesheet" type="file" value="../images/notMorningPerson.png"/>
    </properties>
   </object>
-  <object id="3" type="Character" x="400" y="491" width="32" height="32">
+  <object id="3" type="Character" x="384" y="512" width="32" height="32">
    <properties>
     <property name="Collidable" type="bool" value="true"/>
     <property name="OnInteract">face(player);
 
-prompt(&quot;&lt;b&gt;Greedy Business Man&lt;/b&gt; : Have you heard of Milk-To-Door? It's all the rage, and I just so happen to have access to a screaming deal! Are you interested?.&quot;, 
+prompt(&quot;&lt;b&gt;Busy Business Man&lt;/b&gt; : Have you heard of Milk-To-Door? It's all the rage, and I just so happen to have access to a screaming deal! Are you interested?.&quot;, 
 [&quot;Ya&quot;, &quot;No&quot;],
 [
 
@@ -250,7 +250,7 @@ fun() { dialog(&quot;&lt;b&gt;Salty Business Man&lt;/b&gt; : Suit yourself stupi
     <property name="Spritesheet" type="file" value="../images/businessMan.png"/>
    </properties>
   </object>
-  <object id="4" type="Character" x="574" y="384" width="32" height="32">
+  <object id="4" type="Character" x="576" y="384" width="32" height="32">
    <properties>
     <property name="Collidable" type="bool" value="true"/>
     <property name="OnInteract">face(player);
