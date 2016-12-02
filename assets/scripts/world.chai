@@ -14,6 +14,33 @@ def face(Direction d)
 	return script.face(self, d);
 }
 
+def face(Entity e, Location l)
+{
+	var mine = location(e);
+	var theirs = l;
+
+	var dir;
+
+	if(mine.y <= theirs.y)
+	{
+		dir := DOWN;
+	} 
+	else
+	{
+		dir := UP;
+	}
+	if(mine.x < theirs.x)
+	{
+		dir := RIGHT;
+	}
+	else if(mine.x > theirs.x)
+	{
+		dir := LEFT;
+	}
+
+	script.face(e, dir);
+}
+
 def face(Location l)
 {
 	var mine = location(self);

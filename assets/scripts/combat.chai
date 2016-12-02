@@ -1,10 +1,12 @@
-global arena_loc = Location(1000, 1000);
+global arena_loc = Location(3000, 3000);
 
 global saved_locations;
 global saved_facing;
 
 global combat_enemy;
 global combat_enemy_loc;
+
+global combat_locations;
 
 global enemy_action;
 
@@ -16,6 +18,8 @@ def teleport_to_arena()
 	saved_locations = EntityLocationMap();
 	saved_facing = EntityDirectionMap();
 
+	combat_locations = EntityLocationMap();
+
 	saved_locations[player] = location(player);
 	saved_facing[player] = facing(player);
 
@@ -25,11 +29,15 @@ def teleport_to_arena()
 
 	saved_locations[combat_enemy] = location(combat_enemy);
 	saved_facing[combat_enemy] = facing(combat_enemy);
+
+	combat_locations[combat_enemy] = combat_enemy_loc;
 	script.teleport(combat_enemy, combat_enemy_loc);
 	script.face(combat_enemy, DOWN);
 
+	combat_locations[player] = Location(arena_ctr.x, arena_ctr.y);
 	script.teleport(player, Location(arena_ctr.x, arena_ctr.y));
 	script.face(player, UP);
+
 
 	var followers = range(followers(player));
 	var follower_count = 0;
@@ -45,6 +53,7 @@ def teleport_to_arena()
 		follower_loc.x += (2 * follower_count - 1) % 9;
 		follower_loc.y += (2 * follower_count - 1) / 9;
 
+		combat_locations[follower] = follower_loc;
 		script.teleport(follower, follower_loc);
 		script.face(follower, UP);
 	}
@@ -75,12 +84,12 @@ def combat_end()
 
 def kill_follower(int i)
 {
-	follower_choices.erase(i);
-	follower_actions.erase(i);
+	follower_choices.erase_at(i);
+	follower_actions.erase_at(i);
 
-	follower_healths.erase(i);
+	follower_healths.erase_at(i);
 
-	index_to_followers.erase(i);
+	index_to_follower.erase_at(i);
 	
 	// DELETE THE FOLLOWER FOR REAL
 }
@@ -110,7 +119,33 @@ def combat_loop()
 	prompt("Which follower will you call on?", follower_choices, follower_actions);
 }
 
-global attacking;
+def move_back_to_original_positions(callback)
+{
+	script.walk_to(me, combat_locations[me], fun[callback]()
+	{
+		if(me == combat_enemy)
+		{
+			script.face(me, DOWN);
+		}
+		else
+		{
+			script.face(me, UP);
+		}
+		script.walk_to(attacking, combat_locations[attacking], fun[callback]()
+		{
+			if(attacking == combat_enemy)
+			{
+				script.face(attacking, DOWN);
+			}
+			else
+			{
+				script.face(attacking, UP);
+			}
+			callback();
+		});
+	});
+}
+
 global resume_combat;
 
 def make_follower_action(Entity f)
@@ -134,7 +169,10 @@ def make_follower_action(Entity f)
 
 				resume_combat = fun()
 				{
-					combat_loop();
+					move_back_to_original_positions(fun()
+					{
+						combat_loop();
+					});
 				};
 
 				enemy_action();
@@ -225,6 +263,7 @@ def do_combat(string arena, Entity enemy)
 
 // Stuff that can be used by OnCombat
 global me;
+global attacking;
 
 def damage(Entity e, int damage)
 {
@@ -236,26 +275,22 @@ def damage(Entity e, int damage)
 	{
 		var index = follower_to_index(e);
 
-		followers_health[index] -= damage;
+		follower_healths[index] -= damage;
 	}
 }
 
-def walk_to_attack_location(Entity e, Function callback)
+def walk_in_enemy_melee_range(Function callback)
 {
-	if(e == combat_enemy)
+	var attacking_loc = location(attacking);
+
+	if(me == combat_enemy)
 	{
-		script.face(e, DOWN);
-		callback();
+		attacking_loc.y -= 1;
 	}
 	else
 	{
-		var loc_in_line = location(e);
-
-		walk_to(e, Location(combat_enemy_loc.x, combat_enemy_loc.y + 1), 
-		fun()
-		{
-			script.face(e, UP);
-			callback();
-		});
+		attacking_loc.y += 1;
 	}
+
+	script.walk_to(me, attacking_loc, callback);
 }
