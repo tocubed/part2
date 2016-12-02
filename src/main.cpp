@@ -139,10 +139,22 @@ EntityIndex addFollower(EntityIndex entityAhead)
 	auto& scripts = manager.addComponent(follower, CScripts{});
 	scripts["Name"] = "Orc";
 	scripts["OnCombat"] = R"(
-			dialog("<b>Orc</b> : Yes boss!", fun()
+			dialog("<b>Orc</b> : Yes, boss!", fun()
 			{
-				damage(combat_enemy, 25);
-				resume_combat();
+				walk_in_enemy_melee_range(fun()
+				{
+					damage(combat_enemy, 25);
+					resume_combat();
+				});
+			});
+	)";
+	scripts["OnDefeat"] = R"(
+			dialog("<b>Orc</b> : I am finished!", fun()
+			{
+				play(me, "stand_down", 200, fun()
+				{
+					resume_combat();
+				});
 			});
 	)";
 
@@ -176,7 +188,7 @@ int main(int argc, char** argv)
 	EntityIndex player = addPlayer();
 
 	EntityIndex following = player;
-	for(auto i = 0u; i < 10; i++)
+	for(auto i = 0u; i < 5; i++)
 	{
 		following = addFollower(following);
 	}

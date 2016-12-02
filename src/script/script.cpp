@@ -67,9 +67,18 @@ ScriptSystem::ScriptSystem(Manager& manager, Overworld& overworld)
 
 	chai.add(chaiscript::fun(&ScriptSystem::getFollowers), "followers");
 	chai.add(chaiscript::fun(&ScriptSystem::becomeFollower), "follow");
+	chai.add(chaiscript::fun(&ScriptSystem::killCharacter), "kill_character");
 
 	chai.add(chaiscript::fun(&ScriptSystem::loadMap), "load_map");
 	chai.add(chaiscript::fun(&ScriptSystem::unloadMap), "unload_map");
+
+	chai.add(chaiscript::fun([&manager](EntityIndex who, bool tag)
+	{
+		if(tag)
+			manager.addTag<TFollower>(who);
+		else
+			manager.removeTag<TFollower>(who);
+	}), "tag_follower");
 
 	chai.add(
 	    chaiscript::fun([&manager](EntityIndex who, const std::string& what) {
@@ -401,7 +410,7 @@ std::vector<EntityIndex> ScriptSystem::getFollowers(EntityIndex character) const
 {
 	std::map<EntityIndex, EntityIndex> followerMap;
 
-	manager.forEntitiesHaving<TFollower, CFollowOrder>(
+	manager.forEntitiesHaving<CFollowOrder>(
 	[=, &followerMap](EntityIndex follower)
 	{
 		auto following = manager.getComponent<CFollowOrder>(follower).entityAhead;
@@ -458,6 +467,27 @@ void ScriptSystem::becomeFollower(EntityIndex character, EntityIndex following)
 		if(walkToLocation(character, behind, finishWalk))
 			break;
 	}
+}
+
+void ScriptSystem::killCharacter(EntityIndex character)
+{
+	auto followers = getFollowers(character);
+
+	if(manager.hasComponent<CFollowOrder>(character))
+	{
+		for(auto i = followers.size() - 1; i >= 1u; i--)
+		{
+			manager.getComponent<CFollowOrder>(followers[i]).entityAhead =
+			    manager.getComponent<CFollowOrder>(followers[i - 1])
+			        .entityAhead;
+		}
+
+		if(followers.size() > 0)
+			manager.getComponent<CFollowOrder>(followers[0]).entityAhead =
+			    manager.getComponent<CFollowOrder>(character).entityAhead;
+	}
+	
+	manager.deleteEntity(character);
 }
 
 TileLocation ScriptSystem::getTileLocation(EntityIndex entity) const

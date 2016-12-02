@@ -40,6 +40,7 @@ public:
 
 	std::vector<EntityIndex> getFollowers(EntityIndex character) const;
 	void becomeFollower(EntityIndex character, EntityIndex following);
+	void killCharacter(EntityIndex character);
 
 	TileLocation getTileLocation(EntityIndex entity) const;
 	bool makeEntityFace(EntityIndex character, Direction dir);

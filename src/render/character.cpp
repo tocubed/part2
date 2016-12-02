@@ -142,6 +142,11 @@ namespace Character
 	        20 * 13 + 2, 20 * 13 + 1, 20 * 13};
 		animatedSprite->addAnimation("stand_up", standUpAnimation);
 
+	    static std::vector<std::size_t> standDownAnimation{
+	        20 * 13, 20 * 13 + 1, 20 * 13 + 2,
+	        20 * 13 + 3, 20 * 13 + 4, 20 * 13 + 5};
+		animatedSprite->addAnimation("stand_down", standDownAnimation);
+
 	    return animatedSprite;
     }
 

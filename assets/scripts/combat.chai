@@ -49,13 +49,14 @@ def teleport_to_arena()
 		saved_locations[follower] = location(follower);
 		saved_facing[follower] = facing(follower);
 
-		var follower_loc = Location(arena_ctr.x - 4, arena_ctr.y + 1);
-		follower_loc.x += (2 * follower_count - 1) % 9;
-		follower_loc.y += (2 * follower_count - 1) / 9;
+		var follower_loc = Location(arena_ctr.x - 4, arena_ctr.y + 2);
+		follower_loc.x += ((2 * follower_count - 1) % 9);
+		follower_loc.y += ((2 * follower_count - 1) / 9);
 
 		combat_locations[follower] = follower_loc;
 		script.teleport(follower, follower_loc);
 		script.face(follower, UP);
+		tag_follower(follower, false);
 	}
 }
 
@@ -89,9 +90,8 @@ def kill_follower(int i)
 
 	follower_healths.erase_at(i);
 
+	//script.kill_character(index_to_follower[i]);
 	index_to_follower.erase_at(i);
-	
-	// DELETE THE FOLLOWER FOR REAL
 }
 
 def check_if_followers_died()
@@ -146,6 +146,94 @@ def move_back_to_original_positions(callback)
 	});
 }
 
+def check_defeated(callback)
+{
+	var defeat_me = fun(callback)
+	{
+		var defeated = false;
+
+		if(me == combat_enemy)
+		{
+			if(enemy_health <= 0)
+			{
+				defeated = true;
+			}
+		}
+		else
+		{
+			if(follower_healths[follower_to_index(me)] <= 0)
+			{
+				defeated = true;
+			}
+		}
+		
+		if(defeated)
+		{
+			return fun[callback]()
+			{
+				resume_combat = callback;
+				eval(get_script(me, "OnDefeat"));
+			};
+		}
+		else
+		{
+			return callback;
+		}
+	};
+
+	var defeat_attacking = fun(callback)
+	{
+		var defeated = false;
+
+		if(attacking == combat_enemy)
+		{
+			if(enemy_health <= 0)
+			{
+				defeated = true;
+			}
+		}
+		else
+		{
+			if(follower_healths[follower_to_index(attacking)] <= 0)
+			{
+				defeated = true;
+			}
+		}
+		
+		if(defeated)
+		{
+			return fun[callback]()
+			{
+				resume_combat = fun[callback]()
+				{
+					var temp = me;
+					me = attacking;
+					attacking = me;
+					callback();
+				};
+				
+				var temp = me;
+				me = attacking;
+				attacking = me;
+
+				eval(get_script(attacking, "OnDefeat"));
+			};
+		}
+		else
+		{
+			return callback;
+		}
+	};
+
+	defeat_me(fun[callback, defeat_attacking]()
+	{
+		defeat_attacking(fun[callback]()
+		{
+			callback();
+		})();
+	})();
+}
+
 global resume_combat;
 
 def make_follower_action(Entity f)
@@ -171,7 +259,10 @@ def make_follower_action(Entity f)
 				{
 					move_back_to_original_positions(fun()
 					{
-						combat_loop();
+						check_defeated(fun()
+						{
+							combat_loop();
+						});
 					});
 				};
 
@@ -235,6 +326,8 @@ def end_combat()
 		{
 			script.teleport(follower, saved_locations[follower]);
 			script.face(follower, saved_facing[follower]);
+
+			tag_follower(follower, true);
 		}
 
 		script.unload_map(arena_loc);
@@ -292,5 +385,16 @@ def walk_in_enemy_melee_range(Function callback)
 		attacking_loc.y += 1;
 	}
 
-	script.walk_to(me, attacking_loc, callback);
+	script.walk_to(me, attacking_loc, fun[callback]()
+	{
+		if(me == combat_enemy)
+		{
+			script.face(me, DOWN);
+		}
+		else
+		{
+			script.face(me, UP);
+		}
+		callback();
+	});
 }
