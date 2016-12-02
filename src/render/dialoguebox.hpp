@@ -92,7 +92,7 @@ private:
 	{
 		bool bold = (style & sf::Text::Style::Bold) != 0;
 
-		unsigned int maxLineWidth = dimensions.x - 24;
+		int maxLineWidth = dimensions.x - 24;
 
 		auto remaining = str;
 		while(remaining.size() > 0)
@@ -133,11 +133,11 @@ private:
 	unsigned int currentLineWidth;
 
 private:
-	std::size_t calculateSplit(const std::string& text, unsigned int maxWidth,
+	std::size_t calculateSplit(const std::string& text, int maxWidth,
 		                       unsigned int characterSize, bool bold)
 	{
 		auto i = 0;
-		auto width = 0u;
+		auto width = 0;
 
 		while(i < text.size())
 		{
