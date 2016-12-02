@@ -78,9 +78,26 @@ def follower_to_index(Entity f)
 	}
 }
 
+def all_followers_dead()
+{
+	var all_followers_dead = true;
+
+	for(health: range(follower_healths))
+	{
+		all_followers_dead = (health <= 0) && all_followers_dead;
+	}
+
+	return all_followers_dead;
+}
+
+def enemy_dead()
+{
+	return enemy_health <= 0;
+}
+
 def combat_end()
 {
-	return enemy_health <= 0 || follower_healths.size() == 0;
+	return enemy_dead() || all_followers_dead();
 }
 
 def kill_follower(int i)
@@ -90,7 +107,20 @@ def kill_follower(int i)
 
 	follower_healths.erase_at(i);
 
-	//script.kill_character(index_to_follower[i]);
+	var i_followers = followers(index_to_follower[i]);
+	for(var j = i_followers.size(); j > 1; --j)
+	{
+		saved_locations[i_followers[j - 1]] = saved_locations[i_followers[j - 2]];
+		saved_facing[i_followers[j - 1]] = saved_facing[i_followers[j - 2]];
+	}
+
+	if(i_followers.size() > 0)
+	{
+		saved_locations[i_followers[0]] = saved_locations[index_to_follower[i]];
+		saved_facing[i_followers[0]] = saved_facing[index_to_follower[i]];
+	}
+
+	script.kill_character(index_to_follower[i]);
 	index_to_follower.erase_at(i);
 }
 
@@ -246,28 +276,28 @@ def make_follower_action(Entity f)
 		attacking = combat_enemy;
 
 		resume_combat = fun[follower]() {
-			if(combat_end())
-			{
-				end_combat();
-			}
-			else
-			{
-				me = combat_enemy;
-				attacking = follower;
+			me = combat_enemy;
+			attacking = follower;
 
-				resume_combat = fun()
+			resume_combat = fun()
+			{
+				move_back_to_original_positions(fun()
 				{
-					move_back_to_original_positions(fun()
+					check_defeated(fun()
 					{
-						check_defeated(fun()
+						if(combat_end())
+						{
+							end_combat();
+						}
+						else
 						{
 							combat_loop();
-						});
+						}
 					});
-				};
+				});
+			};
 
-				enemy_action();
-			}
+			enemy_action();
 		};
 
 		eval(get_script(follower, "OnCombat"));
@@ -307,38 +337,59 @@ def init_followers()
 	}
 }
 
+global end_combat_callback;
+
 def end_combat()
 {
-	fade(true, fun()
+	show_healthbars(false);
+
+	if(all_followers_dead())
 	{
-		freeze_player(false);
-
-		fade(false);
-
-		script.teleport(combat_enemy, saved_locations[combat_enemy]);
-		script.face(combat_enemy, saved_facing[combat_enemy]);
-
-		script.teleport(player, saved_locations[player]);
-		script.face(player, saved_facing[player]);
-
-		var followers = range(followers(player));
-		for(follower: followers)
+		fade(true, fun()
 		{
-			script.teleport(follower, saved_locations[follower]);
-			script.face(follower, saved_facing[follower]);
+			dialog("<i>Without any followers to guide him, the Kid becomes lost in a jungle and invents coconut milk.</i>", fun()
+			{
+				dialog("<b>GAME OVER</b>");
+			});
+		});
+	}
+	else
+	{
+		fade(true, fun()
+		{
+			freeze_player(false);
 
-			tag_follower(follower, true);
-		}
+			fade(false);
 
-		script.unload_map(arena_loc);
-	});
+			script.teleport(combat_enemy, saved_locations[combat_enemy]);
+			script.face(combat_enemy, saved_facing[combat_enemy]);
+
+			script.teleport(player, saved_locations[player]);
+			script.face(player, saved_facing[player]);
+
+			var followers = range(followers(player));
+			for(follower: followers)
+			{
+				script.teleport(follower, saved_locations[follower]);
+				script.face(follower, saved_facing[follower]);
+
+				tag_follower(follower, true);
+			}
+
+			end_combat_callback();
+
+			script.unload_map(arena_loc);
+		});
+	}
 }
 
-def do_combat(string arena, Entity enemy)
-{
-	combat_enemy = enemy;
 
+def do_combat(string arena, Entity enemy, Function callback)
+{
 	script.load_map("assets/maps/arenas/"+arena+".tmx", arena_loc);
+
+	combat_enemy = enemy;
+	end_combat_callback = callback;
 
 	freeze_player(true);
 
@@ -349,6 +400,8 @@ def do_combat(string arena, Entity enemy)
 		teleport_to_arena();
 		init_enemy();
 		init_followers();
+
+		show_healthbars(true);
 
 		combat_loop();
 	});

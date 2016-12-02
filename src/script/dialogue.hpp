@@ -83,7 +83,7 @@ namespace Dialogue
 		location.x += 8 * 32;
 		location.y += 8 * 32 - 4 * 32 /* dialog box y-dimension */;
 
-		location.zLevel = 1000;
+		location.zLevel = 20000;
 
 		std::shared_ptr<MenuBox> menuBox = loadMenuBox(options);
 
@@ -114,7 +114,7 @@ namespace Dialogue
 		location.x -= 7 * 32;
 		location.y += 8 * 32 - dimensions.y;
 
-		location.zLevel = 1000;
+		location.zLevel = 20000;
 
 		manager.addComponent(dialogue, CLocation{location});
 	    manager.addComponent(

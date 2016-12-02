@@ -15,8 +15,19 @@ namespace
 }
 
 ScriptSystem::ScriptSystem(Manager& manager, Overworld& overworld)
-	: System(manager), overworld(overworld), chai(Script::getChaiScript())
+	: System(manager), overworld(overworld), chai(Script::getChaiScript()),
+	  showHealthBars(false), healthBars()
 {
+	fadeRectangle =
+	    std::make_shared<sf::RectangleShape>(sf::Vector2f(1000000, 1000000));
+	fadeRectangle->setFillColor(sf::Color(0, 0, 0, 0));
+
+	auto fader = manager.createEntity();
+
+	manager.addComponent(fader, CLocation{-500000, -500000, 10000});
+	manager.addComponent(fader, CDrawable{fadeRectangle}); 
+
+	// Chaiscript Bindings
 	chai.add_global(chaiscript::var(this), "script");
 	
 	chai.add(chaiscript::fun(&ScriptSystem::openDialog), "dialog");
@@ -64,6 +75,10 @@ ScriptSystem::ScriptSystem(Manager& manager, Overworld& overworld)
 
 	chai.add(chaiscript::fun(&ScriptSystem::playAnimation), "play");
 	chai.add(chaiscript::fun(&ScriptSystem::screenFade), "fade");
+
+	chai.add(
+	    chaiscript::fun([=](bool show) { showHealthBars = show; }),
+	    "show_healthbars");
 
 	chai.add(chaiscript::fun(&ScriptSystem::getFollowers), "followers");
 	chai.add(chaiscript::fun(&ScriptSystem::becomeFollower), "follow");
@@ -127,6 +142,8 @@ void ScriptSystem::update(sf::Time delta)
 		else
 			++it;
 	}
+
+	displayHealthBars();
 }
 
 void ScriptSystem::walkPath(
@@ -473,20 +490,12 @@ void ScriptSystem::killCharacter(EntityIndex character)
 {
 	auto followers = getFollowers(character);
 
-	if(manager.hasComponent<CFollowOrder>(character))
+	if(followers.size() > 0 && manager.hasComponent<CFollowOrder>(character))
 	{
-		for(auto i = followers.size() - 1; i >= 1u; i--)
-		{
-			manager.getComponent<CFollowOrder>(followers[i]).entityAhead =
-			    manager.getComponent<CFollowOrder>(followers[i - 1])
-			        .entityAhead;
-		}
-
-		if(followers.size() > 0)
-			manager.getComponent<CFollowOrder>(followers[0]).entityAhead =
-			    manager.getComponent<CFollowOrder>(character).entityAhead;
+		manager.getComponent<CFollowOrder>(followers[0]).entityAhead =
+			manager.getComponent<CFollowOrder>(character).entityAhead;
 	}
-	
+
 	manager.deleteEntity(character);
 }
 
@@ -508,30 +517,17 @@ bool ScriptSystem::makeEntityFace(EntityIndex character, Direction dir)
 
 void ScriptSystem::screenFade(bool out, std::function<void()> callback)
 {
-	auto fader = manager.createEntity();
-	
-	manager.addComponent(fader, CLocation{-500000, -500000, 10000});
-
-	auto rectangle =
-	    std::make_shared<sf::RectangleShape>(sf::Vector2f(1000000, 1000000));
-	manager.addComponent(fader, CDrawable{rectangle}); 
-
 	int opacity = out ? 0 : 255;
-	rectangle->setFillColor(sf::Color(0, 0, 0, opacity));
+	fadeRectangle->setFillColor(sf::Color(0, 0, 0, opacity));
 
-	auto fadeRectangle = [=]() mutable
+	auto doFadeRectangle = [=]() mutable
 	{
 		opacity += (out ? 10 : -10);
+		opacity = std::min(std::max(0, opacity), 255);
 
-		rectangle->setFillColor(sf::Color(0, 0, 0, opacity));
+		fadeRectangle->setFillColor(sf::Color(0, 0, 0, opacity));
 
-		return out ? opacity >= 255 : opacity <= 0;
-	};
-
-	auto removeRectangle = [=]()
-	{
-		manager.deleteEntity(fader);
-		return true;
+		return out ? opacity == 255 : opacity == 0;
 	};
 
 	auto callCallback = [=]()
@@ -540,7 +536,89 @@ void ScriptSystem::screenFade(bool out, std::function<void()> callback)
 		return true;
 	};
 
-	doLatentInOrder({fadeRectangle, removeRectangle, callCallback});
+	doLatentInOrder({doFadeRectangle, callCallback});
+}
+
+void ScriptSystem::makeHealthBarFor(EntityIndex character)
+{
+	auto healthbar = manager.createEntity();
+
+	manager.addComponent(healthbar, CLocation{});
+	manager.addComponent(
+	    healthbar, CDrawable{std::make_shared<sf::RectangleShape>()});
+
+	healthBars[character] = healthbar;
+}
+
+void ScriptSystem::setHealthBarFor(EntityIndex character, int health)
+{
+	if(health <= 0)
+		return;
+
+	auto it = healthBars.find(character);
+	auto healthbar = it->second;
+
+	auto& drawable = manager.getComponent<CDrawable>(healthbar);
+	auto& bar = static_cast<sf::RectangleShape&>(*(drawable.drawable));
+
+	if(health <= 25)
+		bar.setFillColor(sf::Color(255, 0, 0, 200));
+	else if(health <= 50)
+		bar.setFillColor(sf::Color(255, 255, 0, 200));
+	else
+		bar.setFillColor(sf::Color(0, 255, 0, 200));
+
+	bar.setOutlineColor(sf::Color(0, 0, 0, 255));
+	bar.setOutlineThickness(1);
+
+	bar.setSize(sf::Vector2f((32 * health) / 100, 4));
+}
+
+void ScriptSystem::displayHealthBars()
+{
+	for(auto it: healthBars)
+	{
+		auto character = it.first;
+		auto healthbar = it.second;
+
+		auto& drawable = manager.getComponent<CDrawable>(healthbar);
+		auto& bar = static_cast<sf::RectangleShape&>(*(drawable.drawable));
+
+		// Hide all bars
+		bar.setFillColor(sf::Color(0, 0, 0, 0));
+		bar.setOutlineColor(sf::Color(0, 0, 0, 0));
+		bar.setOutlineThickness(0);
+
+		auto& char_location = manager.getComponent<CLocation>(character);
+		auto& bar_location = manager.getComponent<CLocation>(healthbar);
+		
+		// Follow character
+		bar_location.x = char_location.x;
+		bar_location.y = char_location.y - 24;
+		bar_location.zLevel = char_location.zLevel + 1;
+	}
+
+	if(!showHealthBars)
+		return;
+
+	auto enemy = chai.eval<EntityIndex>("combat_enemy");
+	if(healthBars.count(enemy) == 0)
+		makeHealthBarFor(enemy);
+
+	auto enemy_health = chai.eval<int>("enemy_health");
+	setHealthBarFor(enemy, enemy_health);
+
+	for(auto i = 0; i < chai.eval<int>("int(index_to_follower.size())"); i++)
+	{
+		auto follower = chai.eval<EntityIndex>(
+		    "index_to_follower[" + std::to_string(i) + "]");
+		if(healthBars.count(follower) == 0)
+			makeHealthBarFor(follower);
+
+		auto follower_health = chai.eval<int>(
+		    "follower_healths[" + std::to_string(i) + "]");
+		setHealthBarFor(follower, follower_health);
+	}
 }
 
 void ScriptSystem::loadMap(const std::string& mapFile, TileLocation location)

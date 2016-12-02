@@ -7,6 +7,7 @@
 
 #include <functional>
 #include <list>
+#include <memory>
 
 class ScriptSystem : System
 {
@@ -47,6 +48,10 @@ public:
 
 	void screenFade(bool out, std::function<void()> callback);
 
+	void makeHealthBarFor(EntityIndex character);
+	void setHealthBarFor(EntityIndex character, int health);
+	void displayHealthBars();
+
 	void loadMap(const std::string& mapFile, TileLocation location);
 	void unloadMap(TileLocation location);
 
@@ -54,6 +59,12 @@ public:
 
 	void doLatent(std::function<bool()> func);
 	void doLatentInOrder(std::vector<std::function<bool()>> funcs);
+
+private:
+	std::shared_ptr<sf::RectangleShape> fadeRectangle;
+
+	bool showHealthBars;
+	std::map<EntityIndex, EntityIndex> healthBars;
 
 private:
 	Overworld& overworld;
