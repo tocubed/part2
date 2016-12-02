@@ -1,0 +1,53 @@
+global surfer_combat_counter;
+if(surfer_combat_counter.is_var_undef())
+{
+	surfer_combat_counter = 0;
+}
+
+surfer_combat_counter += 1;
+
+var i = surfer_combat_counter % 4; 
+var surfer_attack = [
+fun() {
+	play(me, "slash_down", 100, fun()
+	{
+		dialog("<i>The " + name(me) + " slams the " + name(attacking) + 
+			   " with his board, causing 20 damage!</i>", resume_combat);
+		damage(attacking, 20);
+	});
+},
+fun() {
+	play(me, "spell_down", 200, fun()
+	{
+		dialog("<i>The " + name(me) + " calls upon Broseidon and washes out the " +
+			   name(attacking) + 
+			   " with a wave, causing 35 damage!</i>", resume_combat);
+		damage(attacking, 35);
+	});
+},
+fun() {
+	play(me, "slash_left", 75, fun()
+	{
+	play(me, "slash_right", 75, fun()
+	{
+		script.face(me, DOWN);
+		dialog("<i>The " + name(me) + " summons seagulls who peck the " +
+			   name(attacking) + 
+			   " for 10 damage!</i>", resume_combat);
+		damage(attacking, 10);
+	});});
+},
+fun() {
+	play(me, "walk_down", 50, fun()
+	{
+	play(me, "walk_down", 25, fun()
+	{
+		dialog("<i>The " + name(me) + " kicks sand in the " +
+			   name(attacking) + 
+			   "'s eyes, blinding them and causing 25 damage!</i>", resume_combat);
+		damage(attacking, 25);
+	});});
+}
+][i];
+
+walk_in_enemy_melee_range(surfer_attack);

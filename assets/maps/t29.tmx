@@ -321,19 +321,17 @@ fun() { dialog(&quot;&lt;b&gt;Sinewy Sun Bather&lt;/b&gt; : Come on kid, help a 
   <object id="2" type="Character" x="672" y="480" width="32" height="32">
    <properties>
     <property name="Collidable" type="bool" value="true"/>
-    <property name="OnCombat">dialog(&quot;&lt;b&gt;Scornful Surfer Bro&lt;/b&gt; : My turn!&quot;, fun() {
-	walk_in_enemy_melee_range(fun() {
-		play(self, &quot;slash_down&quot;, 50, fun() {
-			damage(attacking, 100);
-			resume_combat();
-		});
-	});
+    <property name="Name" value="Surfer"/>
+    <property name="OnCombat" type="file" value="../scripts/combat/surfer.chai"/>
+    <property name="OnDefeat">dialog(&quot;&lt;b&gt;Scornful Surfer Bro&lt;/b&gt; : PLACEHOLDER DEFEATED TEXT!&quot;, fun()
+{
+play(me, &quot;stand_down&quot;, 200, fun(){});
+resume_combat();
 });</property>
-    <property name="OnDefeat" value="resume_combat();"/>
     <property name="OnInteract">face(player);
 
 dialog(&quot;&lt;b&gt;Scornful Surfer Bro&lt;/b&gt; : Get off my beach you kook!&quot;,
-fun() {do_combat(&quot;beach&quot;, self, fun(){}); }
+fun() {do_combat(&quot;beach&quot;, self, fun(){ script.kill_character(self); }); }
 );</property>
     <property name="Orientation" value="Up"/>
     <property name="Spritesheet" type="file" value="../images/surferBro2.png"/>
