@@ -19,7 +19,7 @@ fun() {
 	play(me, "stand_down", 100, fun()
 	{
 		dialog("<i>The " + name(me) + " slips on his sun tan oil, falling over and taking 20 damage!</i>", resume_combat);
-		damage(me, 15);
+		damage(me, 20);
 	});});});
 },
 fun() {

@@ -40,7 +40,7 @@ fun() {
 	{
 		dialog("<i>The " + name(me) + " throws a rock at the " +
 			   name(attacking) + 
-			   " and it bounces off the his sinewy body, doing 0 damage!</i>", resume_combat);
+			   " and it bounces off his sinewy body, doing 0 damage!</i>", resume_combat);
 	});});});
 },
 fun() {
