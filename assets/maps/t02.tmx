@@ -121,8 +121,7 @@
 fun(){dialog(&quot;&lt;i&gt;Bothersome Bum has died.&lt;/i&gt;&quot;,
 fun()
 {
-play(me, &quot;stand_down&quot;, 200, fun(){});
-resume_combat();
+play(me, &quot;stand_down&quot;, 200, resume_combat);
 }
 );} );</property>
     <property name="OnInteract">global get_rekt_by_bum = fun()
@@ -135,9 +134,9 @@ resume_combat();
 	script.face(self, DOWN);
 	dialog(&quot;&lt;i&gt;A little while later...&lt;/i&gt;&quot;, 
 	fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Ughh. Where am I and why does my head hurt so much?&quot;,
-	fun() { dialog(&quot;&lt;b&gt;Bothersome Bum&lt;/b&gt; : Oh... Uh... You definitely didn't get drugged and taken to another island so I could recuit you for the Milkmen.&quot;, 	
+	fun() { dialog(&quot;&lt;b&gt;Bothersome Bum&lt;/b&gt; : Oh... Uh... You definitely didn't get drugged and taken to another island so I could recruit you for the Milkmen.&quot;, 	
 	fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Umm... Alright, but I still have to get some milk for my mom.&quot;,
-	fun() { dialog(&quot;&lt;b&gt;Bothersom Bum&lt;/b&gt; : I should follow you around so you don't run awa-- UHHHH, I MEANT TO KEEP YOU SAFE!&quot;,
+	fun() { dialog(&quot;&lt;b&gt;Bothersome Bum&lt;/b&gt; : I should follow you around so you don't run awa-- UHHHH, I MEANT TO KEEP YOU SAFE!&quot;,
 	fun() { dialog(&quot;&lt;i&gt;Bothersome Bum is now your follower.&lt;/i&gt;&quot;, fun() { follow(player); });}
 	);});});});});
 	play(player, &quot;stand_up&quot;, 200, fun() {freeze_player(false);});

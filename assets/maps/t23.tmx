@@ -226,8 +226,7 @@ fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Whatever&quot;);}
 fun(){dialog(&quot;&lt;i&gt;Shady Milk Dealer has been died&lt;/i&gt;&quot;,
 fun()
 {
-play(me, &quot;stand_down&quot;, 200, fun(){});
-resume_combat();
+play(me, &quot;stand_down&quot;, 200, resume_combat);
 }
 );} );</property>
     <property name="OnInteract">face(player);
