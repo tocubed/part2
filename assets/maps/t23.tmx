@@ -265,7 +265,7 @@ fun() { dialog(&quot;&lt;b&gt;Salty Milk Dealer&lt;/b&gt; : Suit yourself stupid
     <property name="Collidable" type="bool" value="true"/>
     <property name="Name" value="Vegan"/>
     <property name="OnCombat" type="file" value="../scripts/combat/vegan.chai"/>
-    <property name="OnDefeat">dialog(&quot;&lt;b&gt;Vexing Vegan&lt;/b&gt; : There better be vegan cheese in heaven!&quot;, 
+    <property name="OnDefeat">dialog(&quot;&lt;b&gt;Vexing Vegan&lt;/b&gt; : You may have defeated me, but you will never defeat C.A.T.T.T.L.E!&quot;, 
 fun(){dialog(&quot;&lt;i&gt;Vexing Vegan has been defeated&lt;/i&gt;&quot;,
 fun()
 {
