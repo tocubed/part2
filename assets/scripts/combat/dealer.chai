@@ -1,0 +1,42 @@
+global dealer_combat_counter;
+if(dealer_combat_counter.is_var_undef())
+{
+	dealer_combat_counter = 0;
+}
+
+dealer_combat_counter += 1;
+
+var i = dealer_combat_counter % 2; 
+
+if(name(attacking) == "Vegan")
+{
+var dealer_attack = [
+fun() {
+	play(me, "slash_up", 25, fun()
+	{
+	play(me, "slash_up", 25, fun()
+	{
+	play(me, "slash_up", 25, fun()
+	{
+	play(me, "slash_up", 25, fun()
+	{
+	play(me, "slash_up", 25, fun()
+	{
+		dialog("<i>The " + name(me) + " throws his business cards at the " + name(attacking) + " causing sever papercuts! " + name(attacking) + " takes 25 damage!</i>", resume_combat);
+		damage(attacking, 15);
+	});});});});});
+},
+fun() {
+	play(me, "idle_left", 25, fun()
+	{
+	play(me, "idle_right", 25, fun()
+	{
+	play(me, "spell_down", 75, fun()
+	{
+		dialog("<i>The " + name(me) + " cranks up the volume on his beeper, deafening the " + name(attacking) + " and causing 15 damage!</i>", resume_combat);
+	});});});
+}
+][i];
+
+walk_in_enemy_melee_range(dealer_attack);
+}

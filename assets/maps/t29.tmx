@@ -298,6 +298,8 @@
    <properties>
     <property name="Collidable" type="bool" value="true"/>
     <property name="Name" value="Bather"/>
+    <property name="OnCombat" type="file" value="../scripts/combat/bather.chai"/>
+    <property name="OnDefeat" value="resume_combat();"/>
     <property name="OnInteract">face(player);
 
 prompt(&quot;&lt;b&gt;Sinewy Sun Bather&lt;/b&gt; : Hey kid, my back is frying. Mind rubbing lotion all over me?&quot;, 

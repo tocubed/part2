@@ -117,9 +117,9 @@ EntityIndex addPlayer()
 	manager.addTag<TPlayer>(player);
 	manager.addComponent(player, CPlayer{false});
 
-	manager.getComponent<CLocation>(player) = {29 * 32, 139 * 32, 99};
+	//manager.getComponent<CLocation>(player) = {29 * 32, 139 * 32, 99};
 	//manager.getComponent<CLocation>(player) = {29 * 32, 19 * 32, 99};
-	//manager.getComponent<CLocation>(player) = {7 * 32, 19 * 32, 99};
+	manager.getComponent<CLocation>(player) = {7 * 32, 19 * 32, 99};
 
 	return player;
 }
@@ -188,7 +188,7 @@ int main(int argc, char** argv)
 	EntityIndex player = addPlayer();
 
 	EntityIndex following = player;
-	for(auto i = 0u; i < 10; i++)
+	for(auto i = 0u; i < 0; i++)
 	{
 		following = addFollower(following);
 	}

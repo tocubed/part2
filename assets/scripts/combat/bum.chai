@@ -1,0 +1,71 @@
+global bum_combat_counter;
+if(bum_combat_counter.is_var_undef())
+{
+	bum_combat_counter = 0;
+}
+
+bum_combat_counter += 1;
+
+var i = bum_combat_counter % 2; 
+
+if(name(attacking) == "Surfer")
+{
+var bum_attack = [
+fun() {
+	play(me, "walk_up", 50, fun()
+	{
+	play(me, "walk_up", 25, fun()
+	{
+		dialog("<i>The " + name(me) + " charges the " + name(attacking) + " with his cart, causing 20 damage!</i>", resume_combat);
+		damage(attacking, 20);
+	});});
+},
+fun() {
+	play(me, "slash_up", 75, fun()
+	{
+		dialog("<i>The " + name(me) + " pulls a flask out of his coat and splashes the " + name(attacking) + "!", fun()
+	{
+	play(attacking, "stand_down", 150, fun()
+	{
+		dialog("<i>The " + name(attacking) + " becomes disoriented and incoherent, falling over and taking 30 damage!</i>", resume_combat);
+		damage(attacking, 30);
+	});});});
+}
+][i];
+
+walk_in_enemy_melee_range(bum_attack);
+}
+
+if(name(attacking) == "Vegan")
+{
+var bum_attack = [
+fun() {
+	play(me, "slash_up", 25, fun()
+	{
+	play(me, "slash_up", 25, fun()
+	{
+	play(me, "slash_up", 25, fun()
+	{
+		dialog("<i>The " + name(me) + " lectures the " + name(attacking) + " on the benefits of meat using crazy-uncle logic, causing 30 brain damage!</i>", resume_combat);
+		damage(attacking, 30);
+	});})});
+},
+fun() {
+	play(me, "slash_up", 250, fun()
+	{
+	play(me, "thrust_up", 50, fun()
+	{
+		dialog("<i>The " + name(me) + " pulls out rancid meat from under his hat and hurls it at the " + name(attacking) + "!</i>", fun()
+	{
+	walk_relative(attacking, 1, 0, fun()
+	{
+	play(attacking, "stand_down", 100, fun()
+	{
+		dialog("<i>The " + name(attacking) + " recoils in disgust before being paralyzed by the smell, taking 25 damage!</i>", resume_combat);
+		damage(attacking, 25);
+	});});});});});
+}
+][i];
+
+walk_in_enemy_melee_range(bum_attack);
+}
