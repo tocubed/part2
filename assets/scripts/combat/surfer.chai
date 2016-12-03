@@ -21,8 +21,8 @@ fun() {
 	{
 		dialog("<i>The " + name(me) + " calls upon Broseidon and washes out the " +
 			   name(attacking) + 
-			   " with a wave, causing 35 damage!</i>", resume_combat);
-		damage(attacking, 35);
+			   " with a wave, causing 30 damage!</i>", resume_combat);
+		damage(attacking, 30);
 	});
 },
 fun() {
@@ -44,8 +44,8 @@ fun() {
 	{
 		dialog("<i>The " + name(me) + " kicks sand in the " +
 			   name(attacking) + 
-			   "'s eyes, blinding them and causing 25 damage!</i>", resume_combat);
-		damage(attacking, 25);
+			   "'s eyes, blinding them and causing 15 damage!</i>", resume_combat);
+		damage(attacking, 15);
 	});});
 }
 ][i];

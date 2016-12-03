@@ -7,6 +7,57 @@ if(vegan_combat_counter.is_var_undef())
 vegan_combat_counter += 1;
 
 var i = vegan_combat_counter % 4; 
+
+if(name(attacking) == "Bather")
+{
+var vegan_attack = [
+fun() {
+	play(me, "slash_down", 25, fun()
+	{
+	play(me, "slash_down", 25, fun()
+	{
+	play(me, "slash_down", 25, fun()
+	{
+		dialog("<i>The " + name(me) + " lectures the " + name(attacking) + 
+			   " on the harms of animal products, causing 0 brain damage since the " + name(attacking) + 
+			   " has no brain!</i>", resume_combat);
+	})})});
+},
+fun() {
+	play(me, "thrust_down", 200, fun()
+	{
+		dialog("<i>The " + name(me) + " forces the " + name(attacking) + 
+			   " to try vegan pizza, which heals the " + name(attacking) + " for 10 health!", resume_combat);
+		damage(attacking, -10);
+	});
+},
+fun() {
+	dialog("<b>Vexing Vegan</b> : Milk is murder!", fun()
+	{
+	play(me, "thrust_up", 25, fun()
+	{
+	play(me, "thrust_down", 75, fun()
+	{
+		dialog("<i>The " + name(me) + " throws a rock at the " +
+			   name(attacking) + 
+			   " and it bounces off the his sinewy body, doing 0 damage!</i>", resume_combat);
+	});});});
+},
+fun() {
+	play(me, "spell_up", 100, fun()
+	{
+		script.face(me, DOWN);
+		dialog("<i>The " + name(me) + " takes a sip of a wierd looking green smoothie and gains 25 health!</i>", resume_combat);
+		damage(me, -25);
+	});
+}
+][i];
+
+walk_in_enemy_melee_range(vegan_attack);
+}
+
+else
+{
 var vegan_attack = [
 fun() {
 	play(me, "thrust_down", 200, fun()
@@ -24,9 +75,9 @@ fun() {
 	play(me, "slash_down", 25, fun()
 	{
 		dialog("<i>The " + name(me) + " lectures the " + name(attacking) + 
-			   " on the harms of animal products, causing 30 brain damage!</i>",
+			   " on the harms of animal products, causing 50 brain damage!</i>",
 			   resume_combat);
-		damage(attacking, 30);
+		damage(attacking, 50);
 	})})});
 },
 fun() {
@@ -38,8 +89,8 @@ fun() {
 	{
 		dialog("<i>The " + name(me) + " throws a rock at the " +
 			   name(attacking) + 
-			   " for 15 damage!</i>", resume_combat);
-		damage(attacking, 15);
+			   " for 35 damage!</i>", resume_combat);
+		damage(attacking, 35);
 	});});});
 },
 fun() {
@@ -53,3 +104,4 @@ fun() {
 ][i];
 
 walk_in_enemy_melee_range(vegan_attack);
+}

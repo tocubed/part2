@@ -19,7 +19,7 @@ fun() {
 	play(me, "stand_down", 100, fun()
 	{
 		dialog("<i>The " + name(me) + " slips on his sun tan oil, falling over and taking 20 damage!</i>", resume_combat);
-		damage(me, 20);
+		damage(me, 15);
 	});});});
 },
 fun() {
@@ -49,9 +49,9 @@ fun() {
 	{
 	play(me, "spell_up", 50, fun()
 	{
-		dialog("<i>The " + name(me) + " sprays his sunscreen everywhere, blinding himself and the " + name(attacking) + " for 25 damage!</i>", resume_combat);
-		damage(me, 25);
-		damage(attacking, 25);
+		dialog("<i>The " + name(me) + " sprays his sunscreen everywhere, healing himself for 5 health and blinding the " + name(attacking) + " for 55 damage!</i>", resume_combat);
+		damage(me, -5);
+		damage(attacking, 55);
 	});})});
 },
 fun() {
@@ -60,9 +60,9 @@ fun() {
 	play(me, "slash_up", 75, fun()
 	{
 		dialog("<i>The " + name(me) + " throws kelp at the " + name(attacking) + 
-			   ", who happily eats it, gaining 20 health!</i>",
+			   ", who happily eats it, gaining 15 health!</i>",
 			   resume_combat);
-		damage(attacking, -20);
+		damage(attacking, -15);
 	});});
 }
 ][i];

@@ -22,7 +22,7 @@ fun() {
 	{
 	play(me, "slash_up", 25, fun()
 	{
-		dialog("<i>The " + name(me) + " throws his business cards at the " + name(attacking) + " causing sever papercuts! " + name(attacking) + " takes 25 damage!</i>", resume_combat);
+		dialog("<i>The " + name(me) + " throws his business cards at the " + name(attacking) + " causing sever papercuts! " + name(attacking) + " takes 15 damage!</i>", resume_combat);
 		damage(attacking, 15);
 	});});});});});
 },
@@ -34,6 +34,7 @@ fun() {
 	play(me, "spell_down", 75, fun()
 	{
 		dialog("<i>The " + name(me) + " cranks up the volume on his beeper, deafening the " + name(attacking) + " and causing 15 damage!</i>", resume_combat);
+		damage(attacking, 15)
 	});});});
 }
 ][i];

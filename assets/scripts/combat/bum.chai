@@ -46,8 +46,8 @@ fun() {
 	{
 	play(me, "slash_up", 25, fun()
 	{
-		dialog("<i>The " + name(me) + " lectures the " + name(attacking) + " on the benefits of meat using crazy-uncle logic, causing 30 brain damage!</i>", resume_combat);
-		damage(attacking, 30);
+		dialog("<i>The " + name(me) + " lectures the " + name(attacking) + " on the benefits of meat using crazy-uncle logic, causing 10 brain damage!</i>", resume_combat);
+		damage(attacking, 10);
 	});})});
 },
 fun() {
@@ -61,8 +61,8 @@ fun() {
 	{
 	play(attacking, "stand_down", 100, fun()
 	{
-		dialog("<i>The " + name(attacking) + " recoils in disgust before being paralyzed by the smell, taking 25 damage!</i>", resume_combat);
-		damage(attacking, 25);
+		dialog("<i>The " + name(attacking) + " recoils in disgust before being paralyzed by the smell, taking 15 damage!</i>", resume_combat);
+		damage(attacking, 15);
 	});});});});});
 }
 ][i];
