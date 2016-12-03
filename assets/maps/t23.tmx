@@ -220,18 +220,19 @@ fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Whatever&quot;);}
   <object id="3" type="Character" x="384" y="512" width="32" height="32">
    <properties>
     <property name="Collidable" type="bool" value="true"/>
+    <property name="Name" value="Business Man"/>
     <property name="OnInteract">face(player);
 
-prompt(&quot;&lt;b&gt;Busy Business Man&lt;/b&gt; : Have you heard of Milk-To-Door? It's all the rage, and I just so happen to have access to a screaming deal! Are you interested?.&quot;, 
-[&quot;Ya&quot;, &quot;No&quot;],
+prompt(&quot;&lt;b&gt;Busy Business Man&lt;/b&gt; : Have you heard of Milk-To-Door? It's all the rage, and I just so happen to have access to a screaming deal! Are you interested?&quot;, 
+[&quot;Yes&quot;, &quot;No&quot;],
 [
 
 fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : That would have solved everything, I would have never had to come here! I wish I could go back in time...&quot;,
-fun() { prompt(&quot;&lt;b&gt;Dickhead Business Man&lt;/b&gt; : But then you never would have met me and heard of it, you need to consider the repercussions when dealing with time. Amateur. Well anyway, I just need to see your address so we can set up the deliveries.&quot;, [&quot;Ok&quot;, &quot;No&quot;],
+fun() { prompt(&quot;&lt;b&gt;Dickhead Business Man&lt;/b&gt; : But then you never would have met me and heard of it, you need to consider the repercussions when dealing with time. Amateur. Well anyway, I just need to see your address so we can set up the deliveries.&quot;, [&quot;Okay&quot;, &quot;No&quot;],
 [
 
 fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Alright. I don't know my address, but you can follow me home.&quot;,
-fun() { dialog(&quot;&lt;i&gt;Dickhead Business Man is now a follower for the kid&lt;/i&gt;&quot;);}
+fun() { dialog(&quot;&lt;i&gt;Dickhead Business Man is now your follower.&lt;/i&gt;&quot;, fun(){ follow(player); });}
 );},
 
 fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : My mom told me not to tell strangers my address, you creep.&quot;,
@@ -253,12 +254,18 @@ fun() { dialog(&quot;&lt;b&gt;Salty Business Man&lt;/b&gt; : Suit yourself stupi
   <object id="4" type="Character" x="576" y="384" width="32" height="32">
    <properties>
     <property name="Collidable" type="bool" value="true"/>
+    <property name="Name" value="Vegan"/>
+    <property name="OnCombat" type="file" value="../scripts/combat/vegan.chai"/>
+    <property name="OnDefeat">dialog(&quot;&lt;b&gt;Vexing Vegan&lt;/b&gt; : PLACEHOLDER DEFEAT TEXT!&quot;, fun()
+{
+walk_relative(self, -9, 3, resume_combat);
+});</property>
     <property name="OnInteract">face(player);
 
 dialog(&quot;&lt;b&gt;Vexing Vegan&lt;/b&gt; : Have I told you that I am a vegan?&quot;,
 fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : I don't have time for you. I need to go get some milk.&quot;,
 fun() { dialog(&quot;&lt;b&gt;Vengeful Vexing Vegan&lt;/b&gt; : MILK! HOW DARE YOU ABUSE ANIMALS FOR YOUR SELFISH NEEDS!&quot;,
-fun() { dialog(&quot;&lt;i&gt;Boss Battle Starts&lt;/i&gt;&quot;);}
+fun() {do_combat(&quot;cafe&quot;, self, fun(){ script.kill_character(self); }); }
 );});})</property>
     <property name="Orientation" value="Down"/>
     <property name="Spritesheet" type="file" value="../images/veganBoss.png"/>

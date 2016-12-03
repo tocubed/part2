@@ -88,6 +88,16 @@ def walk_to(Location l)
 	walk_to(self, l);
 }
 
+def walk_relative(Entity c, int x, int y, Function callback)
+{
+	var newloc = location(c);
+
+	newloc.x += x;
+	newloc.y += y;
+
+	walk_to(c, newloc, callback);
+}
+
 def walk_relative(Entity c, int x, int y)
 {
 	var newloc = location(c);

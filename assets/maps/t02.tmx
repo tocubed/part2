@@ -115,6 +115,7 @@
   <object id="1" type="Character" x="352" y="512" width="32" height="32">
    <properties>
     <property name="Collidable" type="bool" value="true"/>
+    <property name="Name" value="Bum"/>
     <property name="OnInteract">global get_rekt_by_bum = fun()
 {
     freeze_player(true);
@@ -125,7 +126,7 @@
 	fun() { dialog(&quot;&lt;b&gt;Bothersome Bum&lt;/b&gt; : Oh... Uh... You definitely didn't get drugged and taken to another island so I could sell you off to slavery.&quot;, 	
 	fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Umm... Alright, but I still have to get some milk for my mom.&quot;,
 	fun() { dialog(&quot;&lt;b&gt;Bothersom Bum&lt;/b&gt; : I should follow you around so you don't run awa-- UHHHH, I MEANT TO KEEP YOU SAFE.&quot;,
-	fun() { dialog(&quot;&lt;i&gt;Bothersome Bum is now a follower for the kid.&lt;/i&gt;&quot;);}
+	fun() { dialog(&quot;&lt;i&gt;Bothersome Bum is now your follower&lt;/i&gt;&quot;, fun() { follow(player); });}
 	);});});});});
 	play(player, &quot;stand_up&quot;, 200, fun() {freeze_player(false);});
 	fade(false);
