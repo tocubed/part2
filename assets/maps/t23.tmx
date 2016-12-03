@@ -222,7 +222,14 @@ fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Whatever&quot;);}
     <property name="Collidable" type="bool" value="true"/>
     <property name="Name" value="Dealer"/>
     <property name="OnCombat" type="file" value="../scripts/combat/dealer.chai"/>
-    <property name="OnDefeat" value="resume_combat();"/>
+    <property name="OnDefeat">dialog(&quot;&lt;b&gt;Shady Milk Dealer&lt;/b&gt; : Wait! I need to scam this kid before I can die.&quot;, 
+fun(){dialog(&quot;&lt;i&gt;Shady Milk Dealer has been died&lt;/i&gt;&quot;,
+fun()
+{
+play(me, &quot;stand_down&quot;, 200, fun(){});
+resume_combat();
+}
+);} );</property>
     <property name="OnInteract">face(player);
 
 prompt(&quot;&lt;b&gt;Busy Milk Dealer&lt;/b&gt; : Have you heard of Milk-To-Door? It's all the rage, and I just so happen to have access to a screaming deal! Are you interested?&quot;, 
@@ -258,10 +265,13 @@ fun() { dialog(&quot;&lt;b&gt;Salty Milk Dealer&lt;/b&gt; : Suit yourself stupid
     <property name="Collidable" type="bool" value="true"/>
     <property name="Name" value="Vegan"/>
     <property name="OnCombat" type="file" value="../scripts/combat/vegan.chai"/>
-    <property name="OnDefeat">dialog(&quot;&lt;b&gt;Vexing Vegan&lt;/b&gt; : PLACEHOLDER DEFEAT TEXT!&quot;, fun()
+    <property name="OnDefeat">dialog(&quot;&lt;b&gt;Vexing Vegan&lt;/b&gt; : There better be vegan cheese in heaven!&quot;, 
+fun(){dialog(&quot;&lt;i&gt;Vexing Vegan has been defeated&lt;/i&gt;&quot;,
+fun()
 {
 walk_relative(self, -9, 3, resume_combat);
-});</property>
+}
+);} );</property>
     <property name="OnInteract">face(player);
 
 dialog(&quot;&lt;b&gt;Vexing Vegan&lt;/b&gt; : Have I told you that I am a vegan?&quot;,

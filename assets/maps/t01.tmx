@@ -172,12 +172,12 @@ if(!spoke_with_mom)
 {
 face(player);
 
-prompt(&quot;&lt;b&gt;Merciless Mom&lt;/b&gt; : HI KID, GO GET MILK FOR MY CEREAL!&quot;, 
+prompt(&quot;&lt;b&gt;Merciless Mom&lt;/b&gt; : HI KID, GO GET 3 DROPLETS OF MILK FOR MY CEREAL!&quot;, 
 [&quot;Yes&quot;, &quot;No&quot;],
 [
 
 fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Sure Mom, but I have a name.&quot;,
-fun() { dialog(&quot;&lt;b&gt;Merciless Mom&lt;/b&gt; : SHUTUP KID NUMBER 2! YOU'D BETTER HURRY AND GET MY MILK, I'M HUNGRY!&quot;, mom_walk_to_kitchen); }
+fun() { dialog(&quot;&lt;b&gt;Merciless Mom&lt;/b&gt; : SHUTUP KID! YOU'D BETTER HURRY AND GET MY MILK, I'M HUNGRY!&quot;, mom_walk_to_kitchen); }
 );},
 
 fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : I want to play video games instead. WOW Games just released a new game.&quot;,

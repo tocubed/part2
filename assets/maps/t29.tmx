@@ -299,7 +299,14 @@
     <property name="Collidable" type="bool" value="true"/>
     <property name="Name" value="Bather"/>
     <property name="OnCombat" type="file" value="../scripts/combat/bather.chai"/>
-    <property name="OnDefeat" value="resume_combat();"/>
+    <property name="OnDefeat">dialog(&quot;&lt;b&gt;Sinewy Sun Bather&lt;/b&gt; : I'm too tan and good looking to die!&quot;, 
+fun(){dialog(&quot;&lt;i&gt;Sinewy Sun Bather has been died&lt;/i&gt;&quot;,
+fun()
+{
+play(me, &quot;stand_down&quot;, 200, fun(){});
+resume_combat();
+}
+);} );</property>
     <property name="OnInteract">face(player);
 
 prompt(&quot;&lt;b&gt;Sinewy Sun Bather&lt;/b&gt; : Hey kid, my back is frying. Mind rubbing lotion all over me?&quot;, 
@@ -326,11 +333,14 @@ fun() { dialog(&quot;&lt;b&gt;Sinewy Sun Bather&lt;/b&gt; : Come on kid, help a 
     <property name="Collidable" type="bool" value="true"/>
     <property name="Name" value="Surfer"/>
     <property name="OnCombat" type="file" value="../scripts/combat/surfer.chai"/>
-    <property name="OnDefeat">dialog(&quot;&lt;b&gt;Scornful Surfer Bro&lt;/b&gt; : PLACEHOLDER DEFEATED TEXT!&quot;, fun()
+    <property name="OnDefeat">dialog(&quot;&lt;b&gt;Scornful Surfer Bro&lt;/b&gt; : You can take a surfer out of the surf, but you can never take the surf out of a surfer!&quot;, 
+fun(){dialog(&quot;&lt;i&gt;Scornful Surfer Bro has been defeated&lt;/i&gt;&quot;,
+fun()
 {
 play(me, &quot;stand_down&quot;, 200, fun(){});
 resume_combat();
-});</property>
+}
+);} );</property>
     <property name="OnInteract">face(player);
 
 dialog(&quot;&lt;b&gt;Scornful Surfer Bro&lt;/b&gt; : Get off my beach you kook!&quot;,
