@@ -161,6 +161,11 @@ EntityIndex Map::getScriptedEntity(TileLocation location)
 	return NULL_ENTITY;
 }
 
+std::string Map::getMusic()
+{
+	return musicFile;
+}
+
 // TODO More control over visibility
 void Map::finalizeTileLayer(std::size_t index)
 {
@@ -325,6 +330,12 @@ void Map::loadFromFile(const std::string& mapFile)
 	auto height = map.attribute("height").as_int();
 
 	setSize(width, height);
+
+	auto musicProperty =
+	    map.select_nodes("properties/property[@name=\"Music\"]");
+	if(!musicProperty.empty())
+		musicFile = correctFilePath(
+		    musicProperty[0].node().attribute("value").value());
 
 	auto numTiles = 0u;
 	for(auto tileset: map.children("tileset"))

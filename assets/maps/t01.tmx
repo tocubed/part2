@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" nextobjectid="14">
+ <properties>
+  <property name="Music" type="file" value="../music/beginning.flac"/>
+ </properties>
  <tileset firstgid="1" name="forest_tiles" tilewidth="32" tileheight="32" tilecount="256" columns="16">
   <image source="../images/forest_tiles.png" width="512" height="512"/>
  </tileset>
@@ -187,7 +190,7 @@ fun() { dialog(&quot;&lt;b&gt;Merciless Mom&lt;/b&gt; : TOO BAD, GET ME MY MILK 
 }
 else
 {
-dialog(&quot;&lt;i&gt;I should get that milk.&lt;/i&gt;&quot;);
+dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : I should get that milk.&quot;);
 }</property>
     <property name="Orientation" value="Down"/>
     <property name="Spritesheet" type="file" value="../images/mom.png"/>

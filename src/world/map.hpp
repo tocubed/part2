@@ -29,6 +29,8 @@ public:
 	bool isCollidable(TileLocation location);
 	EntityIndex getScriptedEntity(TileLocation location);
 
+	std::string getMusic();
+
 private:
 	Manager& manager;
 
@@ -85,4 +87,7 @@ private:
 
 private:
 	std::unordered_map<TileLocation, std::string> interactScripts;
+
+private:
+	std::string musicFile;
 };

@@ -100,6 +100,22 @@ public:
 		}
 	}
 
+	std::string getMusic(TileLocation location)
+	{
+		auto mapLocation = getMapLocation(location);
+
+		auto it = mapsByLocation.find(mapLocation);
+
+		if(it == mapsByLocation.end())
+			return ""; // out of bounds
+		else
+		{
+			auto& map = *maps[std::get<1>(*it)];
+
+			return map.getMusic();
+		}
+	}
+
 private:
 	Manager& manager;
 	std::size_t mapSize;

@@ -9,6 +9,7 @@
 #include <world/movement.hpp>
 #include <world/overworld.hpp>
 
+#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 
@@ -30,6 +31,35 @@ std::unique_ptr<ScriptSystem> scriptSystem;
 
 bool quit;
 
+sf::Music music;
+std::string lastPlaying;
+
+void lastMinuteAudioSystemDo()
+{
+	TileLocation playerLocation;
+
+	manager.forEntitiesHaving<TPlayer>(
+	[&playerLocation](EntityIndex player) 
+	{
+		playerLocation = TileLocation::fromLocation(
+		    manager.getComponent<CLocation>(player));
+	});
+
+	std::string play = overworld.getMusic(playerLocation);
+	if(play == "")
+		play = "assets/music/default.flac";
+
+	if(lastPlaying != play)
+	{
+		music.openFromFile(play);
+		music.setLoop(true);
+
+		music.play();
+
+		lastPlaying = play;
+	}
+}
+
 void update(sf::Time delta) 
 {
 	inputSystem->clearKeyPresses();
@@ -48,6 +78,8 @@ void update(sf::Time delta)
 	movementSystem->update(delta);
 	animationSystem->update(delta);
 	renderSystem->update(delta);
+
+	lastMinuteAudioSystemDo();
 
 	// TODO Move event cleanup elsewhere
 	manager.forEntitiesHaving<TEvent>([](EntityIndex eI)

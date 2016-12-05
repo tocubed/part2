@@ -18,7 +18,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 	set(SFML_STATIC_LIBRARIES TRUE)
 endif()
-find_package(SFML 2.4 REQUIRED COMPONENTS system window graphics)
+find_package(SFML 2.4 REQUIRED COMPONENTS system window graphics audio)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE ${SFML_DEPENDENCIES})
 target_link_libraries(${PROJECT_NAME} PRIVATE ${SFML_LIBRARIES})
