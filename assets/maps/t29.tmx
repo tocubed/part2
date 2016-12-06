@@ -299,8 +299,8 @@
     <property name="Collidable" type="bool" value="true"/>
     <property name="Name" value="Bather"/>
     <property name="OnCombat" type="file" value="../scripts/combat/bather.chai"/>
-    <property name="OnDefeat">dialog(&quot;&lt;b&gt;Sinewy Sun Bather&lt;/b&gt; : I'm too tan and good looking to die!&quot;, 
-fun(){dialog(&quot;&lt;i&gt;Sinewy Sun Bather has been died&lt;/i&gt;&quot;,
+    <property name="OnDefeat">dialog(&quot;&lt;b&gt;Sinewy Sunbather&lt;/b&gt; : I'm too tan and good-looking to die!&quot;, 
+fun(){dialog(&quot;&lt;i&gt;Sinewy Sunbather has died.&lt;/i&gt;&quot;,
 fun()
 {
 play(me, &quot;stand_down&quot;, 200, resume_combat);
@@ -308,19 +308,19 @@ play(me, &quot;stand_down&quot;, 200, resume_combat);
 );} );</property>
     <property name="OnInteract">face(player);
 
-prompt(&quot;&lt;b&gt;Sinewy Sun Bather&lt;/b&gt; : Hey kid, my back is frying. Mind rubbing lotion all over me?&quot;, 
+prompt(&quot;&lt;b&gt;Sinewy Sunbather&lt;/b&gt; : Hey kid, my back is frying. Mind rubbing lotion all over me?&quot;, 
 [&quot;Sure&quot;, &quot;No&quot;],
 [
 
 fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : I can't believe I'm doing this, but flip over.&quot;,
-fun() { dialog(&quot;&lt;b&gt;Sinewy Sun Bather&lt;/b&gt; : Oooo that feels nice. Thanks kid, you're a life saver! You know, skin cancer and all.&quot;,
-fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Well, all done. That was gross; I need to wash my hands...&quot;,
-fun() { dialog(&quot;&lt;b&gt;Sinewy Sun Bather&lt;/b&gt; : I'll show you where the bathroom is.&quot;,
-fun() { dialog(&quot;&lt;i&gt;Sinewy Sun Bather is now your follower.&lt;/i&gt;&quot;, fun() { follow(player); });}
+fun() { dialog(&quot;&lt;b&gt;Sinewy Sunbather&lt;/b&gt; : Oooo, that feels nice. Thanks kid, you're a life-saver! You know, skin cancer and all.&quot;,
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Well, all done. That was gross; I need to wash my hands now.&quot;,
+fun() { dialog(&quot;&lt;b&gt;Sinewy Sunbather&lt;/b&gt; : I'll show you where the bathroom is.&quot;,
+fun() { dialog(&quot;&lt;i&gt;Sinewy Sunbather is now your follower.&lt;/i&gt;&quot;, fun() { follow(player); });}
 );});});});},
 
-fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : No way man, that's gross!&quot;,
-fun() { dialog(&quot;&lt;b&gt;Sinewy Sun Bather&lt;/b&gt; : Come on kid, help a guy out.&quot;);}
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : No way, man! That's gross!&quot;,
+fun() { dialog(&quot;&lt;b&gt;Sinewy Sunbather&lt;/b&gt; : Come on, kid. Help a guy out.&quot;);}
 );}
 ]);</property>
     <property name="Orientation" value="Left"/>
@@ -333,7 +333,7 @@ fun() { dialog(&quot;&lt;b&gt;Sinewy Sun Bather&lt;/b&gt; : Come on kid, help a 
     <property name="Name" value="Surfer"/>
     <property name="OnCombat" type="file" value="../scripts/combat/surfer.chai"/>
     <property name="OnDefeat">dialog(&quot;&lt;b&gt;Scornful Surfer Bro&lt;/b&gt; : You can take a surfer out of the surf, but you can never take the surf out of a surfer!&quot;, 
-fun(){dialog(&quot;&lt;i&gt;Scornful Surfer Bro has been defeated&lt;/i&gt;&quot;,
+fun(){dialog(&quot;&lt;i&gt;Scornful Surfer Bro has been defeated.&lt;/i&gt;&quot;,
 fun()
 {
 play(me, &quot;stand_down&quot;, 200, fun(){});
@@ -342,7 +342,7 @@ resume_combat();
 );} );</property>
     <property name="OnInteract">face(player);
 
-dialog(&quot;&lt;b&gt;Scornful Surfer Bro&lt;/b&gt; : Get off my beach you kook!&quot;,
+dialog(&quot;&lt;b&gt;Scornful Surfer Bro&lt;/b&gt; : Get off my beach, you kook!&quot;,
 fun() {do_combat(&quot;beach&quot;, self, fun(){ script.kill_character(self); }); }
 );</property>
     <property name="Orientation" value="Up"/>

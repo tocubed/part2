@@ -191,10 +191,10 @@
     <property name="Collidable" type="bool" value="true"/>
     <property name="OnInteract">face(player);
 
-dialog(&quot;&lt;b&gt;Bored Barista Beth&lt;/b&gt; : What can I help you with today?&quot;,
+dialog(&quot;&lt;b&gt;Bored Barista Beth&lt;/b&gt; : Is there anything I can help you with today?&quot;,
 fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : I need milk.&quot;,
-fun() { dialog(&quot;&lt;b&gt;Bored Barista Beth&lt;/b&gt; : We don't have any. Do you want some half and half?&quot;,
-fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : No it has to be milk. Can you just give me the milk half?&quot;,
+fun() { dialog(&quot;&lt;b&gt;Bored Barista Beth&lt;/b&gt; : We don't have any. Do you want some half-and-half?&quot;,
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : No, it has to be milk. Can you just give me the milk half?&quot;,
 fun() { dialog(&quot;&lt;b&gt;Bored Barista Beth&lt;/b&gt; : It doesn't work that way.&quot;);}
 );} );} );})</property>
     <property name="Orientation" value="Down"/>
@@ -211,10 +211,10 @@ prompt(&quot;&lt;b&gt;Not a Morning Person&lt;/b&gt; :  Ugghh mmpphhh grumble.&q
 [
 
 fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : What was that?&quot;,
-fun() { dialog(&quot;&lt;b&gt;Grumpy Not Morning Person&lt;/b&gt; : Go away I need my coffee!&quot;);}
+fun() { dialog(&quot;&lt;b&gt;Grumpy Not Morning Person&lt;/b&gt; : Go away! I need my coffee!&quot;);}
 );},
 
-fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Whatever&quot;);}
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Whatever.&quot;);}
 ]);</property>
     <property name="Orientation" value="Down"/>
     <property name="Spritesheet" type="file" value="../images/notMorningPerson.png"/>
@@ -225,8 +225,8 @@ fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Whatever&quot;);}
     <property name="Collidable" type="bool" value="true"/>
     <property name="Name" value="Dealer"/>
     <property name="OnCombat" type="file" value="../scripts/combat/dealer.chai"/>
-    <property name="OnDefeat">dialog(&quot;&lt;b&gt;Shady Milk Dealer&lt;/b&gt; : Wait! I need to scam this kid before I can die.&quot;, 
-fun(){dialog(&quot;&lt;i&gt;Shady Milk Dealer has been died&lt;/i&gt;&quot;,
+    <property name="OnDefeat">dialog(&quot;&lt;b&gt;Shady Milk Dealer&lt;/b&gt; : But wait! I needed to scam this kid before I can die! Nooo!&quot;, 
+fun(){dialog(&quot;&lt;i&gt;Shady Milk Dealer has died.&lt;/i&gt;&quot;,
 fun()
 {
 play(me, &quot;stand_down&quot;, 200, resume_combat);
@@ -234,12 +234,12 @@ play(me, &quot;stand_down&quot;, 200, resume_combat);
 );} );</property>
     <property name="OnInteract">face(player);
 
-prompt(&quot;&lt;b&gt;Busy Milk Dealer&lt;/b&gt; : Have you heard of Milk-To-Door? It's all the rage, and I just so happen to have access to a screaming deal! Are you interested?&quot;, 
+prompt(&quot;&lt;b&gt;Shady Milk Dealer&lt;/b&gt; : Have you heard of Milk-To-Door? It's all the rage, and I just so happen to have access to a screaming deal! Are you interested?&quot;, 
 [&quot;Yes&quot;, &quot;No&quot;],
 [
 
-fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : That would have solved everything, I would have never had to come here! I wish I could go back in time...&quot;,
-fun() { prompt(&quot;&lt;b&gt;Shady Milk Dealer&lt;/b&gt; : But then you never would have met me and heard of it, you need to consider the repercussions when dealing with time. Amateur. Well anyway, I just need to see your address so we can set up the deliveries.&quot;, [&quot;Okay&quot;, &quot;No&quot;],
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : That would have solved everything! I never would've had to come here! I wish I could go back in time...&quot;,
+fun() { prompt(&quot;&lt;b&gt;Shady Milk Dealer&lt;/b&gt; : But then you never would have met me and heard of it. You need to consider the repercussions when dealing with time. Amateur. Well anyway, I just need to see your address so we can set up the deliveries.&quot;, [&quot;Okay&quot;, &quot;No&quot;],
 [
 
 fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Alright. I don't know my address, but you can follow me home.&quot;,
@@ -247,15 +247,15 @@ fun() { dialog(&quot;&lt;i&gt;Shady Milk Dealer is now your follower.&lt;/i&gt;&
 );},
 
 fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : My mom told me not to tell strangers my address, you creep.&quot;,
-fun() { dialog(&quot;&lt;b&gt;Salty Milk Dealer&lt;/b&gt; : I'm no creep! Fine, no deal for you!&quot;);}
+fun() { dialog(&quot;&lt;b&gt;Shady Milk Dealer&lt;/b&gt; : I'm no creep! Fine, no deal for you!&quot;);}
 );}
 
 ]);
 
 });},
 
-fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : I handle the milk in my house, I don't need some middle man stepping in.&quot;,
-fun() { dialog(&quot;&lt;b&gt;Salty Milk Dealer&lt;/b&gt; : Suit yourself stupid kid.&quot;);});}
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : I handle the milk in my house. I don't need some middleman stepping in.&quot;,
+fun() { dialog(&quot;&lt;b&gt;Shady Milk Dealer&lt;/b&gt; : Suit yourself, stupid kid.&quot;);});}
 
 ]);</property>
     <property name="Orientation" value="Down"/>
@@ -268,7 +268,7 @@ fun() { dialog(&quot;&lt;b&gt;Salty Milk Dealer&lt;/b&gt; : Suit yourself stupid
     <property name="Name" value="Vegan"/>
     <property name="OnCombat" type="file" value="../scripts/combat/vegan.chai"/>
     <property name="OnDefeat">dialog(&quot;&lt;b&gt;Vexing Vegan&lt;/b&gt; : You may have defeated me, but you will never defeat C.A.T.T.T.L.E!&quot;, 
-fun(){dialog(&quot;&lt;i&gt;Vexing Vegan has been defeated&lt;/i&gt;&quot;,
+fun(){dialog(&quot;&lt;i&gt;Vexing Vegan has been defeated.&lt;/i&gt;&quot;,
 fun()
 {
 walk_relative(self, -9, 3, resume_combat);
@@ -277,8 +277,8 @@ walk_relative(self, -9, 3, resume_combat);
     <property name="OnInteract">face(player);
 
 dialog(&quot;&lt;b&gt;Vexing Vegan&lt;/b&gt; : Have I told you that I am a vegan?&quot;,
-fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : I don't have time for you. I need to go get some milk.&quot;,
-fun() { dialog(&quot;&lt;b&gt;Vengeful Vexing Vegan&lt;/b&gt; : MILK! HOW DARE YOU ABUSE ANIMALS FOR YOUR SELFISH NEEDS!&quot;,
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : I don't have time for you. I need to get some milk.&quot;,
+fun() { dialog(&quot;&lt;b&gt;Vexing Vegan&lt;/b&gt; : MILK?! HOW DARE YOU ABUSE ANIMALS FOR YOUR SELFISH NEEDS!&quot;,
 fun() {do_combat(&quot;cafe&quot;, self, fun(){ script.kill_character(self); }); }
 );});})</property>
     <property name="Orientation" value="Down"/>

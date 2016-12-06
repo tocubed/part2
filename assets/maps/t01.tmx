@@ -180,11 +180,11 @@ prompt(&quot;&lt;b&gt;Merciless Mom&lt;/b&gt; : HI KID, GO GET 3 DROPLETS OF MIL
 [
 
 fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Sure Mom, but I have a name.&quot;,
-fun() { dialog(&quot;&lt;b&gt;Merciless Mom&lt;/b&gt; : SHUTUP KID! YOU'D BETTER HURRY AND GET MY MILK, I'M HUNGRY!&quot;, mom_walk_to_kitchen); }
+fun() { dialog(&quot;&lt;b&gt;Merciless Mom&lt;/b&gt; : SHUT UP KID! YOU'D BETTER HURRY AND GET MY MILK, I'M HUNGRY!&quot;, mom_walk_to_kitchen); }
 );},
 
 fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : I want to play video games instead. WOW Games just released a new game.&quot;,
-fun() { dialog(&quot;&lt;b&gt;Merciless Mom&lt;/b&gt; : TOO BAD, GET ME MY MILK OR I'LL BREAK YOUR COMPUTER!&quot;, mom_walk_to_kitchen);}
+fun() { dialog(&quot;&lt;b&gt;Merciless Mom&lt;/b&gt; : TOO BAD. GET ME MY MILK OR I'LL BREAK YOUR COMPUTER!&quot;, mom_walk_to_kitchen);}
 );}
 ]);
 }
@@ -204,12 +204,12 @@ prompt(&quot;&lt;b&gt;Decent Dad&lt;/b&gt; : Hello son, I think your mom wants t
 [&quot;Ok&quot;, &quot;No&quot;],
 [
 
-fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Dammit, what does she want now?&quot;,
-fun() { dialog(&quot;&lt;b&gt;Decent Dad&lt;/b&gt; : No clue, but you better do what she wants because I'm watching TV so leave me alone.&quot;);}
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Damn it, what does she want now?&quot;,
+fun() { dialog(&quot;&lt;b&gt;Decent Dad&lt;/b&gt; : No clue, but you better do what she wants because I'm watching TV, so leave me alone.&quot;);}
 );},
 
 fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Aww, come on puffy pops, she's gonna make me do something. Why can't you talk to her?&quot;,
-fun() { dialog(&quot;&lt;b&gt;Decent Dad&lt;/b&gt; : Just go talk to her. I'm watching TV so leave me alone.&quot;);}
+fun() { dialog(&quot;&lt;b&gt;Decent Dad&lt;/b&gt; : Just go talk to her. I'm watching TV, so leave me alone.&quot;);}
 );}
 ]);</property>
     <property name="Orientation" value="Up"/>
@@ -225,12 +225,12 @@ prompt(&quot;&lt;b&gt;Caring Courtney&lt;/b&gt; : How are you?&quot;,
 [&quot;Good&quot;, &quot;Bad&quot;],
 [
 
-fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Good, how about you?&quot;,
-fun() { dialog(&quot;&lt;b&gt;Caring Courtney&lt;/b&gt; : I'm good. Hi, I hear some guy is handing out milk over there.&quot;);}
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Good. How about you?&quot;,
+fun() { dialog(&quot;&lt;b&gt;Caring Courtney&lt;/b&gt; : I'm good. Hey, I hear some guy is handing out milk over there.&quot;);}
 );},
 
 fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Horrible. I have to get some milk for my mom.&quot;,
-fun() { dialog(&quot;&lt;b&gt;Caring Courtney&lt;/b&gt; : Oh I see. Watch out for the bum in front of the grocery store, he looks dangerous.&quot;);}
+fun() { dialog(&quot;&lt;b&gt;Caring Courtney&lt;/b&gt; : Oh I see. Watch out for the bum in front of the grocery store. He looks dangerous.&quot;);}
 );}
 ]);</property>
     <property name="Orientation" value="Down"/>
@@ -246,12 +246,12 @@ prompt(&quot;&lt;b&gt;Perverted Pete&lt;/b&gt; : Hi kid, do you want some candy?
 [&quot;Yes&quot;, &quot;No&quot;],
 [
 
-fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Heck yea I want some candy.&quot;,
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Heck yea, I want some candy.&quot;,
 fun() { dialog(&quot;&lt;b&gt;Perverted Pete&lt;/b&gt; : Come into my basement so we can have some KitKat and chill.&quot;, 
-fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Nice try you creep.&quot;);}
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Nice try, you creep.&quot;);}
 );});},
 
-fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : No thanks you perv.&quot;,
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : No, thanks, you perv.&quot;,
 fun() { dialog(&quot;&lt;b&gt;Perverted Pete&lt;/b&gt; : [Series of creepy moans]&quot;);}
 );}
 ]);</property>

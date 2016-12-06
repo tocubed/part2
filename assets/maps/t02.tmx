@@ -120,7 +120,7 @@
     <property name="Collidable" type="bool" value="true"/>
     <property name="Name" value="Bum"/>
     <property name="OnCombat" type="file" value="../scripts/combat/bum.chai"/>
-    <property name="OnDefeat">dialog(&quot;&lt;b&gt;Bothersome Bum&lt;/b&gt; : Aww man, I've never died before. I wonder if God has any change?&quot;, 
+    <property name="OnDefeat">dialog(&quot;&lt;b&gt;Bothersome Bum&lt;/b&gt; : Aww man, I've never died before. I wonder if God has any change.&quot;, 
 fun(){dialog(&quot;&lt;i&gt;Bothersome Bum has died.&lt;/i&gt;&quot;,
 fun()
 {
@@ -136,10 +136,10 @@ play(me, &quot;stand_down&quot;, 200, resume_combat);
 	teleport(self, 14, 19 + 30 * 4 - 1);
 	script.face(self, DOWN);
 	dialog(&quot;&lt;i&gt;A little while later...&lt;/i&gt;&quot;, 
-	fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Ughh. Where am I and why does my head hurt so much?&quot;,
+	fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Ughh. Where am I, and why does my head hurt so much?&quot;,
 	fun() { dialog(&quot;&lt;b&gt;Bothersome Bum&lt;/b&gt; : Oh... Uh... You definitely didn't get drugged and taken to another island so I could recruit you for the Milkmen.&quot;, 	
 	fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Umm... Alright, but I still have to get some milk for my mom.&quot;,
-	fun() { dialog(&quot;&lt;b&gt;Bothersome Bum&lt;/b&gt; : I should follow you around so you don't run awa-- UHHHH, I MEANT TO KEEP YOU SAFE!&quot;,
+	fun() { dialog(&quot;&lt;b&gt;Bothersome Bum&lt;/b&gt; : I should follow you around so you don't run awa-- UHHHH, I MEAN TO KEEP YOU SAFE!&quot;,
 	fun() { dialog(&quot;&lt;i&gt;Bothersome Bum is now your follower.&lt;/i&gt;&quot;, fun() { follow(player); });}
 	);});});});});
 	play(player, &quot;stand_up&quot;, 200, fun() {freeze_player(false);});
@@ -153,14 +153,14 @@ prompt(&quot;&lt;b&gt;Bothersome Bum&lt;/b&gt; : Hi kid, can I have some change?
 [&quot;Yes&quot;, &quot;No&quot;],
 [
 
-fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Sure. Here you go. Now get out of way I need some milk.&quot;,
-fun() { dialog(&quot;&lt;b&gt;Bothersome Bum&lt;/b&gt; : Hey kid I appreciate your kindness. Milk, you say? I have some right here.&quot;,
-fun() { dialog(&quot;&lt;i&gt;Kid takes the chunky looking rotten milk and takes a sip.&lt;/i&gt;&quot;,
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Sure. Here you go. Now get out of the way. I need some milk.&quot;,
+fun() { dialog(&quot;&lt;b&gt;Bothersome Bum&lt;/b&gt; : Hey kid, I appreciate your kindness. Milk, you say? I have some right here.&quot;,
+fun() { dialog(&quot;&lt;i&gt;Kid takes the chunky-looking, rotten milk and takes a sip.&lt;/i&gt;&quot;,
 	get_rekt_by_bum);}
 );} );},
 
 fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : I don't have time for this! Get out of my way so I can get back to playing video games!&quot;,
-fun() { dialog(&quot;&lt;b&gt;Bothersome Bum&lt;/b&gt; : You dam inconsiderate kid!&quot;,
+fun() { dialog(&quot;&lt;b&gt;Bothersome Bum&lt;/b&gt; : You damn inconsiderate kid!&quot;,
 fun() { dialog(&quot;&lt;i&gt;Bum drugs the kid and beats him up.&lt;/i&gt;&quot;,
 	get_rekt_by_bum);}
 );});}
