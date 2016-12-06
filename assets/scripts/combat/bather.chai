@@ -28,8 +28,8 @@ fun() {
 	play(me, "slash_up", 75, fun()
 	{
 		dialog("<i>The " + name(me) + " sprays his sunscreen at The " + name(attacking) + 
-			   ", blocking the sun's harmful rays and healing " + name(attacking) +
-			   " with 15 health!</i>",
+			   ", blocking the sun's harmful rays and healing The " + name(attacking) +
+			   " for 15 health!</i>",
 			   resume_combat);
 		damage(attacking, -15);
 	});});
@@ -49,7 +49,7 @@ fun() {
 	{
 	play(me, "spell_up", 50, fun()
 	{
-		dialog("<i>The " + name(me) + " sprays his sunscreen everywhere, healing himself with 5 health and blinding The " + name(attacking) + ", for 55 damage!</i>", resume_combat);
+		dialog("<i>The " + name(me) + " sprays his sunscreen everywhere, healing himself for 5 health, and blinding The " + name(attacking) + " for 55 damage!</i>", resume_combat);
 		damage(me, -5);
 		damage(attacking, 55);
 	});})});
@@ -60,7 +60,7 @@ fun() {
 	play(me, "slash_up", 75, fun()
 	{
 		dialog("<i>The " + name(me) + " throws kelp at The " + name(attacking) + 
-			   ", who happily eats it, and gains 5 health!</i>",
+			   ", who happily eats it and gains 5 health!</i>",
 			   resume_combat);
 		damage(attacking, -5);
 	});});
