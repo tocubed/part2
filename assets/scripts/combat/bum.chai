@@ -16,8 +16,8 @@ fun() {
 	{
 	play(me, "walk_up", 25, fun()
 	{
-		dialog("<i>The " + name(me) + " charges the " + name(attacking) + " with his cart, causing 20 damage!</i>", resume_combat);
-		damage(attacking, 20);
+		dialog("<i>The " + name(me) + " charges the " + name(attacking) + " with his cart, causing 35 damage!</i>", resume_combat);
+		damage(attacking, 35);
 	});});
 },
 fun() {
@@ -27,8 +27,8 @@ fun() {
 	{
 	play(attacking, "stand_down", 150, fun()
 	{
-		dialog("<i>The " + name(attacking) + " becomes disoriented and incoherent, falling over and taking 30 damage!</i>", resume_combat);
-		damage(attacking, 30);
+		dialog("<i>The " + name(attacking) + " becomes disoriented and incoherent, falls over and takes 40 damage!</i>", resume_combat);
+		damage(attacking, 40);
 	});});});
 }
 ][i];
@@ -46,8 +46,8 @@ fun() {
 	{
 	play(me, "slash_up", 25, fun()
 	{
-		dialog("<i>The " + name(me) + " lectures the " + name(attacking) + " on the benefits of meat using crazy-uncle logic, causing 10 brain damage!</i>", resume_combat);
-		damage(attacking, 10);
+		dialog("<i>The " + name(me) + " lectures the " + name(attacking) + " on the benefits of meat using crazy-uncle logic, causing 25 brain damage!</i>", resume_combat);
+		damage(attacking, 25);
 	});})});
 },
 fun() {
@@ -61,8 +61,8 @@ fun() {
 	{
 	play(attacking, "stand_down", 100, fun()
 	{
-		dialog("<i>The " + name(attacking) + " recoils in disgust before being paralyzed by the smell, taking 15 damage!</i>", resume_combat);
-		damage(attacking, 15);
+		dialog("<i>The " + name(attacking) + " recoils in disgust before becoming paralyzed by the smell, taking 20 damage!</i>", resume_combat);
+		damage(attacking, 20);
 	});});});});});
 }
 ][i];

@@ -12,14 +12,14 @@ fun() {
 	play(me, "slash_down", 100, fun()
 	{
 		dialog("<i>The " + name(me) + " slams the " + name(attacking) + 
-			   " with his board, causing 20 damage!</i>", resume_combat);
+			   " with his surfboard, causing 20 damage!</i>", resume_combat);
 		damage(attacking, 20);
 	});
 },
 fun() {
 	play(me, "spell_down", 200, fun()
 	{
-		dialog("<i>The " + name(me) + " calls upon Broseidon and washes out the " +
+		dialog("<i>The " + name(me) + " calls upon Broseidon, who washes out the " +
 			   name(attacking) + 
 			   " with a wave, causing 30 damage!</i>", resume_combat);
 		damage(attacking, 30);
@@ -31,9 +31,9 @@ fun() {
 	play(me, "slash_right", 75, fun()
 	{
 		script.face(me, DOWN);
-		dialog("<i>The " + name(me) + " summons seagulls who peck the " +
+		dialog("<i>The " + name(me) + " summons seagulls that peck the " +
 			   name(attacking) + 
-			   " for 10 damage!</i>", resume_combat);
+			   ", causing 10 damage!</i>", resume_combat);
 		damage(attacking, 10);
 	});});
 },
@@ -44,7 +44,7 @@ fun() {
 	{
 		dialog("<i>The " + name(me) + " kicks sand in the " +
 			   name(attacking) + 
-			   "'s eyes, blinding them and causing 15 damage!</i>", resume_combat);
+			   "'s eyes, blinding him, causing 15 damage!</i>", resume_combat);
 		damage(attacking, 15);
 	});});
 }

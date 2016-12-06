@@ -27,7 +27,7 @@ fun() {
 	play(me, "thrust_down", 200, fun()
 	{
 		dialog("<i>The " + name(me) + " forces the " + name(attacking) + 
-			   " to try vegan pizza, which heals the " + name(attacking) + " for 10 health!", resume_combat);
+			   " to try vegan pizza, which heals the " + name(attacking) + " with 10 health!", resume_combat);
 		damage(attacking, -10);
 	});
 },
@@ -40,14 +40,14 @@ fun() {
 	{
 		dialog("<i>The " + name(me) + " throws a rock at the " +
 			   name(attacking) + 
-			   " and it bounces off his sinewy body, doing 0 damage!</i>", resume_combat);
+			   ", which bounces off his sinewy body, doing 0 damage!</i>", resume_combat);
 	});});});
 },
 fun() {
 	play(me, "spell_up", 100, fun()
 	{
 		script.face(me, DOWN);
-		dialog("<i>The " + name(me) + " takes a sip of a wierd looking green smoothie and gains 25 health!</i>", resume_combat);
+		dialog("<i>The " + name(me) + " takes a sip of a weird-looking green smoothie and gains 25 health!</i>", resume_combat);
 		damage(me, -25);
 	});
 }
@@ -97,7 +97,7 @@ fun() {
 	play(me, "spell_up", 100, fun()
 	{
 		script.face(me, DOWN);
-		dialog("<i>The " + name(me) + " takes a sip of a wierd looking green smoothie and gains 25 health!</i>", resume_combat);
+		dialog("<i>The " + name(me) + " takes a sip of a weird-looking green smoothie and gains 25 health!</i>", resume_combat);
 		damage(me, -25);
 	});
 }
