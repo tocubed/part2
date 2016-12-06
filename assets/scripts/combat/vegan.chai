@@ -18,16 +18,16 @@ fun() {
 	{
 	play(me, "slash_down", 25, fun()
 	{
-		dialog("<i>The " + name(me) + " lectures the " + name(attacking) + 
-			   " on the harms of animal products, causing 0 brain damage since the " + name(attacking) + 
+		dialog("<i>The " + name(me) + " lectures The " + name(attacking) + 
+			   " on the harms of animal products, causing 0 brain damage since The " + name(attacking) + 
 			   " has no brain!</i>", resume_combat);
 	})})});
 },
 fun() {
 	play(me, "thrust_down", 200, fun()
 	{
-		dialog("<i>The " + name(me) + " forces the " + name(attacking) + 
-			   " to try vegan pizza, which heals the " + name(attacking) + " with 10 health!", resume_combat);
+		dialog("<i>The " + name(me) + " forces The " + name(attacking) + 
+			   " to try vegan pizza, which heals The " + name(attacking) + " with 10 health!", resume_combat);
 		damage(attacking, -10);
 	});
 },
@@ -38,7 +38,7 @@ fun() {
 	{
 	play(me, "thrust_down", 75, fun()
 	{
-		dialog("<i>The " + name(me) + " throws a rock at the " +
+		dialog("<i>The " + name(me) + " throws a rock at The " +
 			   name(attacking) + 
 			   ", which bounces off his sinewy body, doing 0 damage!</i>", resume_combat);
 	});});});
@@ -62,7 +62,7 @@ var vegan_attack = [
 fun() {
 	play(me, "thrust_down", 200, fun()
 	{
-		dialog("<i>The " + name(me) + " forces the " + name(attacking) + 
+		dialog("<i>The " + name(me) + " forces The " + name(attacking) + 
 			   " to try vegan pizza, causing major indigestion and 40 damage!", resume_combat);
 		damage(attacking, 40);
 	});
@@ -74,7 +74,7 @@ fun() {
 	{
 	play(me, "slash_down", 25, fun()
 	{
-		dialog("<i>The " + name(me) + " lectures the " + name(attacking) + 
+		dialog("<i>The " + name(me) + " lectures The " + name(attacking) + 
 			   " on the harms of animal products, causing 50 brain damage!</i>",
 			   resume_combat);
 		damage(attacking, 50);
@@ -87,7 +87,7 @@ fun() {
 	{
 	play(me, "thrust_down", 75, fun()
 	{
-		dialog("<i>The " + name(me) + " throws a rock at the " +
+		dialog("<i>The " + name(me) + " throws a rock at The " +
 			   name(attacking) + 
 			   " for 35 damage!</i>", resume_combat);
 		damage(attacking, 35);

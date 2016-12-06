@@ -11,7 +11,7 @@ var surfer_attack = [
 fun() {
 	play(me, "slash_down", 100, fun()
 	{
-		dialog("<i>The " + name(me) + " slams the " + name(attacking) + 
+		dialog("<i>The " + name(me) + " slams The " + name(attacking) + 
 			   " with his surfboard, causing 20 damage!</i>", resume_combat);
 		damage(attacking, 20);
 	});
@@ -19,7 +19,7 @@ fun() {
 fun() {
 	play(me, "spell_down", 200, fun()
 	{
-		dialog("<i>The " + name(me) + " calls upon Broseidon, who washes out the " +
+		dialog("<i>The " + name(me) + " calls upon Broseidon, who washes out The " +
 			   name(attacking) + 
 			   " with a wave, causing 30 damage!</i>", resume_combat);
 		damage(attacking, 30);
@@ -31,7 +31,7 @@ fun() {
 	play(me, "slash_right", 75, fun()
 	{
 		script.face(me, DOWN);
-		dialog("<i>The " + name(me) + " summons seagulls that peck the " +
+		dialog("<i>The " + name(me) + " summons seagulls that peck The " +
 			   name(attacking) + 
 			   ", causing 10 damage!</i>", resume_combat);
 		damage(attacking, 10);
@@ -42,7 +42,7 @@ fun() {
 	{
 	play(me, "walk_down", 25, fun()
 	{
-		dialog("<i>The " + name(me) + " kicks sand in the " +
+		dialog("<i>The " + name(me) + " kicks sand into The " +
 			   name(attacking) + 
 			   "'s eyes, blinding him, causing 15 damage!</i>", resume_combat);
 		damage(attacking, 15);

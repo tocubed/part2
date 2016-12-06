@@ -16,14 +16,14 @@ fun() {
 	{
 	play(me, "walk_up", 25, fun()
 	{
-		dialog("<i>The " + name(me) + " charges the " + name(attacking) + " with his cart, causing 35 damage!</i>", resume_combat);
+		dialog("<i>The " + name(me) + " charges The " + name(attacking) + " with his cart, causing 35 damage!</i>", resume_combat);
 		damage(attacking, 35);
 	});});
 },
 fun() {
 	play(me, "slash_up", 75, fun()
 	{
-		dialog("<i>The " + name(me) + " pulls a flask out of his coat and splashes the " + name(attacking) + "!", fun()
+		dialog("<i>The " + name(me) + " pulls a flask out of his coat and splashes The " + name(attacking) + "!", fun()
 	{
 	play(attacking, "stand_down", 150, fun()
 	{
@@ -46,7 +46,7 @@ fun() {
 	{
 	play(me, "slash_up", 25, fun()
 	{
-		dialog("<i>The " + name(me) + " lectures the " + name(attacking) + " on the benefits of meat using crazy-uncle logic, causing 25 brain damage!</i>", resume_combat);
+		dialog("<i>The " + name(me) + " lectures The " + name(attacking) + " on the benefits of meat using crazy-uncle logic, causing 25 brain damage!</i>", resume_combat);
 		damage(attacking, 25);
 	});})});
 },
@@ -55,7 +55,7 @@ fun() {
 	{
 	play(me, "thrust_up", 50, fun()
 	{
-		dialog("<i>The " + name(me) + " pulls out rancid meat from under his hat and hurls it at the " + name(attacking) + "!</i>", fun()
+		dialog("<i>The " + name(me) + " pulls out rancid meat from under his hat and hurls it at The " + name(attacking) + "!</i>", fun()
 	{
 	walk_relative(attacking, 1, 0, fun()
 	{
