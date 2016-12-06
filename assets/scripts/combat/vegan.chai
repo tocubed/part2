@@ -27,7 +27,7 @@ fun() {
 	play(me, "thrust_down", 200, fun()
 	{
 		dialog("<i>The " + name(me) + " forces The " + name(attacking) + 
-			   " to try vegan pizza, which heals The " + name(attacking) + " with 10 health!", resume_combat);
+			   " to try vegan pizza, which heals The " + name(attacking) + " for 10 health!", resume_combat);
 		damage(attacking, -10);
 	});
 },
