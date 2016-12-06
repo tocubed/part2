@@ -314,7 +314,7 @@ prompt(&quot;&lt;b&gt;Sinewy Sunbather&lt;/b&gt; : Hey kid, my back is frying. M
 
 fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : I can't believe I'm doing this, but flip over.&quot;,
 fun() { dialog(&quot;&lt;b&gt;Sinewy Sunbather&lt;/b&gt; : Oooo, that feels nice. Thanks kid, you're a life-saver! You know, skin cancer and all.&quot;,
-fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Well, all done. That was gross; I need to wash my hands now.&quot;,
+fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Well, all done. That was gross. I need to wash my hands now.&quot;,
 fun() { dialog(&quot;&lt;b&gt;Sinewy Sunbather&lt;/b&gt; : I'll show you where the bathroom is.&quot;,
 fun() { dialog(&quot;&lt;i&gt;Sinewy Sunbather is now your follower.&lt;/i&gt;&quot;, fun() { follow(player); });}
 );});});});},

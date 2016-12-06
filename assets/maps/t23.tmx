@@ -239,7 +239,7 @@ prompt(&quot;&lt;b&gt;Shady Milk Dealer&lt;/b&gt; : Have you heard of Milk-To-Do
 [
 
 fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : That would have solved everything! I never would've had to come here! I wish I could go back in time...&quot;,
-fun() { prompt(&quot;&lt;b&gt;Shady Milk Dealer&lt;/b&gt; : But then you never would have met me and heard of it. You need to consider the repercussions when dealing with time. Amateur. Well anyway, I just need to see your address so we can set up the deliveries.&quot;, [&quot;Okay&quot;, &quot;No&quot;],
+fun() { prompt(&quot;&lt;b&gt;Shady Milk Dealer&lt;/b&gt; : But then you never would have met me and heard of it. You need to consider the repercussions when dealing with time. Amateur. Anyway, I just need to see your address so we can set up the deliveries.&quot;, [&quot;Okay&quot;, &quot;No&quot;],
 [
 
 fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : Alright. I don't know my address, but you can follow me home.&quot;,

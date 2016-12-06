@@ -161,7 +161,7 @@ fun() { dialog(&quot;&lt;i&gt;Kid takes the chunky-looking, rotten milk and take
 
 fun() { dialog(&quot;&lt;b&gt;Kid&lt;/b&gt; : I don't have time for this! Get out of my way so I can get back to playing video games!&quot;,
 fun() { dialog(&quot;&lt;b&gt;Bothersome Bum&lt;/b&gt; : You damn inconsiderate kid!&quot;,
-fun() { dialog(&quot;&lt;i&gt;Bum drugs the kid and beats him up.&lt;/i&gt;&quot;,
+fun() { dialog(&quot;&lt;i&gt;The Bum drugs the kid and beats him up.&lt;/i&gt;&quot;,
 	get_rekt_by_bum);}
 );});}
 ]);</property>
