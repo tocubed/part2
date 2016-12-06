@@ -31,7 +31,7 @@ std::unique_ptr<ScriptSystem> scriptSystem;
 
 bool quit;
 
-sf::Music music;
+std::unique_ptr<sf::Music> music;
 std::string lastPlaying;
 
 void lastMinuteAudioSystemDo()
@@ -51,10 +51,10 @@ void lastMinuteAudioSystemDo()
 
 	if(lastPlaying != play)
 	{
-		music.openFromFile(play);
-		music.setLoop(true);
+		music->openFromFile(play);
+		music->setLoop(true);
 
-		music.play();
+		music->play();
 
 		lastPlaying = play;
 	}
@@ -204,6 +204,8 @@ int main(int argc, char** argv)
 	inputSystem = std::make_unique<InputSystem>(manager);
 	animationSystem = std::make_unique<AnimationSystem>(manager);
 	scriptSystem = std::make_unique<ScriptSystem>(manager, overworld);
+
+	music = std::make_unique<sf::Music>();
 	
 	for(auto i = 0; i < 7; i++)
 		for(auto j = 0; j < 5; j++)
